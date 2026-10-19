@@ -1,127 +1,53 @@
-import { Injectable } from '@angular/core';
-import { Cliente } from '../models/cliente.model';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ClienteDTO } from '../dtos/cliente.dto';
+import { LoginDTO } from '../dtos/login.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClienteService {
-  constructor() {
-    this.inicializarDatos();
-  }
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:8080/api';
 
-  // Base de datos simulada en memoria
-  private clientes: Cliente[] = [];
-  private clienteActual: Cliente | null = null;
+  // Sesión en memoria (Singleton de Angular, cero localStorage)
+  private clienteActual: ClienteDTO | null = null;
 
-  private inicializarDatos(): void {
-    this.clientes = [
-      new Cliente(
-        1,
-        'Lionel Messi',
-        'lionel.messi@email.com',
-        'messi10',
-        '3104567890',
-        'Carrera 7 # 45-23, Bogotá',
-        true,
-        [],
-      ),
-      new Cliente(
-        2,
-        'Carlos Mendoza',
-        'carlos.mendoza@email.com',
-        'carlos123',
-        '3159876543',
-        'Calle 100 # 15-34, Bogotá',
-        true,
-        [],
-      ),
-      new Cliente(
-        3,
-        'Valeria Gómez',
-        'valeria.gomez@email.com',
-        'valeria456',
-        '3201122334',
-        'Avenida Circunvalar # 85-12, Bogotá',
-        true,
-        [],
-      ),
-      new Cliente(
-        4,
-        'Andrés Felipe Rodríguez',
-        'andres.rodriguez@email.com',
-        'andres789',
-        '3018899001',
-        'Transversal 23 # 67-89, Bogotá',
-        true,
-        [],
-      ),
-    ];
-
-    // Por defecto, se asigna el primer cliente para permitir acceso directo a Mi Portal
-    this.clienteActual = this.clientes[0];
-  }
-
-  getClientes(): Cliente[] {
-    return this.clientes;
-  }
-
-  getClienteById(id: number): Cliente | undefined {
-    return this.clientes.find((c) => c.id === id);
-  }
-
-  getClienteActual(): Cliente | null {
+  getClienteActual(): ClienteDTO | null {
     return this.clienteActual;
   }
 
-  setClienteActual(cliente: Cliente | null): void {
+  setClienteActual(cliente: ClienteDTO | null): void {
     this.clienteActual = cliente;
-  }
-
-  autenticar(correo: string, contrasena: string): Cliente | undefined {
-    const encontrado = this.clientes.find(
-      (c) =>
-        c.correo.trim().toLowerCase() === correo.trim().toLowerCase() &&
-        c.contrasena === contrasena,
-    );
-    if (encontrado) {
-      this.clienteActual = encontrado;
-    }
-    return encontrado;
   }
 
   cerrarSesion(): void {
     this.clienteActual = null;
   }
 
-  addCliente(cliente: Cliente): Cliente {
-    const maxId =
-      this.clientes.length > 0
-        ? Math.max(...this.clientes.map((c) => c.id))
-        : 0;
-    cliente.id = maxId + 1;
-    this.clientes.push(cliente);
-    this.clienteActual = cliente;
-    return cliente;
+  esOperador(): boolean {
+    return this.clienteActual?.correo?.toLowerCase() === 'operador@elwey.com';
   }
 
-  updateCliente(id: number, cliente: Cliente): void {
-    cliente.id = id;
-    const index = this.clientes.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.clientes[index] = cliente;
-      if (this.clienteActual?.id === id) {
-        this.clienteActual = cliente;
-      }
-    }
+  // Peticiones HTTP puras (sin tap, gestionadas en el next del subscribe de los componentes)
+  autenticar(credenciales: LoginDTO): Observable<ClienteDTO> {
+    return this.http.post<ClienteDTO>(`${this.apiUrl}/auth/login`, credenciales);
   }
 
-  eliminarCliente(id: number): void {
-    const index = this.clientes.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.clientes.splice(index, 1);
-      if (this.clienteActual?.id === id) {
-        this.clienteActual = null;
-      }
-    }
+  addCliente(cliente: ClienteDTO): Observable<ClienteDTO> {
+    return this.http.post<ClienteDTO>(`${this.apiUrl}/clientes`, cliente);
+  }
+
+  getClienteById(id: number): Observable<ClienteDTO> {
+    return this.http.get<ClienteDTO>(`${this.apiUrl}/clientes/${id}`);
+  }
+
+  updateCliente(id: number, cliente: ClienteDTO): Observable<ClienteDTO> {
+    return this.http.put<ClienteDTO>(`${this.apiUrl}/clientes/${id}`, cliente);
+  }
+
+  eliminarCliente(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/clientes/${id}`);
   }
 }

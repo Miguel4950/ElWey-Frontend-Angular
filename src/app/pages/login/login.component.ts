@@ -1,10 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { ClienteService } from '../../service/cliente.service';
+import { LoginDTO } from '../../dtos/login.dto';
+import { ClienteDTO } from '../../dtos/cliente.dto';
 
 @Component({
   selector: 'app-login',
@@ -19,10 +22,15 @@ import { ClienteService } from '../../service/cliente.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   private clienteService = inject(ClienteService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private subscription?: Subscription;
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
 
   errorMessage: string = '';
   logoutMessage: boolean = false;
@@ -51,17 +59,25 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const email = this.loginForm.value.email ?? '';
-    const password = this.loginForm.value.password ?? '';
+    const credenciales: LoginDTO = {
+      correo: this.loginForm.value.email ?? '',
+      contrasena: this.loginForm.value.password ?? '',
+    };
 
-    const cliente = this.clienteService.autenticar(email, password);
-
-    if (cliente) {
-      this.errorMessage = '';
-      this.router.navigate(['/cliente/portal']);
-    } else {
-      this.errorMessage = 'Credenciales incorrectas. Inténtalo de nuevo.';
-    }
+    this.subscription = this.clienteService.autenticar(credenciales).subscribe({
+      next: (cliente) => {
+        this.clienteService.setClienteActual(cliente);
+        this.errorMessage = '';
+        if (this.clienteService.esOperador()) {
+          this.router.navigate(['/pedidos']);
+        } else {
+          this.router.navigate(['/cliente/portal']);
+        }
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.mensaje || 'Error de conexión. Por favor, intenta nuevamente.';
+      },
+    });
   }
 
   cargarCredencial(email: string, pass: string): void {

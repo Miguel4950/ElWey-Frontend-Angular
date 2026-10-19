@@ -1,0 +1,145 @@
+<app-navbar></app-navbar>
+
+<main class="main-pedido-detalle">
+  <div class="container-pedido-detalle">
+
+    @if (pedido) {
+      <!-- Breadcrumb Navigation -->
+      <div class="breadcrumb-detalle-nav">
+        <a [routerLink]="['/']" class="breadcrumb-item-link">Inicio</a>
+        <span>/</span>
+        <a [routerLink]="['/pedidos']" class="breadcrumb-item-link">Portal de Pedidos</a>
+        <span>/</span>
+        <span class="breadcrumb-item-activo">Pedido #{{ pedido.id }}</span>
+      </div>
+
+      <!-- Tarjeta Principal del Detalle del Pedido -->
+      <div class="card-pedido-detalle">
+
+        <!-- Cabecera del Pedido -->
+        <div class="cabecera-pedido-detalle">
+          <div>
+            <span class="subtitulo-comanda">Comanda de Restaurante</span>
+            <h1 class="titulo-pedido-num">Pedido #{{ pedido.id }}</h1>
+            <p class="fecha-pedido-texto">Registrado el {{ pedido.fechaCreacion }}</p>
+          </div>
+          <div>
+            <span
+              class="badge-estado-grande"
+              [class.badge-preparacion]="pedido.estado === 'En preparación'"
+              [class.badge-camino]="pedido.estado === 'En camino'"
+              [class.badge-entregado]="pedido.estado === 'Entregado'"
+            >
+              {{ pedido.estado }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Información del Cliente y Entrega -->
+        <div class="grid-info-pedido">
+          <div class="caja-info-bloque">
+            <p class="etiqueta-bloque">Datos del Cliente</p>
+            <h3 class="nombre-cliente-detalle">{{ pedido.clienteNombre }}</h3>
+            <p class="dato-secundario">Correo: <span>{{ pedido.clienteCorreo || 'No registrado' }}</span></p>
+            <p class="dato-secundario">Teléfono: <span>{{ pedido.clienteTelefono || 'No registrado' }}</span></p>
+          </div>
+
+          <div class="caja-info-bloque">
+            <p class="etiqueta-bloque">Resumen de Cantidades y Entrega</p>
+            <p class="dato-secundario">Dirección: <span>{{ pedido.clienteDireccion || 'Despacho en barra' }}</span></p>
+            <p class="dato-secundario">
+              Total Unidades de Producto: <strong class="resalte-blanco">{{ pedido.cantidadTotalProductos }}</strong>
+            </p>
+            <p class="dato-secundario">
+              Total Adicionales Seleccionados: <strong class="resalte-ambar">{{ pedido.cantidadTotalAdicionales }}</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Tabla de Platos, Cantidades y Adicionales -->
+        <div class="seccion-tabla-items">
+          <h3 class="titulo-seccion-items">Platos y Adicionales Seleccionados</h3>
+
+          <div class="tabla-items-responsive">
+            <table class="tabla-detalle-items">
+              <thead>
+                <tr>
+                  <th>Plato</th>
+                  <th>Precio Unit.</th>
+                  <th class="col-centro">Cant. Producto</th>
+                  <th>Adicionales Seleccionados (Cant.)</th>
+                  <th class="col-derecha">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of pedido.items; track $index) {
+                  <tr>
+                    <td>
+                      <strong class="nombre-plato-item">{{ item.comidaNombre }}</strong>
+                      <span class="cat-plato-item">({{ item.categoriaNombre ?? 'General' }})</span>
+                    </td>
+                    <td>
+                      ${{ item.comidaPrecio | number:'1.0-0' }}
+                    </td>
+                    <td class="col-centro">
+                      <span class="badge-cant-tabla">x{{ item.cantidad }}</span>
+                    </td>
+                    <td>
+                      @if (item.adicionales && item.adicionales.length > 0) {
+                        <div class="lista-chips-adic">
+                          @for (adic of item.adicionales; track $index) {
+                            <span class="adic-chip">
+                              <strong>{{ adic.cantidad }}x</strong> {{ adic.nombre }}
+                              <span class="precio-chip">(+${{ adic.subtotal | number:'1.0-0' }})</span>
+                            </span>
+                          }
+                        </div>
+                      } @else {
+                        <span class="sin-adic-texto">Sin adicionales (0)</span>
+                      }
+                    </td>
+                    <td class="col-derecha celda-subtotal-item">
+                      ${{ item.subtotal | number:'1.0-0' }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" class="etiqueta-pie-subtotal">Subtotal Productos ({{ pedido.cantidadTotalProductos }}):</td>
+                  <td class="valor-pie-subtotal">${{ pedido.subtotalComida | number:'1.0-0' }}</td>
+                </tr>
+                <tr>
+                  <td colspan="4" class="etiqueta-pie-subtotal">Subtotal Adicionales ({{ pedido.cantidadTotalAdicionales }}):</td>
+                  <td class="valor-pie-subtotal">+${{ pedido.subtotalAdicionales | number:'1.0-0' }}</td>
+                </tr>
+                <tr class="fila-total-general">
+                  <th colspan="4" class="etiqueta-total-general">TOTAL GENERAL:</th>
+                  <th class="valor-total-general">${{ pedido.total | number:'1.0-0' }}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- Botones de Navegación -->
+        <div class="pie-acciones-detalle">
+          <a [routerLink]="['/pedidos']" class="btn-volver-pedidos">
+            &larr; Volver al Portal de Pedidos
+          </a>
+        </div>
+
+      </div>
+    } @else {
+      <div class="no-encontrado">
+        <h2>Pedido no encontrado</h2>
+        <p>No se encontró ningún pedido con el ID especificado en la base de datos.</p>
+        <a [routerLink]="['/pedidos']" class="btn-volver-pedidos">Volver al Portal de Pedidos</a>
+      </div>
+    }
+
+  </div>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

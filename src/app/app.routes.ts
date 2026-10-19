@@ -6,6 +6,8 @@ import { ComidaDetailComponent } from './pages/comida-detail/comida-detail.compo
 import { LoginComponent } from './pages/login/login.component';
 import { RegistroComponent } from './pages/registro/registro.component';
 import { MiPortalComponent } from './pages/mi-portal/mi-portal.component';
+import { PedidosPageComponent } from './pages/pedidos-page/pedidos-page.component';
+import { PedidoDetailComponent } from './pages/pedido-detail/pedido-detail.component';
 
 export const routes: Routes = [
   {
@@ -55,6 +57,14 @@ export const routes: Routes = [
   {
     path: 'cliente/portal/:id',
     component: MiPortalComponent,
+  },
+  {
+    path: 'pedidos',
+    component: PedidosPageComponent,
+  },
+  {
+    path: 'pedidos/:id',
+    component: PedidoDetailComponent,
   },
   {
     path: '**',

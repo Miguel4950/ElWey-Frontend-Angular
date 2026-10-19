@@ -10,14 +10,18 @@
       <a [routerLink]="['/']">Inicio</a>
       <a [routerLink]="['/comidas/tarjetas']">Menú</a>
       <a [routerLink]="['/comidas/tabla']">Tabla</a>
-      <a [routerLink]="['/cliente/portal']">Mi Portal</a>
+      @if (esOperador) {
+        <a [routerLink]="['/pedidos']">Portal Pedidos</a>
+      } @else {
+        <a [routerLink]="['/cliente/portal']">Mi Portal</a>
+      }
     </nav>
 
     <!-- Botones de acción a la derecha -->
     <div class="acciones-nav">
       <a [routerLink]="['/comidas/tarjetas']" class="btn-pedido-nav">Haz Tu Pedido</a>
       @if (clienteActual) {
-        <a [routerLink]="['/cliente/portal']" class="enlace-acceder-nav" title="Ir a Mi Portal">{{ clienteActual.nombre }}</a>
+        <a [routerLink]="[esOperador ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav" title="Ir al Portal">{{ clienteActual.nombre }}</a>
         <button type="button" (click)="cerrarSesion()" class="enlace-acceder-nav" style="background: none; border: none; cursor: pointer; padding: 0;" title="Cerrar sesión">Salir</button>
       } @else {
         <a [routerLink]="['/login']" class="enlace-acceder-nav">Acceder</a>

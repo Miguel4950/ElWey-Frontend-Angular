@@ -18,109 +18,113 @@
       </a>
     </div>
 
+    <!-- Alerta de Error al eliminar o interactuar -->
+    @if (errorMessage) {
+    <div class="alerta-error-comida">
+      <span>{{ errorMessage }}</span>
+    </div>
+    }
+
     <!-- =========================================================================
          MODO 1: VISTA DE TARJETAS (Carta y Especialidades idéntico a Spring Boot)
          ========================================================================= -->
     @if (esVistaTarjetas) {
-      <div class="header-menu-tarjetas">
-        <div>
-          <p class="subtitulo-menu-tarjetas">Carta y Especialidades</p>
-          <h1 class="titulo-menu-tarjetas">Menú Taquería</h1>
-          <p class="desc-menu-tarjetas">
-            Recetas tradicionales elaboradas con ingredientes auténticos y maíz nixtamalizado.
-          </p>
-        </div>
-        <div class="acciones-header-tarjetas">
-          <a [routerLink]="['/comidas/tabla']" class="btn-ir-tabla">
-            Gestionar en Tabla
-          </a>
-        </div>
+    <div class="header-menu-tarjetas">
+      <div>
+        <p class="subtitulo-menu-tarjetas">Carta y Especialidades</p>
+        <h1 class="titulo-menu-tarjetas">Menú Taquería</h1>
+        <p class="desc-menu-tarjetas">
+          Recetas tradicionales elaboradas con ingredientes auténticos y maíz nixtamalizado.
+        </p>
+      </div>
+      <div class="acciones-header-tarjetas">
+        <a [routerLink]="['/comidas/tabla']" class="btn-ir-tabla">
+          Gestionar en Tabla
+        </a>
+      </div>
+    </div>
+
+    <!-- Barra de filtros por categoría y buscador -->
+    <div class="barra-filtros-tarjetas">
+      <div class="pills-categorias">
+        <button type="button" (click)="seleccionarCategoria('')" class="pill-btn"
+          [class.pill-activa]="filtroCategoria === ''">
+          Todos ({{ comidaArray.length }})
+        </button>
+        <button type="button" (click)="seleccionarCategoria('Tacos')" class="pill-btn"
+          [class.pill-activa]="filtroCategoria === 'Tacos'">
+          Tacos
+        </button>
+        <button type="button" (click)="seleccionarCategoria('Quesadillas')" class="pill-btn"
+          [class.pill-activa]="filtroCategoria === 'Quesadillas'">
+          Quesadillas
+        </button>
+        <button type="button" (click)="seleccionarCategoria('Entradas')" class="pill-btn"
+          [class.pill-activa]="filtroCategoria === 'Entradas'">
+          Entradas
+        </button>
+        <button type="button" (click)="seleccionarCategoria('Especialidades')" class="pill-btn"
+          [class.pill-activa]="filtroCategoria === 'Especialidades'">
+          Especialidades
+        </button>
+        <button type="button" (click)="seleccionarCategoria('Burritos')" class="pill-btn"
+          [class.pill-activa]="filtroCategoria === 'Burritos'">
+          Burritos
+        </button>
       </div>
 
-      <!-- Barra de filtros por categoría y buscador -->
-      <div class="barra-filtros-tarjetas">
-        <div class="pills-categorias">
-          <button type="button" (click)="seleccionarCategoria('')" class="pill-btn" [class.pill-activa]="filtroCategoria === ''">
-            Todos ({{ comidaArray.length }})
-          </button>
-          <button type="button" (click)="seleccionarCategoria('Tacos')" class="pill-btn" [class.pill-activa]="filtroCategoria === 'Tacos'">
-            Tacos
-          </button>
-          <button type="button" (click)="seleccionarCategoria('Quesadillas')" class="pill-btn" [class.pill-activa]="filtroCategoria === 'Quesadillas'">
-            Quesadillas
-          </button>
-          <button type="button" (click)="seleccionarCategoria('Entradas')" class="pill-btn" [class.pill-activa]="filtroCategoria === 'Entradas'">
-            Entradas
-          </button>
-          <button type="button" (click)="seleccionarCategoria('Especialidades')" class="pill-btn" [class.pill-activa]="filtroCategoria === 'Especialidades'">
-            Especialidades
-          </button>
-          <button type="button" (click)="seleccionarCategoria('Burritos')" class="pill-btn" [class.pill-activa]="filtroCategoria === 'Burritos'">
-            Burritos
-          </button>
-        </div>
-
-        <div class="caja-buscador">
-          <input
-            type="text"
-            [value]="busqueda"
-            (input)="onBuscar($event)"
-            placeholder="Buscar plato..."
-            class="input-buscador"
-          />
-        </div>
+      <div class="caja-buscador">
+        <input type="text" [value]="busqueda" (input)="onBuscar($event)" placeholder="Buscar plato..."
+          class="input-buscador" />
       </div>
+    </div>
 
-      <!-- Cuadrícula de Tarjetas -->
-      <div class="grid-tarjetas-menu">
-        @for (item of comidasFiltradas; track item.id) {
-          <article class="tarjeta-plato">
-            <div class="caja-foto-plato">
-              <img [src]="item.imagen_url" [alt]="item.nombre" class="img-plato" />
-              <span
-                class="badge-etiqueta-flotante"
-                [class.etiqueta-verde]="item.etiqueta === 'Vegano' || item.etiqueta === 'Favorito' || item.etiqueta === 'Top Ventas' || item.etiqueta === 'Clásico'"
-                [class.etiqueta-roja]="item.etiqueta !== 'Vegano' && item.etiqueta !== 'Favorito' && item.etiqueta !== 'Top Ventas' && item.etiqueta !== 'Clásico'">
-                {{ item.etiqueta }}
-              </span>
-            </div>
-            <div class="contenido-plato">
-              <span class="sub-categoria">{{ item.categoria ? item.categoria.nombre : 'General' }}</span>
-              <h3>{{ item.nombre }}</h3>
-              <p>{{ item.descripcion }}</p>
-              <div class="fila-precio">
-                <span class="texto-precio">${{ item.precio | number:'1.0-0' }}</span>
-                <a [routerLink]="['/comidas', item.id]" class="enlace-pedir">
-                  VER DETALLE &rarr;
-                </a>
-              </div>
-            </div>
-          </article>
-        } @empty {
-          <div class="vacio-tarjetas">
-            <p>No se encontraron platos con los criterios de búsqueda.</p>
+    <!-- Cuadrícula de Tarjetas -->
+    <div class="grid-tarjetas-menu">
+      @for (item of comidasFiltradas; track item.id) {
+      <article class="tarjeta-plato">
+        <div class="caja-foto-plato">
+          <img [src]="item.imagen_url" [alt]="item.nombre" class="img-plato" />
+          <span class="badge-etiqueta-flotante"
+            [class.etiqueta-verde]="item.etiqueta === 'Vegano' || item.etiqueta === 'Favorito' || item.etiqueta === 'Top Ventas' || item.etiqueta === 'Clásico'"
+            [class.etiqueta-roja]="item.etiqueta !== 'Vegano' && item.etiqueta !== 'Favorito' && item.etiqueta !== 'Top Ventas' && item.etiqueta !== 'Clásico'">
+            {{ item.etiqueta }}
+          </span>
+        </div>
+        <div class="contenido-plato">
+          <span class="sub-categoria">{{ item.categoriaNombre ?? 'General' }}</span>
+          <h3>{{ item.nombre }}</h3>
+          <p>{{ item.descripcion }}</p>
+          <div class="fila-precio">
+            <span class="texto-precio">${{ item.precio | number:'1.0-0' }}</span>
+            <a [routerLink]="['/comidas', item.id]" class="enlace-pedir">
+              VER DETALLE &rarr;
+            </a>
           </div>
-        }
+        </div>
+      </article>
+      } @empty {
+      <div class="vacio-tarjetas">
+        <p>No se encontraron platos con los criterios de búsqueda.</p>
       </div>
+      }
+    </div>
     }
 
     <!-- =========================================================================
          MODO 2: VISTA DE TABLA (Inventario Gastronómico idéntico a Spring Boot)
          ========================================================================= -->
     @else {
-      <div class="barra-superior-gestion">
-        <app-page-title></app-page-title>
-        <div class="contenedor-btn-crear">
-          <a [routerLink]="['/comidas/new']" class="btn-crear-comida">
-            + CREAR COMIDA
-          </a>
-        </div>
+    <div class="barra-superior-gestion">
+      <app-page-title></app-page-title>
+      <div class="contenedor-btn-crear">
+        <a [routerLink]="['/comidas/new']" class="btn-crear-comida">
+          + CREAR COMIDA
+        </a>
       </div>
+    </div>
 
-      <app-comida-table
-        [comidaArray]="comidaArray"
-        (comidaDeleted)="eliminarComida($event)"
-      ></app-comida-table>
+    <app-comida-table [comidaArray]="comidaArray" (comidaDeleted)="eliminarComida($event)"></app-comida-table>
     }
 
   </div>

@@ -18,6 +18,10 @@ export class NavbarComponent {
     return this.clienteService.getClienteActual();
   }
 
+  get esOperador(): boolean {
+    return this.clienteService.esOperador();
+  }
+
   cerrarSesion(): void {
     this.clienteService.cerrarSesion();
     this.router.navigate(['/login'], { queryParams: { logout: 'true' } });

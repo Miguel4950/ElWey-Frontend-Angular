@@ -1,11 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { ClienteService } from '../../service/cliente.service';
-import { Cliente } from '../../models/cliente.model';
+import { ClienteDTO } from '../../dtos/cliente.dto';
 
 @Component({
   selector: 'app-mi-portal',
@@ -19,12 +20,17 @@ import { Cliente } from '../../models/cliente.model';
   templateUrl: './mi-portal.component.html',
   styleUrl: './mi-portal.component.css',
 })
-export class MiPortalComponent implements OnInit {
+export class MiPortalComponent implements OnInit, OnDestroy {
   private clienteService = inject(ClienteService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private subscription: Subscription = new Subscription();
 
-  cliente: Cliente | null = null;
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  cliente: ClienteDTO | null = null;
   mensajeActualizado: boolean = false;
   mensajeBienvenido: boolean = false;
   errorMessage: string = '';
@@ -35,53 +41,48 @@ export class MiPortalComponent implements OnInit {
     correo: new FormControl('', [Validators.required, Validators.email]),
     telefono: new FormControl('', [Validators.required]),
     direccion: new FormControl('', [Validators.required]),
-    fechaRegistro: new FormControl('15 de Enero, 2026'),
+    fechaRegistro: new FormControl(''),
   });
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      if (params['bienvenido']) {
-        this.mensajeBienvenido = true;
-      }
-      if (params['actualizado']) {
-        this.mensajeActualizado = true;
-      }
-    });
+    this.subscription.add(
+      this.route.queryParams.subscribe((params) => {
+        if (params['bienvenido']) {
+          this.mensajeBienvenido = true;
+        }
+        if (params['actualizado']) {
+          this.mensajeActualizado = true;
+        }
+      })
+    );
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
-      const clienteEncontrado = this.clienteService.getClienteById(Number(idParam));
-      if (clienteEncontrado) {
-        this.cliente = clienteEncontrado;
-      }
-    }
-
-    if (!this.cliente) {
+      this.subscription.add(
+        this.clienteService.getClienteById(Number(idParam)).subscribe({
+          next: (cliente) => {
+            this.cliente = cliente;
+            this.cargarFormulario(cliente);
+          },
+          error: (err) => console.error('Error al cargar cliente:', err),
+        })
+      );
+    } else {
       this.cliente = this.clienteService.getClienteActual();
-    }
-
-    // Si aún no hay sesión activa, cargamos el primer cliente de prueba para evaluación inmediata
-    if (!this.cliente) {
-      const lista = this.clienteService.getClientes();
-      if (lista.length > 0) {
-        this.cliente = lista[0];
-        this.clienteService.setClienteActual(this.cliente);
+      if (this.cliente) {
+        this.cargarFormulario(this.cliente);
       }
-    }
-
-    if (this.cliente) {
-      this.cargarFormulario(this.cliente);
     }
   }
 
-  cargarFormulario(cliente: Cliente): void {
+  cargarFormulario(cliente: ClienteDTO): void {
     this.portalForm.patchValue({
       id: cliente.id,
       nombre: cliente.nombre,
       correo: cliente.correo,
       telefono: cliente.telefono,
       direccion: cliente.direccion,
-      fechaRegistro: '15 de Enero, 2026',
+      fechaRegistro: cliente.fechaRegistro || '15 de Enero, 2026',
     });
   }
 
@@ -92,28 +93,38 @@ export class MiPortalComponent implements OnInit {
       return;
     }
 
-    if (!this.cliente) {
+    if (!this.cliente || !this.cliente.id) {
       return;
     }
 
     const { nombre, correo, telefono, direccion } = this.portalForm.value;
 
-    const clienteActualizado = new Cliente(
-      this.cliente.id,
-      nombre!.trim(),
-      correo!.trim(),
-      this.cliente.contrasena,
-      telefono!.trim(),
-      direccion!.trim(),
-      this.cliente.activo,
-      this.cliente.pedidos
-    );
+    const clienteActualizado: ClienteDTO = {
+      id: this.cliente.id,
+      nombre: nombre!.trim(),
+      correo: correo!.trim(),
+      contrasena: this.cliente.contrasena,
+      telefono: telefono!.trim(),
+      direccion: direccion!.trim(),
+      activo: this.cliente.activo,
+      fechaRegistro: this.cliente.fechaRegistro,
+    };
 
-    this.clienteService.updateCliente(this.cliente.id, clienteActualizado);
-    this.cliente = clienteActualizado;
-    this.mensajeActualizado = true;
-    this.mensajeBienvenido = false;
-    this.errorMessage = '';
+    this.subscription.add(
+      this.clienteService.updateCliente(this.cliente.id, clienteActualizado).subscribe({
+        next: (confirmado) => {
+          this.clienteService.setClienteActual(confirmado);
+          this.cliente = confirmado;
+          this.mensajeActualizado = true;
+          this.mensajeBienvenido = false;
+          this.errorMessage = '';
+        },
+        error: (err) => {
+          this.mensajeActualizado = false;
+          this.errorMessage = err?.error?.mensaje || 'Error al actualizar la información. Por favor, intenta de nuevo.';
+        },
+      })
+    );
   }
 
   onRestablecer(): void {
@@ -125,7 +136,7 @@ export class MiPortalComponent implements OnInit {
   }
 
   onEliminarCuenta(): void {
-    if (!this.cliente) {
+    if (!this.cliente || !this.cliente.id) {
       return;
     }
 
@@ -135,8 +146,20 @@ export class MiPortalComponent implements OnInit {
 
     if (confirmado) {
       const idAEliminar = this.cliente.id;
-      this.clienteService.eliminarCliente(idAEliminar);
-      this.router.navigate(['/']);
+      this.subscription.add(
+        this.clienteService.eliminarCliente(idAEliminar).subscribe({
+          next: () => {
+            this.clienteService.setClienteActual(null);
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            this.mensajeActualizado = false;
+            console.error('Error al eliminar cuenta en el servidor:', err);
+            this.errorMessage =
+              err?.error?.mensaje || 'Error al eliminar la cuenta. Por favor, intenta de nuevo.';
+          },
+        })
+      );
     }
   }
 }

@@ -39,23 +39,12 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 8px 12px;
   border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.item-acomp-row:hover {
-  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .info-acomp {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.checkbox-acomp {
-  accent-color: #ee1a0e;
-  cursor: pointer;
+  gap: 10px;
 }
 
 .texto-acomp-nombre {
@@ -67,6 +56,28 @@
   font-size: 12px;
   font-weight: 700;
   color: #ee1a0e;
+}
+
+.control-cantidad-adic {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.label-cant-adic {
+  font-size: 11px;
+  color: #8c8278;
+}
+
+.input-cant-adic {
+  width: 56px;
+  background-color: #141211;
+  border: 1px solid #332b28;
+  border-radius: 4px;
+  padding: 4px 6px;
+  color: #fcf2e9;
+  font-size: 13px;
+  text-align: center;
 }
 
 .sin-adicionales {

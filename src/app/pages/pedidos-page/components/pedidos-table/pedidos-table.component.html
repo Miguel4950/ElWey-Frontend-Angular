@@ -1,0 +1,86 @@
+<div class="tabla-contenedor-responsive">
+  <table class="tabla-elwey">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Platos del Pedido</th>
+        <th class="col-centrada">Cant. Producto</th>
+        <th class="col-centrada">Cant. Adicionales</th>
+        <th class="col-estado">Estado</th>
+        <th>Total</th>
+        <th class="col-acciones">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (pedido of pedidosArray(); track $index) {
+        <tr>
+          <td class="celda-id">
+            <strong>#{{ pedido.id }}</strong>
+          </td>
+
+          <td>
+            <strong class="nombre-cliente">{{ pedido.clienteNombre }}</strong>
+            <span class="correo-cliente">{{ pedido.clienteCorreo }}</span>
+          </td>
+
+          <td class="celda-fecha">
+            {{ pedido.fechaCreacion }}
+          </td>
+
+          <td class="celda-platos">
+            @for (item of pedido.items; track $index) {
+              <div class="linea-item-resumen">
+                <span>{{ item.comidaNombre }}</span>
+                <span class="badge-cant-item">x{{ item.cantidad }}</span>
+              </div>
+            }
+          </td>
+
+          <td class="col-centrada">
+            <span class="badge-conteo">{{ pedido.cantidadTotalProductos }}</span>
+          </td>
+
+          <td class="col-centrada">
+            <span class="badge-conteo badge-conteo-adic">{{ pedido.cantidadTotalAdicionales }}</span>
+          </td>
+
+          <td class="celda-estado">
+            <span
+              class="badge-estado"
+              [class.badge-preparacion]="pedido.estado === 'En preparación'"
+              [class.badge-camino]="pedido.estado === 'En camino'"
+              [class.badge-entregado]="pedido.estado === 'Entregado'"
+            >
+              {{ pedido.estado }}
+            </span>
+          </td>
+
+          <td class="celda-precio">
+            ${{ pedido.total | number:'1.0-0' }}
+          </td>
+
+          <td class="celda-acciones">
+            <div class="grupo-acciones">
+              <button
+                type="button"
+                (click)="verDetallePedido(pedido)"
+                class="btn-accion btn-detalle"
+                title="Ver detalle"
+              >
+                Ver detalle
+              </button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="9" class="celda-vacia">
+            No se encontraron pedidos registrados en la base de datos.
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

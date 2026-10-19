@@ -2,7 +2,7 @@
   @if (comida(); as c) {
     <div>
       <p class="subtitulo-detalle-ficha">
-        Categoría: <span>{{ c.categoria ? c.categoria.nombre : 'General' }}</span>
+        Categoría: <span>{{ c.categoriaNombre ?? 'General' }}</span>
       </p>
       <h1 class="titulo-detalle-plato">{{ c.nombre }}</h1>
 
@@ -22,8 +22,47 @@
       <!-- Descripción -->
       <p class="desc-completa-detalle">{{ c.descripcion }}</p>
 
+      <!-- Cantidad de Producto -->
+      <div class="caja-cantidad-producto">
+        <label class="titulo-cantidad-prod">Cantidad de Producto:</label>
+        <input
+          type="number"
+          min="1"
+          [value]="cantidadProducto"
+          (input)="actualizarCantidadProducto($event)"
+          class="input-cant-prod"
+        />
+      </div>
+
       <!-- Adicionales Disponibles (Subcomponente fraccionado) -->
-      <app-comida-adicionales [categoria]="c.categoria"></app-comida-adicionales>
+      <app-comida-adicionales
+        [adicionales]="c.adicionales"
+        [categoriaNombre]="c.categoriaNombre"
+        (adicionalesChange)="onAdicionalesChange($event)"
+      ></app-comida-adicionales>
+
+      <!-- Botón para Crear Pedido en Base de Datos -->
+      <button type="button" class="btn-ordenar-pedido" (click)="ordenarPedido(c)">
+        Ordenar Ahora
+      </button>
+
+      @if (pedidoCreado) {
+        <div class="alerta-pedido-exito">
+          <strong>¡Pedido #{{ pedidoCreado.id }} registrado en la base de datos!</strong>
+          <p class="detalle-exito-pedido">
+            Estado: <strong>{{ pedidoCreado.estado }}</strong> ·
+            Cant. Producto: <strong>{{ pedidoCreado.cantidadTotalProductos }}</strong> ·
+            Cant. Adicionales: <strong>{{ pedidoCreado.cantidadTotalAdicionales }}</strong> ·
+            Total: <strong>${{ pedidoCreado.total | number:'1.0-0' }}</strong>
+          </p>
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="alerta-pedido-error">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
 
     <!-- Botones de Acción Inferiores -->

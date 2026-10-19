@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { Comida } from '../../../../models/comida.model';
+import { ComidaDTO } from '../../../../dtos/comida.dto';
 
 @Component({
   selector: 'app-menu-destacado',
@@ -11,6 +11,6 @@ import { Comida } from '../../../../models/comida.model';
 })
 export class MenuDestacadoComponent {
 
-  comidaArray = input<Comida[]>();
+  comidaArray = input<ComidaDTO[]>();
 
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,11 +6,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
-import { Comida } from '../../models/comida.model';
-import { Categoria } from '../../models/categoria.model';
+import { ComidaDTO } from '../../dtos/comida.dto';
+import { CategoriaDTO } from '../../dtos/categoria.dto';
 import { ComidaService } from '../../service/comida.service';
 
 @Component({
@@ -25,15 +26,20 @@ import { ComidaService } from '../../service/comida.service';
   templateUrl: './comida-form.component.html',
   styleUrl: './comida-form.component.css',
 })
-export class ComidaFormComponent implements OnInit {
+export class ComidaFormComponent implements OnInit, OnDestroy {
   // Inyección de dependencias funcional idéntica al código del profesor
   private comidaService = inject(ComidaService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
+  private subscription: Subscription = new Subscription();
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   comidaId: number | undefined = undefined;
   isEdit = false;
-  categorias: Categoria[] = [];
+  categorias: CategoriaDTO[] = [];
 
   comidaForm = new FormGroup({
     nombre: new FormControl('', [
@@ -65,24 +71,41 @@ export class ComidaFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.categorias = this.comidaService.getCategorias();
+    this.subscription.add(
+      this.comidaService.getCategorias().subscribe({
+        next: (cats) => {
+          this.categorias = cats;
+        },
+        error: (err) => {
+          console.error('Error al cargar categorías:', err);
+        },
+      })
+    );
+
     this.comidaId = Number(this.activatedRoute.snapshot.params['id']);
 
     if (this.comidaId) {
       this.isEdit = true;
-      const comida = this.comidaService.getComidaById(this.comidaId);
-
-      if (comida) {
-        this.comidaForm.patchValue({
-          nombre: comida.nombre,
-          precio: comida.precio.toString(),
-          descripcion: comida.descripcion,
-          categoriaId: comida.categoria ? comida.categoria.id.toString() : '1',
-          etiqueta: comida.etiqueta,
-          imagen_url: comida.imagen_url,
-          activo: comida.activo,
-        });
-      }
+      this.subscription.add(
+        this.comidaService.getComidaById(this.comidaId).subscribe({
+          next: (comida) => {
+            if (comida) {
+              this.comidaForm.patchValue({
+                nombre: comida.nombre,
+                precio: comida.precio.toString(),
+                descripcion: comida.descripcion,
+                categoriaId: comida.categoriaId ? comida.categoriaId.toString() : '1',
+                etiqueta: comida.etiqueta,
+                imagen_url: comida.imagen_url,
+                activo: comida.activo,
+              });
+            }
+          },
+          error: (err) => {
+            console.error('Error al obtener comida para edición:', err);
+          },
+        })
+      );
     }
   }
 
@@ -97,8 +120,8 @@ export class ComidaFormComponent implements OnInit {
       this.categorias.find((c) => c.id === Number(val.categoriaId)) ||
       this.categorias[0];
 
-    const plato: Comida = {
-      id: 0,
+    const plato: ComidaDTO = {
+      id: this.isEdit && this.comidaId ? this.comidaId : 0,
       nombre: val.nombre ?? 'Plato Desconocido',
       precio: Number(val.precio),
       descripcion: val.descripcion ?? '',
@@ -108,15 +131,32 @@ export class ComidaFormComponent implements OnInit {
           : 'https://images.unsplash.com/photo-1648437595587-e6a8b0cdf1f9?w=600&h=400&fit=crop',
       etiqueta: val.etiqueta ?? 'Estrella',
       activo: val.activo ?? true,
-      categoria: cat,
+      categoriaId: cat ? cat.id : 1,
+      categoriaNombre: cat ? cat.nombre : 'General',
     };
 
     if (this.isEdit && this.comidaId) {
-      this.comidaService.updateComida(this.comidaId, plato);
+      this.subscription.add(
+        this.comidaService.updateComida(this.comidaId, plato).subscribe({
+          next: () => {
+            this.router.navigate(['/comidas']);
+          },
+          error: (err) => {
+            console.error('Error al actualizar comida:', err);
+          },
+        })
+      );
     } else {
-      this.comidaService.addComida(plato);
+      this.subscription.add(
+        this.comidaService.addComida(plato).subscribe({
+          next: () => {
+            this.router.navigate(['/comidas']);
+          },
+          error: (err) => {
+            console.error('Error al crear comida:', err);
+          },
+        })
+      );
     }
-
-    this.router.navigate(['/comidas']);
   }
 }

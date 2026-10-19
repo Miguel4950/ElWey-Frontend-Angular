@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+
+<main class="main-pedidos-page">
+  <div class="contenedor-pedidos">
+
+    <!-- Barra superior del Portal de Operario -->
+    <div class="barra-superior-operario">
+      <div>
+        <p class="subtitulo-operario">Portal de Operario · Cocina y Despachos</p>
+        <h1 class="titulo-operario">Listado de Pedidos</h1>
+        <p class="desc-operario">
+          Selecciona cualquier pedido de la tabla para inspeccionar sus detalles, cantidades y adicionales.
+        </p>
+      </div>
+
+      <div class="info-derecha-operario">
+        @if (operarioActual) {
+          <span class="badge-operario-sesion">
+            Operario: <strong>{{ operarioActual.nombre }}</strong>
+          </span>
+        }
+        <span class="badge-total-pedidos">
+          Total Pedidos: <strong>{{ pedidosArray.length }}</strong>
+        </span>
+        <a [routerLink]="['/comidas/tarjetas']" class="btn-nuevo-pedido">
+          + Nuevo Pedido
+        </a>
+      </div>
+    </div>
+
+    @if (errorMessage) {
+      <div class="alerta-error-pedidos">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <!-- Tabla de Pedidos (Subcomponente Hijo) -->
+    <app-pedidos-table [pedidosArray]="pedidosArray"></app-pedidos-table>
+
+  </div>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

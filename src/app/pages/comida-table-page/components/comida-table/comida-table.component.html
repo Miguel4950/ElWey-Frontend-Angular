@@ -29,7 +29,7 @@
               <span class="badge-etiqueta" [class.badge-verde]="comida.etiqueta === 'Vegano' || comida.etiqueta === 'Favorito' || comida.etiqueta === 'Top Ventas' || comida.etiqueta === 'Clásico'">
                 {{ comida.etiqueta }}
               </span>
-              <span class="nombre-categoria">({{ comida.categoria ? comida.categoria.nombre : 'General' }})</span>
+              <span class="nombre-categoria">({{ comida.categoriaNombre ?? 'General' }})</span>
             </div>
           </td>
 

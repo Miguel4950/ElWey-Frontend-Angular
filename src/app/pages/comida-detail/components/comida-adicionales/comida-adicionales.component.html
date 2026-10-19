@@ -1,25 +1,29 @@
 <div class="seccion-adicionales">
   <div class="encabezado-adicionales">
     <span class="titulo-acomp-seccion">Adicionales Disponibles</span>
-    <span class="subtitulo-acomp-seccion">Según categoría ({{ categoria() ? categoria()?.nombre : 'General' }})</span>
+    <span class="subtitulo-acomp-seccion">Según categoría ({{ categoriaNombre() ?? 'General' }})</span>
   </div>
 
   <div class="lista-adicionales">
-    @if (categoria(); as cat) {
-      @for (adic of cat.adicionales; track adic.id) {
-        <label class="item-acomp-row">
-          <div class="info-acomp">
-            <input type="checkbox" class="checkbox-acomp" />
-            <span class="texto-acomp-nombre">{{ adic.nombre }}</span>
-          </div>
+    @for (adic of adicionales(); track adic.id) {
+      <div class="item-acomp-row">
+        <div class="info-acomp">
+          <span class="texto-acomp-nombre">{{ adic.nombre }}</span>
           <span class="badge-acomp-incluido">+${{ adic.precio | number:'1.0-0' }}</span>
-        </label>
-      } @empty {
-        <div class="sin-adicionales">
-          No hay adicionales registrados para esta categoría.
         </div>
-      }
-    } @else {
+
+        <div class="control-cantidad-adic">
+          <label class="label-cant-adic">Cant:</label>
+          <input
+            type="number"
+            min="0"
+            value="0"
+            class="input-cant-adic"
+            (input)="actualizarCantidad(adic.id, $event)"
+          />
+        </div>
+      </div>
+    } @empty {
       <div class="sin-adicionales">
         No hay adicionales registrados para esta categoría.
       </div>

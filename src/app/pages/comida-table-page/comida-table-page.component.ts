@@ -1,13 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { PageTitleComponent } from './components/page-title/page-title.component';
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
-import { Comida } from '../../models/comida.model';
+import { ComidaDTO } from '../../dtos/comida.dto';
 import { ComidaService } from '../../service/comida.service';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
@@ -25,26 +25,55 @@ import { DecimalPipe } from '@angular/common';
   templateUrl: './comida-table-page.component.html',
   styleUrl: './comida-table-page.component.css',
 })
-export class ComidaTablePageComponent implements OnInit {
+export class ComidaTablePageComponent implements OnInit, OnDestroy {
   private comidaService = inject(ComidaService);
   private router = inject(Router);
+  private subscription: Subscription = new Subscription();
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   title: string = 'Gestión de Comidas';
   username: string = '';
-  comidaArray: Comida[] = [];
+  comidaArray: ComidaDTO[] = [];
   esVistaTarjetas: boolean = false;
   filtroCategoria: string = '';
   busqueda: string = '';
+  errorMessage: string = '';
 
   ngOnInit(): void {
-    this.comidaArray = this.comidaService.getComidas();
     this.detectarVista();
+    this.cargarComidas();
 
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.detectarVista();
-      });
+    this.subscription.add(
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          const vistaAnterior = this.esVistaTarjetas;
+          this.detectarVista();
+          if (vistaAnterior !== this.esVistaTarjetas) {
+            this.cargarComidas();
+          }
+        })
+    );
+  }
+
+  cargarComidas(): void {
+    const peticion$ = this.esVistaTarjetas
+      ? this.comidaService.getComidasActivas()
+      : this.comidaService.getComidas();
+
+    this.subscription.add(
+      peticion$.subscribe({
+        next: (comidas) => {
+          this.comidaArray = comidas;
+        },
+        error: (err) => {
+          console.error('Error al cargar comidas desde el backend:', err);
+        },
+      })
+    );
   }
 
   detectarVista(): void {
@@ -60,13 +89,13 @@ export class ComidaTablePageComponent implements OnInit {
     this.busqueda = input.value;
   }
 
-  get comidasFiltradas(): Comida[] {
+  get comidasFiltradas(): ComidaDTO[] {
     return this.comidaArray.filter((item) => {
       const matchCat =
         !this.filtroCategoria ||
-        (item.categoria &&
-          item.categoria.nombre.toLowerCase() ===
-            this.filtroCategoria.toLowerCase());
+        (item.categoriaNombre &&
+          item.categoriaNombre.toLowerCase() ===
+          this.filtroCategoria.toLowerCase());
       const matchText =
         !this.busqueda ||
         item.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
@@ -75,8 +104,22 @@ export class ComidaTablePageComponent implements OnInit {
     });
   }
 
-  eliminarComida(comida: Comida): void {
-    this.comidaService.eliminarComida(comida.id);
-    this.comidaArray = this.comidaService.getComidas();
+  eliminarComida(comida: ComidaDTO): void {
+    if (comida.id) {
+      this.errorMessage = '';
+      this.subscription.add(
+        this.comidaService.eliminarComida(comida.id).subscribe({
+          next: () => {
+            this.errorMessage = '';
+            this.cargarComidas();
+          },
+          error: (err) => {
+            console.error('Error al eliminar comida:', err);
+            this.errorMessage =
+              err?.error?.mensaje || 'Error al eliminar el plato. Por favor, intenta de nuevo.';
+          },
+        })
+      );
+    }
   }
 }

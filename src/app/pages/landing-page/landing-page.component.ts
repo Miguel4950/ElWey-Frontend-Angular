@@ -1,4 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
@@ -8,7 +9,7 @@ import { MenuDestacadoComponent } from './components/menu-destacado/menu-destaca
 import { GaleriaComponent } from './components/galeria/galeria.component';
 import { BannerCtaComponent } from './components/banner-cta/banner-cta.component';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
-import { Comida } from '../../models/comida.model';
+import { ComidaDTO } from '../../dtos/comida.dto';
 import { ComidaService } from '../../service/comida.service';
 
 @Component({
@@ -27,12 +28,24 @@ import { ComidaService } from '../../service/comida.service';
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
 })
-export class LandingPageComponent implements OnInit {
+export class LandingPageComponent implements OnInit, OnDestroy {
   private comidaService = inject(ComidaService);
+  private subscription?: Subscription;
 
-  comidaArray: Comida[] = [];
+  comidaArray: ComidaDTO[] = [];
 
   ngOnInit(): void {
-    this.comidaArray = this.comidaService.getComidas().slice(0, 4);
+    this.subscription = this.comidaService.getComidasActivas().subscribe({
+      next: (comidas) => {
+        this.comidaArray = comidas.slice(0, 4);
+      },
+      error: (err) => {
+        console.error('Error al cargar comidas destacadas:', err);
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

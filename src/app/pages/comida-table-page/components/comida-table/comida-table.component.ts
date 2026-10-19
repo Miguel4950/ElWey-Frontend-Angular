@@ -1,5 +1,5 @@
 import { Component, inject, input, output } from '@angular/core';
-import { Comida } from '../../../../models/comida.model';
+import { ComidaDTO } from '../../../../dtos/comida.dto';
 import { Router, RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 
@@ -17,15 +17,15 @@ export class ComidaTableComponent {
   alto: number = 60;
 
   // Signal Inputs
-  comidaArray = input<Comida[]>();
+  comidaArray = input<ComidaDTO[]>();
 
-  comidaDeleted = output<Comida>();
+  comidaDeleted = output<ComidaDTO>();
 
-  verDetalleComida(comida: Comida): void {
+  verDetalleComida(comida: ComidaDTO): void {
     this.router.navigate(['/comidas', comida.id]);
   }
 
-  eliminarComida(comida: Comida): void {
+  eliminarComida(comida: ComidaDTO): void {
     if (confirm(`¿Estás seguro de eliminar "${comida.nombre}"?`)) {
       this.comidaDeleted.emit(comida);
     }
