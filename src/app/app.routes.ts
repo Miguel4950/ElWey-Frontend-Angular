@@ -8,6 +8,7 @@ import { RegistroComponent } from './pages/registro/registro.component';
 import { MiPortalComponent } from './pages/mi-portal/mi-portal.component';
 import { PedidosPageComponent } from './pages/pedidos-page/pedidos-page.component';
 import { PedidoDetailComponent } from './pages/pedido-detail/pedido-detail.component';
+import { CarritoPageComponent } from './pages/carrito-page/carrito-page.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
   {
     path: 'pedidos/:id',
     component: PedidoDetailComponent,
+  },
+  {
+    path: 'carrito',
+    component: CarritoPageComponent,
   },
   {
     path: '**',

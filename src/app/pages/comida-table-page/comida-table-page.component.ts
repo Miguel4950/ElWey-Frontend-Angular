@@ -6,6 +6,7 @@ import { PageTitleComponent } from './components/page-title/page-title.component
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
 import { ComidaService } from '../../service/comida.service';
+import { ClienteService } from '../../service/cliente.service';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
@@ -27,8 +28,13 @@ import { DecimalPipe } from '@angular/common';
 })
 export class ComidaTablePageComponent implements OnInit, OnDestroy {
   private comidaService = inject(ComidaService);
+  private clienteService = inject(ClienteService);
   private router = inject(Router);
   private subscription: Subscription = new Subscription();
+
+  get esAdmin(): boolean {
+    return this.clienteService.esAdmin();
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

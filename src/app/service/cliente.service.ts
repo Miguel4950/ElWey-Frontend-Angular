@@ -30,6 +30,11 @@ export class ClienteService {
     return this.clienteActual?.correo?.toLowerCase() === 'operador@elwey.com';
   }
 
+  esAdmin(): boolean {
+    const correo = this.clienteActual?.correo?.toLowerCase() || '';
+    return correo === 'admin@elwey.com' || correo === 'admin_elwey' || correo === 'gerencia_elwey';
+  }
+
   // Peticiones HTTP puras (sin tap, gestionadas en el next del subscribe de los componentes)
   autenticar(credenciales: LoginDTO): Observable<ClienteDTO> {
     return this.http.post<ClienteDTO>(`${this.apiUrl}/auth/login`, credenciales);

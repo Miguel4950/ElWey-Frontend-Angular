@@ -1,0 +1,237 @@
+<app-navbar></app-navbar>
+
+<main class="main-carrito">
+  <div class="contenedor-carrito">
+
+    <!-- Encabezado de la página -->
+    <header class="header-carrito">
+      <span class="subtitulo-carrito">Tu Pedido Actual</span>
+      <h1 class="titulo-carrito">Carrito de Compras</h1>
+      <p class="desc-carrito">Agrega más productos con sus adicionales o confirma tu orden para enviar a cocina.</p>
+    </header>
+
+    <!-- Alerta de éxito cuando el pedido se registra en la base de datos -->
+    @if (pedidoExitoso) {
+      <div class="card-exito-pedido">
+        <div class="icono-exito">🎉</div>
+        <h2 class="titulo-exito">¡Pedido #{{ pedidoExitoso.id }} Registrado en la Base de Datos!</h2>
+        <p class="estado-exito">
+          Estado actual: <span class="badge-estado-prep">{{ pedidoExitoso.estado }}</span>
+        </p>
+
+        <div class="resumen-pedido-confirmado">
+          <div class="item-resumen-conf">
+            <span>Cliente:</span>
+            <strong>{{ pedidoExitoso.clienteNombre }}</strong>
+          </div>
+          <div class="item-resumen-conf">
+            <span>Total Platos:</span>
+            <strong>{{ pedidoExitoso.cantidadTotalProductos }} unidades</strong>
+          </div>
+          <div class="item-resumen-conf">
+            <span>Total Adicionales:</span>
+            <strong>{{ pedidoExitoso.cantidadTotalAdicionales }} porciones</strong>
+          </div>
+          <div class="item-resumen-conf total-conf">
+            <span>Total a Pagar:</span>
+            <strong>${{ pedidoExitoso.total | number:'1.0-0' }}</strong>
+          </div>
+        </div>
+
+        <div class="acciones-exito">
+          <a [routerLink]="['/pedidos', pedidoExitoso.id]" class="btn-ver-detalle-pedido">
+            Ver Detalles del Pedido &rarr;
+          </a>
+          <a [routerLink]="['/comidas/tarjetas']" class="btn-seguir-comprando">
+            Volver al Menú
+          </a>
+        </div>
+      </div>
+    }
+
+    <!-- Estado vacío si no hay ítems en el carrito -->
+    @else if (items.length === 0) {
+      <div class="card-carrito-vacio">
+        <div class="icono-vacio">🌮</div>
+        <h2 class="titulo-vacio">Tu carrito está vacío</h2>
+        <p class="desc-vacio">No has seleccionado ningún plato ni adicionales aún. Explora nuestro menú y personaliza tus órdenes.</p>
+        <a [routerLink]="['/comidas/tarjetas']" class="btn-ir-menu">
+          + EXPLORAR MENÚ DE COMIDAS
+        </a>
+      </div>
+    }
+
+    <!-- Grilla del Carrito con Productos y Resumen -->
+    @else {
+      @if (errorMessage) {
+        <div class="alerta-error">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <div class="layout-carrito">
+
+        <!-- Columna Izquierda: Lista de Ítems -->
+        <section class="seccion-items-carrito">
+          <div class="barra-acciones-lista">
+            <span class="contador-items-badge">
+              {{ cantidadTotal }} plato(s) en total ({{ items.length }} tipos)
+            </span>
+            <button type="button" (click)="limpiarCarrito()" class="btn-vaciar-carrito" title="Vaciar todos los productos">
+              Vaciar Carrito
+            </button>
+          </div>
+
+          <div class="lista-items">
+            @for (item of items; track item.id) {
+              <article class="card-item-carrito">
+                <!-- Imagen -->
+                <div class="item-img-contenedor">
+                  <img
+                    [src]="item.imagenUrl || '/images/comida 7.webp'"
+                    [alt]="item.comidaNombre"
+                    class="item-img"
+                  />
+                </div>
+
+                <!-- Información del plato -->
+                <div class="item-info">
+                  <span class="item-categoria">{{ item.categoriaNombre || 'Especialidad' }}</span>
+                  <h3 class="item-nombre">{{ item.comidaNombre }}</h3>
+                  <p class="item-precio-unit">
+                    Precio unitario: <strong>${{ item.comidaPrecio | number:'1.0-0' }}</strong>
+                  </p>
+
+                  <!-- Adicionales elegidos para este plato -->
+                  @if (item.adicionales.length > 0) {
+                    <div class="item-adicionales-box">
+                      <span class="titulo-adics-box">Adicionales seleccionados:</span>
+                      <ul class="lista-adics-item">
+                        @for (adic of item.adicionales; track adic.adicionalId) {
+                          <li>
+                            + {{ adic.cantidad }}x {{ adic.nombre }}
+                            <span class="precio-adic-item">(+${{ adic.subtotal | number:'1.0-0' }})</span>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  } @else {
+                    <p class="sin-adics-texto">Sin adicionales extras</p>
+                  }
+                </div>
+
+                <!-- Controles de Cantidad y Subtotal -->
+                <div class="item-acciones">
+                  <div class="control-cantidad">
+                    <button
+                      type="button"
+                      (click)="actualizarCantidad(item.id, -1)"
+                      class="btn-cant"
+                      title="Disminuir"
+                    >
+                      -
+                    </button>
+                    <span class="cant-num">{{ item.cantidad }}</span>
+                    <button
+                      type="button"
+                      (click)="actualizarCantidad(item.id, 1)"
+                      class="btn-cant"
+                      title="Aumentar"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <div class="item-subtotal-box">
+                    <span class="etiqueta-subtotal">Subtotal:</span>
+                    <span class="monto-subtotal">${{ item.subtotal | number:'1.0-0' }}</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    (click)="eliminarItem(item.id)"
+                    class="btn-eliminar-item"
+                    title="Quitar este plato del carrito"
+                  >
+                    🗑️ Quitar
+                  </button>
+                </div>
+              </article>
+            }
+          </div>
+
+          <div class="enlace-seguir-comprando-caja">
+            <a [routerLink]="['/comidas/tarjetas']" class="btn-seguir-explorando">
+              &larr; Agregar más platos desde el Menú
+            </a>
+          </div>
+        </section>
+
+        <!-- Columna Derecha: Resumen Financiero y Confirmación -->
+        <aside class="seccion-resumen-carrito">
+          <div class="card-resumen-fijo">
+            <h2 class="titulo-resumen">Resumen del Pedido</h2>
+            <div class="divider-resumen"></div>
+
+            <div class="fila-resumen">
+              <span>Cantidad de Platos:</span>
+              <strong>{{ cantidadTotal }} unidades</strong>
+            </div>
+
+            <div class="fila-resumen">
+              <span>Subtotal Platos:</span>
+              <strong>${{ subtotalComidas | number:'1.0-0' }}</strong>
+            </div>
+
+            <div class="fila-resumen">
+              <span>Cantidad Adicionales:</span>
+              <strong>{{ cantidadAdicionales }} porciones</strong>
+            </div>
+
+            <div class="fila-resumen">
+              <span>Subtotal Adicionales:</span>
+              <strong>${{ subtotalAdicionales | number:'1.0-0' }}</strong>
+            </div>
+
+            <div class="divider-resumen"></div>
+
+            <div class="fila-resumen total-fila">
+              <span>TOTAL:</span>
+              <span class="total-monto">${{ total | number:'1.0-0' }}</span>
+            </div>
+
+            <!-- Información del Cliente actual -->
+            <div class="info-cliente-resumen">
+              @if (clienteActual) {
+                <p>👤 Orden a nombre de: <strong>{{ clienteActual.nombre }}</strong></p>
+                <small>{{ clienteActual.correo }}</small>
+              } @else {
+                <p>👤 Pedido registrado como cliente oficial (Lionel Messi por defecto).</p>
+                <a [routerLink]="['/login']" class="link-iniciar-sesion-resumen">¿Tienes cuenta? Inicia sesión aquí</a>
+              }
+            </div>
+
+            <!-- Botón de Confirmación -->
+            <button
+              type="button"
+              (click)="confirmarPedido()"
+              [disabled]="cargando"
+              class="btn-confirmar-pedido"
+            >
+              {{ cargando ? 'ENVIANDO A COCINA...' : 'CONFIRMAR Y CREAR PEDIDO' }}
+            </button>
+
+            <p class="nota-estado-defecto">
+              ℹ️ Tu pedido se creará con el estado por defecto: <strong>"En preparación"</strong>.
+            </p>
+          </div>
+        </aside>
+
+      </div>
+    }
+
+  </div>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

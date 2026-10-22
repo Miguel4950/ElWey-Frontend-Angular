@@ -19,6 +19,12 @@
 
     <!-- Botones de acción a la derecha -->
     <div class="acciones-nav">
+      <a [routerLink]="['/carrito']" class="btn-carrito-nav" title="Ver carrito de compras">
+        🛒 Carrito
+        @if (cantidadCarrito > 0) {
+          <span class="badge-carrito">{{ cantidadCarrito }}</span>
+        }
+      </a>
       <a [routerLink]="['/comidas/tarjetas']" class="btn-pedido-nav">Haz Tu Pedido</a>
       @if (clienteActual) {
         <a [routerLink]="[esOperador ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav" title="Ir al Portal">{{ clienteActual.nombre }}</a>

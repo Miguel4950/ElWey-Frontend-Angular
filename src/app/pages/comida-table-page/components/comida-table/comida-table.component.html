@@ -56,12 +56,14 @@
               <button type="button" (click)="verDetalleComida(comida)" class="btn-accion btn-detalle" title="Ver detalle">
                 Ver detalle
               </button>
-              <a [routerLink]="['/comidas/editar', comida.id]" class="btn-accion btn-editar" title="Editar">
-                Editar
-              </a>
-              <button type="button" (click)="eliminarComida(comida)" class="btn-accion btn-eliminar" title="Eliminar">
-                Eliminar
-              </button>
+              @if (esAdmin()) {
+                <a [routerLink]="['/comidas/editar', comida.id]" class="btn-accion btn-editar" title="Editar">
+                  Editar
+                </a>
+                <button type="button" (click)="eliminarComida(comida)" class="btn-accion btn-eliminar" title="Eliminar">
+                  Eliminar
+                </button>
+              }
             </div>
           </td>
         </tr>

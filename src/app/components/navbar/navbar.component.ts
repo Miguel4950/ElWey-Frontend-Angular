@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ClienteService } from '../../service/cliente.service';
+import { CarritoService } from '../../service/carrito.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +11,7 @@ import { ClienteService } from '../../service/cliente.service';
 })
 export class NavbarComponent {
   private clienteService = inject(ClienteService);
+  private carritoService = inject(CarritoService);
   private router = inject(Router);
 
   title: string = 'El Wey';
@@ -20,6 +22,14 @@ export class NavbarComponent {
 
   get esOperador(): boolean {
     return this.clienteService.esOperador();
+  }
+
+  get esAdmin(): boolean {
+    return this.clienteService.esAdmin();
+  }
+
+  get cantidadCarrito(): number {
+    return this.carritoService.getCantidadTotal();
   }
 
   cerrarSesion(): void {

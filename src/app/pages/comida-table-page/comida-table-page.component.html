@@ -117,14 +117,16 @@
     @else {
     <div class="barra-superior-gestion">
       <app-page-title></app-page-title>
-      <div class="contenedor-btn-crear">
-        <a [routerLink]="['/comidas/new']" class="btn-crear-comida">
-          + CREAR COMIDA
-        </a>
-      </div>
+      @if (esAdmin) {
+        <div class="contenedor-btn-crear">
+          <a [routerLink]="['/comidas/new']" class="btn-crear-comida">
+            + CREAR COMIDA
+          </a>
+        </div>
+      }
     </div>
 
-    <app-comida-table [comidaArray]="comidaArray" (comidaDeleted)="eliminarComida($event)"></app-comida-table>
+    <app-comida-table [comidaArray]="comidaArray" [esAdmin]="esAdmin" (comidaDeleted)="eliminarComida($event)"></app-comida-table>
     }
 
   </div>

@@ -4,8 +4,10 @@ import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ComidaDTO } from '../../../../dtos/comida.dto';
 import { AdicionalCantidadDTO, CrearPedidoDTO, PedidoDTO } from '../../../../dtos/pedido.dto';
+import { ItemCarritoDTO } from '../../../../dtos/carrito.dto';
 import { PedidoService } from '../../../../service/pedido.service';
 import { ClienteService } from '../../../../service/cliente.service';
+import { CarritoService } from '../../../../service/carrito.service';
 import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicionales.component';
 
 @Component({
@@ -17,6 +19,7 @@ import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicion
 export class ComidaInfoDetalleComponent implements OnDestroy {
   private pedidoService = inject(PedidoService);
   private clienteService = inject(ClienteService);
+  private carritoService = inject(CarritoService);
   private subscription?: Subscription;
 
   // Signal Input
@@ -26,7 +29,12 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
   adicionalesSeleccionados: AdicionalCantidadDTO[] = [];
 
   pedidoCreado: PedidoDTO | null = null;
+  agregadoAlCarrito: boolean = false;
   errorMessage: string = '';
+
+  get esAdmin(): boolean {
+    return this.clienteService.esAdmin();
+  }
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
@@ -40,6 +48,46 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
 
   onAdicionalesChange(seleccionados: AdicionalCantidadDTO[]): void {
     this.adicionalesSeleccionados = seleccionados;
+  }
+
+  agregarAlCarrito(c: ComidaDTO): void {
+    if (!c.id) return;
+
+    const subtotalComida = (c.precio || 0) * this.cantidadProducto;
+
+    const adicsMapeados = this.adicionalesSeleccionados.map((item) => {
+      const adicObj = c.adicionales?.find((a) => a.id === item.adicionalId);
+      const nombre = adicObj?.nombre || `Adicional #${item.adicionalId}`;
+      const precio = adicObj?.precio || 0;
+      return {
+        adicionalId: item.adicionalId,
+        nombre,
+        precio,
+        cantidad: item.cantidad,
+        subtotal: precio * item.cantidad,
+      };
+    });
+
+    const subtotalAdics = adicsMapeados.reduce((sum, a) => sum + a.subtotal, 0);
+
+    const itemCarrito: ItemCarritoDTO = {
+      id: `${c.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      comidaId: c.id,
+      comidaNombre: c.nombre,
+      comidaPrecio: c.precio,
+      categoriaNombre: c.categoriaNombre,
+      imagenUrl: c.imagen_url,
+      cantidad: this.cantidadProducto,
+      adicionales: adicsMapeados,
+      subtotalComida,
+      subtotalAdicionales: subtotalAdics,
+      subtotal: subtotalComida + subtotalAdics,
+    };
+
+    this.carritoService.agregarItem(itemCarrito);
+    this.agregadoAlCarrito = true;
+    this.pedidoCreado = null;
+    this.errorMessage = '';
   }
 
   ordenarPedido(c: ComidaDTO): void {

@@ -44,9 +44,16 @@ export interface PedidoDTO {
   items: ItemPedidoDTO[];
 }
 
-export interface CrearPedidoDTO {
+export interface ItemCrearPedidoDTO {
   comidaId: number;
   cantidad: number;
   adicionales: AdicionalCantidadDTO[];
+}
+
+export interface CrearPedidoDTO {
+  comidaId?: number;
+  cantidad?: number;
+  adicionales?: AdicionalCantidadDTO[];
   clienteId?: number;
+  items?: ItemCrearPedidoDTO[];
 }

@@ -102,24 +102,97 @@
   text-align: center;
 }
 
+.fila-botones-compra {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
 .btn-ordenar-pedido {
-  width: 100%;
-  background-color: #ab1d19;
-  color: #ffffff;
+  flex: 1;
+  background-color: #facc15;
+  color: #171614;
   border: none;
-  padding: 12px 20px;
+  padding: 12px 18px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 16px;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .btn-ordenar-pedido:hover {
+  background-color: #eab308;
+  transform: translateY(-1px);
+}
+
+.btn-ordenar-directo {
+  background-color: #ab1d19;
+  color: #ffffff;
+  border: none;
+  padding: 12px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-ordenar-directo:hover {
   background-color: #ee1a0e;
+}
+
+.alerta-carrito-exito {
+  background-color: rgba(234, 179, 8, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+  border-radius: 4px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  color: #fef08a;
+  font-size: 13px;
+}
+
+.acciones-alerta-carrito {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-ir-carrito-alerta {
+  background-color: #facc15;
+  color: #171614;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: background-color 0.2s;
+}
+
+.btn-ir-carrito-alerta:hover {
+  background-color: #eab308;
+}
+
+.btn-seguir-comprando-alerta {
+  background-color: transparent;
+  color: #fcf2e9;
+  border: 1px solid #574c43;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+
+.btn-seguir-comprando-alerta:hover {
+  border-color: #facc15;
 }
 
 .alerta-pedido-exito {

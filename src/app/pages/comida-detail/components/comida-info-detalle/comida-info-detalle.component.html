@@ -41,10 +41,28 @@
         (adicionalesChange)="onAdicionalesChange($event)"
       ></app-comida-adicionales>
 
-      <!-- Botón para Crear Pedido en Base de Datos -->
-      <button type="button" class="btn-ordenar-pedido" (click)="ordenarPedido(c)">
-        Ordenar Ahora
-      </button>
+      <!-- Botones de Acción: Carrito y Pedido Directo -->
+      <div class="fila-botones-compra">
+        <button type="button" class="btn-ordenar-pedido" (click)="agregarAlCarrito(c)">
+          🛒 Agregar al Carrito
+        </button>
+        <button type="button" class="btn-ordenar-directo" (click)="ordenarPedido(c)">
+          ⚡ Pedir Ahora
+        </button>
+      </div>
+
+      @if (agregadoAlCarrito) {
+        <div class="alerta-carrito-exito">
+          <strong>¡Plato y adicionales agregados al carrito!</strong>
+          <p class="detalle-exito-pedido">
+            {{ cantidadProducto }}x <strong>{{ c.nombre }}</strong> agregado(s) con éxito.
+          </p>
+          <div class="acciones-alerta-carrito">
+            <a [routerLink]="['/carrito']" class="btn-ir-carrito-alerta">Ver Mi Carrito 🛒</a>
+            <a [routerLink]="['/comidas/tarjetas']" class="btn-seguir-comprando-alerta">+ Seguir agregando platos</a>
+          </div>
+        </div>
+      }
 
       @if (pedidoCreado) {
         <div class="alerta-pedido-exito">
@@ -70,9 +88,11 @@
       <a [routerLink]="['/comidas']" class="btn-volver-tabla-detalle">
         &larr; Volver al Catálogo
       </a>
-      <a [routerLink]="['/comidas/editar', c.id]" class="btn-editar-detalle">
-        Editar este Plato
-      </a>
+      @if (esAdmin) {
+        <a [routerLink]="['/comidas/editar', c.id]" class="btn-editar-detalle">
+          Editar este Plato
+        </a>
+      }
     </div>
   }
 </div>

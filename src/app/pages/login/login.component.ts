@@ -70,6 +70,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.errorMessage = '';
         if (this.clienteService.esOperador()) {
           this.router.navigate(['/pedidos']);
+        } else if (this.clienteService.esAdmin()) {
+          this.router.navigate(['/comidas/tabla']);
         } else {
           this.router.navigate(['/cliente/portal']);
         }

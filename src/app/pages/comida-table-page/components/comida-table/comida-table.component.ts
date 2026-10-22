@@ -18,6 +18,7 @@ export class ComidaTableComponent {
 
   // Signal Inputs
   comidaArray = input<ComidaDTO[]>();
+  esAdmin = input<boolean>(false);
 
   comidaDeleted = output<ComidaDTO>();
 
