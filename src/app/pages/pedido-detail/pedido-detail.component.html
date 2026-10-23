@@ -13,6 +13,83 @@
         <span class="breadcrumb-item-activo">Pedido #{{ pedido.id }}</span>
       </div>
 
+      <!-- Alertas de Feedback -->
+      @if (mensajeExito) {
+        <div class="alerta-exito-detalle">
+          <span>✅ {{ mensajeExito }}</span>
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="alerta-error-detalle">
+          <span>⚠️ {{ errorMessage }}</span>
+        </div>
+      }
+
+      <!-- Panel de Control Operativo (Operador / Administrador) -->
+      @if (puedeGestionar) {
+        <div class="panel-gestion-operador">
+          <div class="info-panel-gestion">
+            <span class="subtitulo-panel">Control de Operaciones</span>
+            <h3 class="titulo-panel">Gestión de Comanda y Despacho</h3>
+          </div>
+
+          <div class="acciones-panel-gestion">
+            @if (pedido.estado === 'Recibido' || pedido.estado === 'Pendiente') {
+              <button
+                type="button"
+                (click)="pasarAEnPreparacion()"
+                class="btn-gestion btn-preparar-grande"
+              >
+                🔥 Iniciar Preparación (Cocinar)
+              </button>
+            }
+
+            @if (pedido.estado === 'En preparación' || pedido.estado === 'Cocinando') {
+              <div class="bloque-asignacion">
+                <select
+                  [(ngModel)]="domiciliarioSeleccionadoId"
+                  class="select-dom-detalle"
+                >
+                  <option [ngValue]="undefined" disabled selected>-- Seleccionar Domiciliario --</option>
+                  @for (dom of domiciliariosDisponibles; track dom.id) {
+                    <option [ngValue]="dom.id">{{ dom.nombre }} ({{ dom.celular }})</option>
+                  }
+                </select>
+                <button
+                  type="button"
+                  (click)="enviarPedido()"
+                  class="btn-gestion btn-camino-grande"
+                >
+                  🛵 Despachar (En camino)
+                </button>
+              </div>
+            }
+
+            @if (pedido.estado === 'En camino' || pedido.estado === 'Enviado') {
+              <div class="bloque-asignacion">
+                <span class="badge-dom-detalle">
+                  🛵 En ruta con: <strong>{{ pedido.domiciliarioNombre || 'Repartidor asignado' }}</strong>
+                </span>
+                <button
+                  type="button"
+                  (click)="marcarEntregado()"
+                  class="btn-gestion btn-entregar-grande"
+                >
+                  ✅ Confirmar Entrega
+                </button>
+              </div>
+            }
+
+            @if (pedido.estado === 'Entregado') {
+              <span class="badge-finalizado-detalle">
+                🎉 Pedido Finalizado y Entregado
+              </span>
+            }
+          </div>
+        </div>
+      }
+
       <!-- Tarjeta Principal del Detalle del Pedido -->
       <div class="card-pedido-detalle">
 
@@ -26,8 +103,8 @@
           <div>
             <span
               class="badge-estado-grande"
-              [class.badge-preparacion]="pedido.estado === 'En preparación'"
-              [class.badge-camino]="pedido.estado === 'En camino'"
+              [class.badge-preparacion]="pedido.estado === 'En preparación' || pedido.estado === 'Cocinando'"
+              [class.badge-camino]="pedido.estado === 'En camino' || pedido.estado === 'Enviado'"
               [class.badge-entregado]="pedido.estado === 'Entregado'"
             >
               {{ pedido.estado }}
@@ -47,6 +124,10 @@
           <div class="caja-info-bloque">
             <p class="etiqueta-bloque">Resumen de Cantidades y Entrega</p>
             <p class="dato-secundario">Dirección: <span>{{ pedido.clienteDireccion || 'Despacho en barra' }}</span></p>
+            <p class="dato-secundario">
+              Repartidor Asignado:
+              <strong class="resalte-blanco">{{ pedido.domiciliarioNombre || 'Sin asignar aún' }}</strong>
+            </p>
             <p class="dato-secundario">
               Total Unidades de Producto: <strong class="resalte-blanco">{{ pedido.cantidadTotalProductos }}</strong>
             </p>

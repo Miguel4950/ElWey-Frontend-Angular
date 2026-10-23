@@ -1,0 +1,139 @@
+.card-formulario-domiciliario {
+  background-color: #1a1716;
+  border: 1px solid #332b28;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  margin-bottom: 24px;
+}
+
+.header-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #2d2422;
+  padding-bottom: 12px;
+}
+
+.titulo-form {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 1.3rem;
+  color: #fbbf24;
+  margin: 0;
+}
+
+.btn-cerrar-x {
+  background: transparent;
+  border: none;
+  color: #a89f95;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-cerrar-x:hover {
+  color: #ee1a0e;
+}
+
+.formulario-domiciliario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.etiqueta-campo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a89f95;
+}
+
+.input-texto {
+  background-color: #12100f;
+  border: 1px solid #332b28;
+  border-radius: 4px;
+  color: #fcf2e9;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.input-texto:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+.input-select {
+  cursor: pointer;
+}
+
+.contenedor-error {
+  margin-top: 2px;
+}
+
+.texto-error {
+  color: #ee1a0e;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.acciones-form {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid #2d2422;
+}
+
+.btn-cancelar {
+  background: transparent;
+  border: 1px solid #3d3632;
+  color: #a89f95;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #282420;
+  color: #fcf2e9;
+}
+
+.btn-guardar {
+  background-color: #d97706;
+  border: none;
+  color: #ffffff;
+  padding: 8px 22px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background-color: #f59e0b;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+.btn-guardar:disabled {
+  background-color: #3d3632;
+  color: #6b635b;
+  cursor: not-allowed;
+}

@@ -8,6 +8,10 @@ import { ComidaDTO } from '../../dtos/comida.dto';
 import { ComidaService } from '../../service/comida.service';
 import { ComidaInfoDetalleComponent } from './components/comida-info-detalle/comida-info-detalle.component';
 
+/**
+ * Página para visualizar el detalle completo de un plato y seleccionar sus adicionales.
+ * Utiliza RxJS mergeMap para consultar el plato y sus adicionales disponibles sin anidar subscribe.
+ */
 @Component({
   selector: 'app-comida-detail',
   imports: [
@@ -21,7 +25,6 @@ import { ComidaInfoDetalleComponent } from './components/comida-info-detalle/com
   styleUrl: './comida-detail.component.css',
 })
 export class ComidaDetailComponent implements OnInit, OnDestroy {
-  // Inyección de dependencias idéntica al código del profesor
   private route = inject(ActivatedRoute);
   private comidaService = inject(ComidaService);
   private subscription?: Subscription;
@@ -30,16 +33,17 @@ export class ComidaDetailComponent implements OnInit, OnDestroy {
   comida: ComidaDTO | undefined;
 
   ngOnInit(): void {
-    // 1. Obtener el id a través de la url
+    // 1. Obtener el ID del plato desde los parámetros de la URL
     this.comidaId = Number(this.route.snapshot.params['id']);
-    // 2. Buscar la comida en el servicio mediante REST
+
+    // 2. Encadenar la consulta de la comida y sus adicionales con RxJS mergeMap
     if (this.comidaId) {
-      this.subscription = this.comidaService.getComidaById(this.comidaId).subscribe({
+      this.subscription = this.comidaService.getComidaConAdicionales(this.comidaId).subscribe({
         next: (comida) => {
           this.comida = comida;
         },
         error: (err) => {
-          console.error('Error al obtener detalle de comida:', err);
+          console.error('Error al obtener detalle de comida con adicionales:', err);
           this.comida = undefined;
         },
       });

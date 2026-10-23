@@ -1,0 +1,136 @@
+.tabla-contenedor-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  background-color: #171413;
+  border: 1px solid #2d2422;
+}
+
+.tabla-elwey {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Poppins', sans-serif;
+  color: #fcf2e9;
+  text-align: left;
+}
+
+.tabla-elwey thead tr {
+  background-color: #211c1a;
+  border-bottom: 2px solid #ee1a0e;
+}
+
+.tabla-elwey th {
+  padding: 14px 18px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fbbf24;
+}
+
+.tabla-elwey td {
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #26211e;
+}
+
+.tabla-elwey tbody tr:hover {
+  background-color: #221d1b;
+}
+
+.celda-id {
+  color: #a89f95;
+  width: 70px;
+}
+
+.nombre-adicional-texto {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.celda-precio {
+  font-weight: 700;
+  color: #38bdf8;
+  font-size: 0.95rem;
+}
+
+.col-precio {
+  width: 150px;
+}
+
+.col-estado {
+  width: 120px;
+}
+
+.badge-estado {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-activo {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.badge-inactivo {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.col-acciones {
+  width: 190px;
+  text-align: center;
+}
+
+.grupo-acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-accion {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-editar {
+  background-color: #2d231e;
+  color: #fbbf24;
+  border: 1px solid #eab308;
+}
+
+.btn-editar:hover {
+  background-color: #eab308;
+  color: #000000;
+}
+
+.btn-eliminar {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid #ef4444;
+}
+
+.btn-eliminar:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.celda-vacia {
+  text-align: center;
+  padding: 36px !important;
+  color: #a89f95;
+  font-style: italic;
+}

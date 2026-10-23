@@ -1,14 +1,14 @@
 <app-navbar></app-navbar>
 
 <main class="main-portal">
-  <div class="portal-container mx-auto w-full max-w-3xl">
+  <div class="portal-container mx-auto w-full max-w-4xl">
 
     <!-- Encabezado de la Sección -->
     <div class="portal-encabezado">
-      <p class="portal-subtitulo">CUENTA PERSONAL</p>
+      <p class="portal-subtitulo">CUENTA PERSONAL & COMANDAS</p>
       <h1 class="portal-titulo text-4xl">Mi Portal</h1>
       <p class="portal-desc">
-        Gestiona tu información personal, actualiza tus datos de contacto y dirección.
+        Monitorea el estado de tus pedidos en tiempo real, consulta tu historial y administra tus datos personales.
       </p>
     </div>
 
@@ -32,11 +32,121 @@
     <!-- Alerta de Error -->
     @if (errorMessage) {
       <div class="alerta-error-portal">
-        <span>{{ errorMessage }}</span>
+        <span>⚠️ {{ errorMessage }}</span>
       </div>
     }
 
-    <!-- Tarjeta: Información Personal -->
+    <!-- SECCIÓN 1: PEDIDOS ACTIVOS EN TIEMPO REAL -->
+    <div class="portal-card seccion-pedidos-portal">
+      <div class="header-card-pedidos">
+        <div>
+          <span class="subtitulo-card-pedidos">En Tiempo Real</span>
+          <h2 class="portal-card-titulo">Tus Pedidos Activos ({{ pedidosActivos.length }})</h2>
+        </div>
+        <a [routerLink]="['/comidas/tarjetas']" class="btn-ordenar-mas">+ Ordenar Algo Más</a>
+      </div>
+
+      @if (pedidosActivos.length > 0) {
+        <div class="lista-pedidos-portal">
+          @for (ped of pedidosActivos; track ped.id) {
+            <div class="tarjeta-pedido-activo">
+              <div class="header-pedido-activo">
+                <div>
+                  <span class="pedido-id-tag">Pedido #{{ ped.id }}</span>
+                  <span class="pedido-fecha-tag">{{ ped.fechaCreacion }}</span>
+                </div>
+                <span
+                  class="badge-estado-portal"
+                  [class.badge-preparacion]="ped.estado === 'En preparación' || ped.estado === 'Cocinando'"
+                  [class.badge-camino]="ped.estado === 'En camino' || ped.estado === 'Enviado'"
+                  [class.badge-recibido]="ped.estado === 'Recibido' || ped.estado === 'Pendiente'"
+                >
+                  {{ ped.estado }}
+                </span>
+              </div>
+
+              @if (ped.domiciliarioNombre) {
+                <div class="aviso-domiciliario-activo">
+                  🛵 <strong>Repartidor asignado:</strong> {{ ped.domiciliarioNombre }} (va en camino a tu dirección)
+                </div>
+              }
+
+              <!-- Resumen de Platos -->
+              <div class="items-resumen-portal">
+                @for (it of ped.items; track $index) {
+                  <span class="chip-item-portal">
+                    {{ it.comidaNombre }} <strong>x{{ it.cantidad }}</strong>
+                  </span>
+                }
+              </div>
+
+              <div class="footer-pedido-activo">
+                <span class="total-pedido-portal">Total: ${{ ped.total | number:'1.0-0' }}</span>
+                <a [routerLink]="['/pedidos', ped.id]" class="btn-ver-comanda">Ver Comanda &rarr;</a>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="estado-sin-pedidos">
+          <p>No tienes ningún pedido en curso en este momento.</p>
+          <a [routerLink]="['/comidas/tarjetas']" class="btn-ir-menu">Explorar Menú</a>
+        </div>
+      }
+    </div>
+
+    <!-- SECCIÓN 2: HISTORIAL DE PEDIDOS ENTREGADOS -->
+    <div class="portal-card seccion-pedidos-portal">
+      <div class="header-card-pedidos">
+        <div>
+          <span class="subtitulo-card-pedidos">Historial</span>
+          <h2 class="portal-card-titulo">Pedidos Anteriores Finalizados ({{ pedidosEntregados.length }})</h2>
+        </div>
+      </div>
+
+      @if (pedidosEntregados.length > 0) {
+        <div class="tabla-historial-responsive">
+          <table class="tabla-historial-portal">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Platos</th>
+                <th>Repartidor</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (ped of pedidosEntregados; track ped.id) {
+                <tr>
+                  <td><strong>#{{ ped.id }}</strong></td>
+                  <td>{{ ped.fechaCreacion }}</td>
+                  <td>
+                    @for (it of ped.items; track $index) {
+                      <div>{{ it.comidaNombre }} (x{{ it.cantidad }})</div>
+                    }
+                  </td>
+                  <td>{{ ped.domiciliarioNombre || 'Repartidor El Wey' }}</td>
+                  <td><strong style="color: #4caf50;">${{ ped.total | number:'1.0-0' }}</strong></td>
+                  <td><span class="badge-entregado-mini">✅ Entregado</span></td>
+                  <td>
+                    <a [routerLink]="['/pedidos', ped.id]" class="link-detalle-mini">Ver &rarr;</a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="estado-sin-pedidos">
+          <p>Aún no tienes pedidos finalizados en tu historial.</p>
+        </div>
+      }
+    </div>
+
+    <!-- SECCIÓN 3: INFORMACIÓN PERSONAL -->
     <div class="portal-card">
       <h2 class="portal-card-titulo">Información Personal</h2>
 

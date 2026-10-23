@@ -5,14 +5,24 @@
       <img src="/images/logo_el_wey.jpg" alt="Logotipo de El Wey" width="58" height="58" />
     </a>
 
-    <!-- Menú de enlaces en el centro -->
+    <!-- Menú de enlaces en el centro (Dinámico según rol) -->
     <nav class="menu-enlaces">
-      <a [routerLink]="['/']">Inicio</a>
-      <a [routerLink]="['/comidas/tarjetas']">Menú</a>
-      <a [routerLink]="['/comidas/tabla']">Tabla</a>
-      @if (esOperador) {
+      @if (esAdmin) {
+        <a [routerLink]="['/']">Inicio</a>
+        <a [routerLink]="['/comidas/tabla']">Comidas</a>
+        <a [routerLink]="['/admin/adicionales']">Adicionales</a>
+        <a [routerLink]="['/admin/operadores']">Operadores</a>
+        <a [routerLink]="['/admin/domiciliarios']">Domiciliarios</a>
+        <a [routerLink]="['/pedidos']">Pedidos</a>
+      } @else if (esOperador) {
+        <a [routerLink]="['/']">Inicio</a>
+        <a [routerLink]="['/comidas/tarjetas']">Menú</a>
+        <a [routerLink]="['/admin/domiciliarios']">Domiciliarios</a>
         <a [routerLink]="['/pedidos']">Portal Pedidos</a>
       } @else {
+        <a [routerLink]="['/']">Inicio</a>
+        <a [routerLink]="['/comidas/tarjetas']">Menú</a>
+        <a [routerLink]="['/comidas/tabla']">Tabla</a>
         <a [routerLink]="['/cliente/portal']">Mi Portal</a>
       }
     </nav>
@@ -27,8 +37,15 @@
       </a>
       <a [routerLink]="['/comidas/tarjetas']" class="btn-pedido-nav">Haz Tu Pedido</a>
       @if (clienteActual) {
-        <a [routerLink]="[esOperador ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav" title="Ir al Portal">{{ clienteActual.nombre }}</a>
-        <button type="button" (click)="cerrarSesion()" class="enlace-acceder-nav" style="background: none; border: none; cursor: pointer; padding: 0;" title="Cerrar sesión">Salir</button>
+        <a [routerLink]="[esOperador ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav enlace-usuario-logueado" title="Ir al Portal">
+          @if (esAdmin) {
+            <span class="badge-rol-nav badge-admin">👑 Admin</span>
+          } @else if (esOperador) {
+            <span class="badge-rol-nav badge-cocina">👨‍🍳 Cocina</span>
+          }
+          {{ clienteActual.nombre }}
+        </a>
+        <button type="button" (click)="cerrarSesion()" class="enlace-acceder-nav btn-salir-nav" title="Cerrar sesión">Salir</button>
       } @else {
         <a [routerLink]="['/login']" class="enlace-acceder-nav">Acceder</a>
       }

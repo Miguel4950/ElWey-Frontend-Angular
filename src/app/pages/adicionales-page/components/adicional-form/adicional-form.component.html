@@ -1,0 +1,78 @@
+<div class="card-formulario-adicional">
+  <div class="header-form">
+    <h3 class="titulo-form">
+      {{ adicionalEditar() ? 'Editar Adicional' : 'Nuevo Adicional' }}
+    </h3>
+    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">✕</button>
+  </div>
+
+  <form [formGroup]="adicionalForm" (ngSubmit)="submitForm()" class="formulario-adic">
+    <!-- Campo Nombre -->
+    <div class="grupo-campo">
+      <label for="nombre" class="etiqueta-campo">NOMBRE DEL ADICIONAL</label>
+      <input
+        type="text"
+        id="nombre"
+        formControlName="nombre"
+        placeholder="Ej: Queso Oaxaca Fundido Extra"
+        class="input-texto"
+      />
+      @if (adicionalForm.get('nombre')?.touched && adicionalForm.get('nombre')?.invalid) {
+        <div class="contenedor-error">
+          @if (adicionalForm.get('nombre')?.errors?.['required']) {
+            <small class="texto-error">El nombre es obligatorio.</small>
+          }
+          @if (adicionalForm.get('nombre')?.errors?.['minlength']) {
+            <small class="texto-error">Debe tener al menos 2 caracteres.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Precio -->
+    <div class="grupo-campo">
+      <label for="precio" class="etiqueta-campo">PRECIO (COP)</label>
+      <input
+        type="number"
+        id="precio"
+        formControlName="precio"
+        placeholder="3500"
+        min="0"
+        class="input-texto"
+      />
+      @if (adicionalForm.get('precio')?.touched && adicionalForm.get('precio')?.invalid) {
+        <div class="contenedor-error">
+          @if (adicionalForm.get('precio')?.errors?.['required']) {
+            <small class="texto-error">El precio es obligatorio.</small>
+          }
+          @if (adicionalForm.get('precio')?.errors?.['min']) {
+            <small class="texto-error">El precio debe ser mayor o igual a 0.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Estado Activo -->
+    <div class="grupo-campo">
+      <label for="activo" class="etiqueta-campo">DISPONIBILIDAD</label>
+      <select id="activo" formControlName="activo" class="input-texto input-select">
+        <option [ngValue]="true">Activo (Disponible para clientes)</option>
+        <option [ngValue]="false">Inactivo (Oculto del menú)</option>
+      </select>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="acciones-form">
+      <button type="button" (click)="cancelar()" class="btn-cancelar">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="!adicionalForm.valid"
+        class="btn-guardar"
+      >
+        {{ adicionalEditar() ? 'Guardar Cambios' : 'Crear Adicional' }}
+      </button>
+    </div>
+  </form>
+</div>

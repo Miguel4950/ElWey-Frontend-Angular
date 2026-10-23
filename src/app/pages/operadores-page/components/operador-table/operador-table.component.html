@@ -1,0 +1,61 @@
+<div class="tabla-contenedor-responsive">
+  <table class="tabla-elwey">
+    <thead>
+      <tr>
+        <th class="col-id">ID</th>
+        <th>Nombre del Operador</th>
+        <th>Usuario de Acceso</th>
+        <th class="col-rol">Rol</th>
+        <th class="col-acciones">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (op of operadoresArray(); track op.id) {
+        <tr>
+          <td class="celda-id">
+            <strong>#{{ op.id }}</strong>
+          </td>
+
+          <td>
+            <strong class="nombre-operador-texto">{{ op.nombre }}</strong>
+          </td>
+
+          <td>
+            <code class="codigo-usuario">&#64;{{ op.usuario }}</code>
+          </td>
+
+          <td class="col-rol">
+            <span class="badge-rol-operador">👨‍🍳 Operador Cocina</span>
+          </td>
+
+          <td class="celda-acciones">
+            <div class="grupo-acciones">
+              <button
+                type="button"
+                (click)="editar(op)"
+                class="btn-accion btn-editar"
+                title="Editar operador"
+              >
+                ✏️ Editar
+              </button>
+              <button
+                type="button"
+                (click)="eliminar(op.id)"
+                class="btn-accion btn-eliminar"
+                title="Eliminar operador"
+              >
+                🗑️ Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="5" class="celda-vacia">
+            No se han registrado operadores en el sistema.
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

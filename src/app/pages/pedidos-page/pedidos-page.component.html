@@ -3,24 +3,31 @@
 <main class="main-pedidos-page">
   <div class="contenedor-pedidos">
 
-    <!-- Barra superior del Portal de Operario -->
+    <!-- Barra superior del Portal de Operario y Administración -->
     <div class="barra-superior-operario">
       <div>
-        <p class="subtitulo-operario">Portal de Operario · Cocina y Despachos</p>
-        <h1 class="titulo-operario">Listado de Pedidos</h1>
+        <p class="subtitulo-operario">
+          @if (esAdmin) {
+            Panel de Administración · Monitoreo Integral de Pedidos
+          } @else {
+            Portal de Operaciones · Cocina y Despachos
+          }
+        </p>
+        <h1 class="titulo-operario">Monitoreo de Pedidos</h1>
         <p class="desc-operario">
-          Selecciona cualquier pedido de la tabla para inspeccionar sus detalles, cantidades y adicionales.
+          Gestiona el flujo de las comandas: cocina los pedidos, asigna repartidores y confirma entregas a clientes.
         </p>
       </div>
 
       <div class="info-derecha-operario">
-        @if (operarioActual) {
+        @if (usuarioActual) {
           <span class="badge-operario-sesion">
-            Operario: <strong>{{ operarioActual.nombre }}</strong>
+            {{ esAdmin ? '👑 Admin:' : '👨‍🍳 Operador:' }}
+            <strong>{{ usuarioActual.nombre }}</strong>
           </span>
         }
         <span class="badge-total-pedidos">
-          Total Pedidos: <strong>{{ pedidosArray.length }}</strong>
+          Domiciliarios Disponibles: <strong>{{ domiciliariosDisponibles.length }}</strong>
         </span>
         <a [routerLink]="['/comidas/tarjetas']" class="btn-nuevo-pedido">
           + Nuevo Pedido
@@ -28,14 +35,99 @@
       </div>
     </div>
 
-    @if (errorMessage) {
-      <div class="alerta-error-pedidos">
-        {{ errorMessage }}
+    <!-- Alertas de Éxito y Error -->
+    @if (mensajeExito) {
+      <div class="alerta-exito-pedidos">
+        <span>✅ {{ mensajeExito }}</span>
       </div>
     }
 
+    @if (errorMessage) {
+      <div class="alerta-error-pedidos">
+        <span>⚠️ {{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Barra de Filtros y Pestañas de Estado -->
+    <div class="card-filtros-pedidos">
+      <!-- Pestañas de Estado -->
+      <div class="pestanas-estado">
+        <button
+          type="button"
+          (click)="pestanaEstado = 'TODOS'"
+          class="btn-pestana"
+          [class.pestana-activa]="pestanaEstado === 'TODOS'"
+        >
+          Todos ({{ pedidosArray.length }})
+        </button>
+        <button
+          type="button"
+          (click)="pestanaEstado = 'ACTIVOS'"
+          class="btn-pestana"
+          [class.pestana-activa]="pestanaEstado === 'ACTIVOS'"
+        >
+          🔥 Activos ({{ conteoActivos }})
+        </button>
+        <button
+          type="button"
+          (click)="pestanaEstado = 'ENTREGADOS'"
+          class="btn-pestana"
+          [class.pestana-activa]="pestanaEstado === 'ENTREGADOS'"
+        >
+          ✅ Entregados ({{ conteoEntregados }})
+        </button>
+      </div>
+
+      <!-- Buscadores por Plato y Rango de Fechas -->
+      <div class="buscadores-filtros">
+        <!-- Filtro por nombre de comida / plato -->
+        <div class="campo-busqueda">
+          <label class="etiqueta-filtro">Buscar por Plato:</label>
+          <input
+            type="text"
+            [(ngModel)]="filtroComida"
+            placeholder="Ej: Tacos al Pastor, Guacamole..."
+            class="input-filtro"
+          />
+        </div>
+
+        <!-- Filtro Rango de Fechas: Desde -->
+        <div class="campo-busqueda">
+          <label class="etiqueta-filtro">Fecha Desde:</label>
+          <input
+            type="date"
+            [(ngModel)]="fechaDesde"
+            class="input-filtro input-fecha"
+          />
+        </div>
+
+        <!-- Filtro Rango de Fechas: Hasta -->
+        <div class="campo-busqueda">
+          <label class="etiqueta-filtro">Fecha Hasta:</label>
+          <input
+            type="date"
+            [(ngModel)]="fechaHasta"
+            class="input-filtro input-fecha"
+          />
+        </div>
+
+        <!-- Botón para Limpiar Filtros -->
+        @if (hayFiltrosActivos) {
+          <div class="campo-busqueda limpiar-box">
+            <button type="button" (click)="limpiarFiltros()" class="btn-limpiar-filtros">
+              ✕ Limpiar Filtros
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
     <!-- Tabla de Pedidos (Subcomponente Hijo) -->
-    <app-pedidos-table [pedidosArray]="pedidosArray"></app-pedidos-table>
+    <app-pedidos-table
+      [pedidosArray]="pedidosFiltrados"
+      [domiciliariosDisponibles]="domiciliariosDisponibles"
+      (onActualizarEstado)="actualizarEstadoPedido($event)"
+    ></app-pedidos-table>
 
   </div>
 </main>

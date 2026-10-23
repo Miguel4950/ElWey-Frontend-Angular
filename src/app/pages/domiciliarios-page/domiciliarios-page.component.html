@@ -1,0 +1,59 @@
+<app-navbar></app-navbar>
+
+<main class="main-domiciliarios">
+  <div class="contenedor-domiciliarios">
+    <!-- Encabezado de la página -->
+    <div class="header-domiciliarios">
+      <div>
+        <span class="subtitulo-seccion">Flota de Entrega y Despacho</span>
+        <h1 class="titulo-pagina">Gestión de Domiciliarios</h1>
+        <p class="descripcion-pagina">
+          Administra el equipo de domiciliarios y monitorea su disponibilidad en tiempo real para las entregas de "El Wey".
+        </p>
+      </div>
+      <div>
+        <button
+          type="button"
+          (click)="abrirNuevoDomiciliario()"
+          class="btn-nuevo-domiciliario"
+          title="Registrar nuevo domiciliario"
+        >
+          + NUEVO DOMICILIARIO
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensajes de feedback -->
+    @if (mensajeExito) {
+      <div class="alerta-exito">
+        <span>✅ {{ mensajeExito }}</span>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="alerta-error">
+        <span>⚠️ {{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Componente Hijo: Formulario (condicional) -->
+    @if (mostrarFormulario) {
+      <app-domiciliario-form
+        [domiciliarioEditar]="domiciliarioSeleccionado"
+        (onSave)="guardarDomiciliario($event)"
+        (onCancel)="cerrarFormulario()"
+      ></app-domiciliario-form>
+    }
+
+    <!-- Componente Hijo: Tabla de Domiciliarios -->
+    <app-domiciliario-table
+      [domiciliariosArray]="domiciliariosArray"
+      (onEdit)="iniciarEdicion($event)"
+      (onToggleDisponibilidad)="toggleDisponibilidad($event)"
+      (onDelete)="eliminarDomiciliario($event)"
+    ></app-domiciliario-table>
+  </div>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

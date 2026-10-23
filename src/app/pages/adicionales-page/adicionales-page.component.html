@@ -1,0 +1,58 @@
+<app-navbar></app-navbar>
+
+<main class="main-adicionales">
+  <div class="contenedor-adicionales">
+    <!-- Encabezado de la página -->
+    <div class="header-adicionales">
+      <div>
+        <span class="subtitulo-seccion">Administración del Menú</span>
+        <h1 class="titulo-pagina">Gestión de Adicionales</h1>
+        <p class="descripcion-pagina">
+          Configura los ingredientes extras, guarniciones y salsas disponibles para los platos del restaurante.
+        </p>
+      </div>
+      <div>
+        <button
+          type="button"
+          (click)="abrirNuevoAdicional()"
+          class="btn-nuevo-adicional"
+          title="Crear nuevo adicional"
+        >
+          + NUEVO ADICIONAL
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensajes de feedback -->
+    @if (mensajeExito) {
+      <div class="alerta-exito">
+        <span>✅ {{ mensajeExito }}</span>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="alerta-error">
+        <span>⚠️ {{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Formulario Hijo (condicional) -->
+    @if (mostrarFormulario) {
+      <app-adicional-form
+        [adicionalEditar]="adicionalSeleccionado"
+        (onSave)="guardarAdicional($event)"
+        (onCancel)="cerrarFormulario()"
+      ></app-adicional-form>
+    }
+
+    <!-- Tabla Hija de Adicionales -->
+    <app-adicional-table
+      [adicionalesArray]="adicionalesArray"
+      (onEdit)="iniciarEdicion($event)"
+      (onDelete)="eliminarAdicional($event)"
+    ></app-adicional-table>
+  </div>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

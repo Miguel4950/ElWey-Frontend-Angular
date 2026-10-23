@@ -184,3 +184,71 @@
     flex-direction: column;
   }
 }
+
+
+/* Estilos de Selección de Adicionales Disponibles */
+.adic-ayuda-texto {
+  font-size: 0.78rem;
+  color: #a89f95;
+  margin: 0 0 8px 0;
+}
+
+.adic-grid-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 8px;
+  background-color: #12100f;
+  border: 1px solid #2d2422;
+  border-radius: 4px;
+}
+
+.adic-check-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background-color: #1c1817;
+  border: 1px solid #332b28;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.adic-check-card:hover {
+  background-color: #26211e;
+  border-color: #eab308;
+}
+
+.adic-check-card.adic-check-activo {
+  background-color: #2d1e15;
+  border-color: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+}
+
+.adic-checkbox-input {
+  accent-color: #ee1a0e;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.adic-check-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.adic-check-nombre {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fcf2e9;
+}
+
+.adic-check-precio {
+  font-size: 0.72rem;
+  color: #fbbf24;
+  font-weight: 500;
+}

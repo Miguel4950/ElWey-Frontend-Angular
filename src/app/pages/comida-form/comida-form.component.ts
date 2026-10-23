@@ -6,19 +6,27 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
 import { CategoriaDTO } from '../../dtos/categoria.dto';
+import { AdicionalDTO } from '../../dtos/adicional.dto';
 import { ComidaService } from '../../service/comida.service';
+import { AdicionalService } from '../../service/adicional.service';
 
+/**
+ * Componente de formulario reactivo para la creación y edición de platos de comida.
+ * Permite seleccionar dinámicamente los adicionales disponibles para el plato.
+ */
 @Component({
   selector: 'app-comida-form',
   imports: [
     ReactiveFormsModule,
     RouterLink,
+    DecimalPipe,
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
@@ -27,19 +35,17 @@ import { ComidaService } from '../../service/comida.service';
   styleUrl: './comida-form.component.css',
 })
 export class ComidaFormComponent implements OnInit, OnDestroy {
-  // Inyección de dependencias funcional idéntica al código del profesor
   private comidaService = inject(ComidaService);
+  private adicionalService = inject(AdicionalService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private subscription: Subscription = new Subscription();
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   comidaId: number | undefined = undefined;
   isEdit = false;
   categorias: CategoriaDTO[] = [];
+  adicionalesList: AdicionalDTO[] = [];
+  adicionalesSeleccionados: number[] = [];
 
   comidaForm = new FormGroup({
     nombre: new FormControl('', [
@@ -71,6 +77,7 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
+    // 1. Cargar categorías para el selector
     this.subscription.add(
       this.comidaService.getCategorias().subscribe({
         next: (cats) => {
@@ -82,12 +89,25 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
       })
     );
 
+    // 2. Cargar todos los adicionales disponibles en el restaurante
+    this.subscription.add(
+      this.adicionalService.getAdicionales().subscribe({
+        next: (adics) => {
+          this.adicionalesList = adics;
+        },
+        error: (err) => {
+          console.error('Error al cargar adicionales:', err);
+        },
+      })
+    );
+
+    // 3. Verificar si estamos en modo edición por el parámetro de ruta :id
     this.comidaId = Number(this.activatedRoute.snapshot.params['id']);
 
     if (this.comidaId) {
       this.isEdit = true;
       this.subscription.add(
-        this.comidaService.getComidaById(this.comidaId).subscribe({
+        this.comidaService.getComidaConAdicionales(this.comidaId).subscribe({
           next: (comida) => {
             if (comida) {
               this.comidaForm.patchValue({
@@ -99,14 +119,47 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
                 imagen_url: comida.imagen_url,
                 activo: comida.activo,
               });
+
+              // Preseleccionar los adicionales asignados a este plato
+              if (comida.adicionales && comida.adicionales.length > 0) {
+                this.adicionalesSeleccionados = comida.adicionales
+                  .map((a) => a.id)
+                  .filter((id): id is number => id !== undefined);
+              } else if (comida.adicionalesIds && comida.adicionalesIds.length > 0) {
+                this.adicionalesSeleccionados = [...comida.adicionalesIds];
+              }
             }
           },
           error: (err) => {
-            console.error('Error al obtener comida para edición:', err);
+            console.error('Error al obtener comida con adicionales:', err);
           },
         })
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  /**
+   * Alterna la selección de un adicional por su ID en el arreglo de IDs seleccionados.
+   */
+  toggleAdicional(adicId?: number): void {
+    if (!adicId) return;
+    const index = this.adicionalesSeleccionados.indexOf(adicId);
+    if (index > -1) {
+      this.adicionalesSeleccionados.splice(index, 1);
+    } else {
+      this.adicionalesSeleccionados.push(adicId);
+    }
+  }
+
+  /**
+   * Retorna true si el adicional con el ID suministrado se encuentra seleccionado.
+   */
+  isAdicionalSelected(adicId?: number): boolean {
+    return !!adicId && this.adicionalesSeleccionados.includes(adicId);
   }
 
   handleSubmit(): void {
@@ -133,6 +186,7 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
       activo: val.activo ?? true,
       categoriaId: cat ? cat.id : 1,
       categoriaNombre: cat ? cat.nombre : 'General',
+      adicionalesIds: this.adicionalesSeleccionados,
     };
 
     if (this.isEdit && this.comidaId) {

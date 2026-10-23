@@ -1,0 +1,58 @@
+<app-navbar></app-navbar>
+
+<main class="main-operadores">
+  <div class="contenedor-operadores">
+    <!-- Encabezado de la página -->
+    <div class="header-operadores">
+      <div>
+        <span class="subtitulo-seccion">Personal de Operaciones</span>
+        <h1 class="titulo-pagina">Gestión de Operadores</h1>
+        <p class="descripcion-pagina">
+          Administra el personal encargado de la preparación en cocina y la gestión de pedidos en "El Wey".
+        </p>
+      </div>
+      <div>
+        <button
+          type="button"
+          (click)="abrirNuevoOperador()"
+          class="btn-nuevo-operador"
+          title="Registrar nuevo operador"
+        >
+          + NUEVO OPERADOR
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensajes de feedback -->
+    @if (mensajeExito) {
+      <div class="alerta-exito">
+        <span>✅ {{ mensajeExito }}</span>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="alerta-error">
+        <span>⚠️ {{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Componente Hijo: Formulario (se muestra condicionalmente) -->
+    @if (mostrarFormulario) {
+      <app-operador-form
+        [operadorEditar]="operadorSeleccionado"
+        (onSave)="guardarOperador($event)"
+        (onCancel)="cerrarFormulario()"
+      ></app-operador-form>
+    }
+
+    <!-- Componente Hijo: Tabla de Operadores -->
+    <app-operador-table
+      [operadoresArray]="operadoresArray"
+      (onEdit)="iniciarEdicion($event)"
+      (onDelete)="eliminarOperador($event)"
+    ></app-operador-table>
+  </div>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

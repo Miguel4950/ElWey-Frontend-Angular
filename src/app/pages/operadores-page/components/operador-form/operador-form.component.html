@@ -1,0 +1,93 @@
+<!-- Componente hijo: Formulario Reactivo para Operadores de Cocina -->
+<div class="card-formulario-operador">
+  <div class="header-form">
+    <h3 class="titulo-form">
+      {{ operadorEditar() ? 'Editar Operador' : 'Registrar Nuevo Operador' }}
+    </h3>
+    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">✕</button>
+  </div>
+
+  <form [formGroup]="operadorForm" (ngSubmit)="submitForm()" class="formulario-operador">
+    <!-- Campo Nombre Completo -->
+    <div class="grupo-campo">
+      <label for="nombre" class="etiqueta-campo">NOMBRE COMPLETO</label>
+      <input
+        type="text"
+        id="nombre"
+        formControlName="nombre"
+        placeholder="Ej: Roberto Gómez Martínez"
+        class="input-texto"
+      />
+      @if (operadorForm.get('nombre')?.touched && operadorForm.get('nombre')?.invalid) {
+        <div class="contenedor-error">
+          @if (operadorForm.get('nombre')?.errors?.['required']) {
+            <small class="texto-error">El nombre completo es obligatorio.</small>
+          }
+          @if (operadorForm.get('nombre')?.errors?.['minlength']) {
+            <small class="texto-error">Debe tener al menos 3 caracteres.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Nombre de Usuario (para login) -->
+    <div class="grupo-campo">
+      <label for="usuario" class="etiqueta-campo">NOMBRE DE USUARIO</label>
+      <input
+        type="text"
+        id="usuario"
+        formControlName="usuario"
+        placeholder="Ej: roberto_cocina"
+        class="input-texto"
+      />
+      @if (operadorForm.get('usuario')?.touched && operadorForm.get('usuario')?.invalid) {
+        <div class="contenedor-error">
+          @if (operadorForm.get('usuario')?.errors?.['required']) {
+            <small class="texto-error">El usuario es obligatorio para el inicio de sesión.</small>
+          }
+          @if (operadorForm.get('usuario')?.errors?.['minlength']) {
+            <small class="texto-error">Debe tener al menos 3 caracteres.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Contraseña -->
+    <div class="grupo-campo">
+      <label for="contrasena" class="etiqueta-campo">
+        CONTRASEÑA {{ operadorEditar() ? '(OPCIONAL SI NO DESEA CAMBIARLA)' : '(MÍNIMO 4 CARACTERES)' }}
+      </label>
+      <input
+        type="password"
+        id="contrasena"
+        formControlName="contrasena"
+        [placeholder]="operadorEditar() ? 'Dejar en blanco para mantener la contraseña actual' : '••••••••'"
+        class="input-texto"
+      />
+      @if (operadorForm.get('contrasena')?.touched && operadorForm.get('contrasena')?.invalid) {
+        <div class="contenedor-error">
+          @if (operadorForm.get('contrasena')?.errors?.['required']) {
+            <small class="texto-error">La contraseña es obligatoria para nuevos operadores.</small>
+          }
+          @if (operadorForm.get('contrasena')?.errors?.['minlength']) {
+            <small class="texto-error">La contraseña debe tener al menos 4 caracteres.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Acciones del Formulario -->
+    <div class="acciones-form">
+      <button type="button" (click)="cancelar()" class="btn-cancelar">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="!operadorForm.valid"
+        class="btn-guardar"
+      >
+        {{ operadorEditar() ? 'Actualizar Operador' : 'Guardar Operador' }}
+      </button>
+    </div>
+  </form>
+</div>

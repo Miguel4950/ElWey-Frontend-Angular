@@ -1,18 +1,28 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { ClienteService } from '../../service/cliente.service';
+import { PedidoService } from '../../service/pedido.service';
 import { ClienteDTO } from '../../dtos/cliente.dto';
+import { PedidoDTO } from '../../dtos/pedido.dto';
 
+/**
+ * Portal del Cliente en "El Wey".
+ * Permite gestionar la información de perfil, actualizar dirección, eliminar cuenta
+ * y realizar seguimiento detallado de pedidos activos e historial de entregados.
+ */
 @Component({
   selector: 'app-mi-portal',
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    RouterLink,
+    DecimalPipe,
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
@@ -22,15 +32,13 @@ import { ClienteDTO } from '../../dtos/cliente.dto';
 })
 export class MiPortalComponent implements OnInit, OnDestroy {
   private clienteService = inject(ClienteService);
+  private pedidoService = inject(PedidoService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private subscription: Subscription = new Subscription();
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   cliente: ClienteDTO | null = null;
+  pedidosCliente: PedidoDTO[] = [];
   mensajeActualizado: boolean = false;
   mensajeBienvenido: boolean = false;
   errorMessage: string = '';
@@ -56,13 +64,16 @@ export class MiPortalComponent implements OnInit, OnDestroy {
       })
     );
 
-    const idParam = this.route.snapshot.paramMap.get('id');
+    const idParam = this.route.snapshot.params['id'];
     if (idParam) {
       this.subscription.add(
         this.clienteService.getClienteById(Number(idParam)).subscribe({
           next: (cliente) => {
             this.cliente = cliente;
             this.cargarFormulario(cliente);
+            if (cliente.id) {
+              this.cargarPedidosCliente(cliente.id);
+            }
           },
           error: (err) => console.error('Error al cargar cliente:', err),
         })
@@ -71,8 +82,34 @@ export class MiPortalComponent implements OnInit, OnDestroy {
       this.cliente = this.clienteService.getClienteActual();
       if (this.cliente) {
         this.cargarFormulario(this.cliente);
+        if (this.cliente.id) {
+          this.cargarPedidosCliente(this.cliente.id);
+        }
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  cargarPedidosCliente(clienteId: number): void {
+    this.subscription.add(
+      this.pedidoService.getPedidosByCliente(clienteId).subscribe({
+        next: (pedidos) => {
+          this.pedidosCliente = pedidos;
+        },
+        error: (err) => console.error('Error al cargar pedidos del cliente:', err),
+      })
+    );
+  }
+
+  get pedidosActivos(): PedidoDTO[] {
+    return this.pedidosCliente.filter((p) => p.estado !== 'Entregado');
+  }
+
+  get pedidosEntregados(): PedidoDTO[] {
+    return this.pedidosCliente.filter((p) => p.estado === 'Entregado');
   }
 
   cargarFormulario(cliente: ClienteDTO): void {

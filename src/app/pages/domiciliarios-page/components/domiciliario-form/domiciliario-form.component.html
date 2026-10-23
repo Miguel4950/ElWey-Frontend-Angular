@@ -1,0 +1,102 @@
+<div class="card-formulario-domiciliario">
+  <div class="header-form">
+    <h3 class="titulo-form">
+      {{ domiciliarioEditar() ? 'Editar Domiciliario' : 'Registrar Nuevo Domiciliario' }}
+    </h3>
+    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">✕</button>
+  </div>
+
+  <form [formGroup]="domiciliarioForm" (ngSubmit)="submitForm()" class="formulario-domiciliario">
+    <!-- Cédula -->
+    <div class="grupo-campo">
+      <label for="cedula" class="etiqueta-campo">NÚMERO DE CÉDULA</label>
+      <input
+        type="text"
+        id="cedula"
+        formControlName="cedula"
+        placeholder="Ej: 1020304050"
+        class="input-texto"
+      />
+      @if (domiciliarioForm.get('cedula')?.touched && domiciliarioForm.get('cedula')?.invalid) {
+        <div class="contenedor-error">
+          @if (domiciliarioForm.get('cedula')?.errors?.['required']) {
+            <small class="texto-error">La cédula es obligatoria.</small>
+          }
+          @if (domiciliarioForm.get('cedula')?.errors?.['minlength']) {
+            <small class="texto-error">La cédula debe tener al menos 7 dígitos.</small>
+          }
+          @if (domiciliarioForm.get('cedula')?.errors?.['pattern']) {
+            <small class="texto-error">La cédula debe contener solo números.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Nombre Completo -->
+    <div class="grupo-campo">
+      <label for="nombre" class="etiqueta-campo">NOMBRE COMPLETO</label>
+      <input
+        type="text"
+        id="nombre"
+        formControlName="nombre"
+        placeholder="Ej: Carlos Ramírez Morales"
+        class="input-texto"
+      />
+      @if (domiciliarioForm.get('nombre')?.touched && domiciliarioForm.get('nombre')?.invalid) {
+        <div class="contenedor-error">
+          @if (domiciliarioForm.get('nombre')?.errors?.['required']) {
+            <small class="texto-error">El nombre completo es obligatorio.</small>
+          }
+          @if (domiciliarioForm.get('nombre')?.errors?.['minlength']) {
+            <small class="texto-error">Debe tener al menos 3 caracteres.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Celular -->
+    <div class="grupo-campo">
+      <label for="celular" class="etiqueta-campo">NÚMERO DE CELULAR / WHATSAPP</label>
+      <input
+        type="text"
+        id="celular"
+        formControlName="celular"
+        placeholder="Ej: 3105556789"
+        class="input-texto"
+      />
+      @if (domiciliarioForm.get('celular')?.touched && domiciliarioForm.get('celular')?.invalid) {
+        <div class="contenedor-error">
+          @if (domiciliarioForm.get('celular')?.errors?.['required']) {
+            <small class="texto-error">El número de celular es obligatorio.</small>
+          }
+          @if (domiciliarioForm.get('celular')?.errors?.['minlength']) {
+            <small class="texto-error">El celular debe tener al menos 10 dígitos.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Disponibilidad -->
+    <div class="grupo-campo">
+      <label for="disponible" class="etiqueta-campo">ESTADO DE DISPONIBILIDAD</label>
+      <select id="disponible" formControlName="disponible" class="input-texto input-select">
+        <option [ngValue]="true">✅ Disponible (Listo para asignar entregas)</option>
+        <option [ngValue]="false">🛑 Ocupado / Fuera de turno</option>
+      </select>
+    </div>
+
+    <!-- Acciones -->
+    <div class="acciones-form">
+      <button type="button" (click)="cancelar()" class="btn-cancelar">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="!domiciliarioForm.valid"
+        class="btn-guardar"
+      >
+        {{ domiciliarioEditar() ? 'Actualizar Domiciliario' : 'Registrar Domiciliario' }}
+      </button>
+    </div>
+  </form>
+</div>

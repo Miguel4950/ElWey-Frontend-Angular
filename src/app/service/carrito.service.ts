@@ -98,18 +98,18 @@ export class CarritoService {
 
   private guardarEnStorage(): void {
     try {
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        sessionStorage.setItem('elwey_carrito', JSON.stringify(this.items));
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('elwey_carrito', JSON.stringify(this.items));
       }
     } catch {
-      // Ignorar si sessionStorage no está disponible
+      // Ignorar si localStorage no está disponible
     }
   }
 
   private cargarDesdeStorage(): void {
     try {
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        const raw = sessionStorage.getItem('elwey_carrito');
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const raw = localStorage.getItem('elwey_carrito');
         if (raw) {
           this.items = JSON.parse(raw);
         }
@@ -119,3 +119,4 @@ export class CarritoService {
     }
   }
 }
+

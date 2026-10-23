@@ -2,12 +2,61 @@
 
 <main class="login-main">
   <div class="login-card">
-    <!-- Encabezado de la Tarjeta -->
+
+    <!-- Selector de las 3 Pestañas de Rol (Sprint 10) -->
+    <div class="selector-roles-login">
+      <button
+        type="button"
+        (click)="seleccionarRol('cliente')"
+        class="tab-rol-btn"
+        [class.tab-rol-activa]="rolSeleccionado === 'cliente'"
+      >
+        🧑 Cliente
+      </button>
+      <button
+        type="button"
+        (click)="seleccionarRol('operador')"
+        class="tab-rol-btn"
+        [class.tab-rol-activa]="rolSeleccionado === 'operador'"
+      >
+        👨‍🍳 Operador
+      </button>
+      <button
+        type="button"
+        (click)="seleccionarRol('admin')"
+        class="tab-rol-btn"
+        [class.tab-rol-activa]="rolSeleccionado === 'admin'"
+      >
+        👑 Administrador
+      </button>
+    </div>
+
+    <!-- Encabezado de la Tarjeta dinámico según el Rol -->
     <div class="login-header">
-      <span class="login-subtitle">Acceso al Sistema</span>
-      <h1 class="login-title">Iniciar Sesión</h1>
+      <span class="login-subtitle">
+        @if (rolSeleccionado === 'cliente') {
+          Portal de Clientes · Pedidos y Seguimiento
+        } @else if (rolSeleccionado === 'operador') {
+          Cocina y Despachos · Gestión de Comandas
+        } @else {
+          Administración General · Control Total de El Wey
+        }
+      </span>
+      <h1 class="login-title">
+        @if (rolSeleccionado === 'cliente') {
+          Iniciar Sesión
+        } @else if (rolSeleccionado === 'operador') {
+          Acceso Operador
+        } @else {
+          Acceso Administrador
+        }
+      </h1>
       <p class="login-desc">
-        Ingresa tu correo y contraseña para acceder al sistema
+        @if (rolSeleccionado === 'cliente') {
+          Ingresa tu correo registrado y contraseña para acceder a tu portal.
+        } @else {
+          Ingresa tu usuario asignado o correo oficial y tu contraseña.
+        }
       </p>
     </div>
 
@@ -42,20 +91,22 @@
         </div>
       }
 
-      <!-- Campo 1: Correo Electrónico -->
+      <!-- Campo 1: Identificador (Correo para Cliente / Usuario o Correo para Operador o Admin) -->
       <div class="form-grupo">
-        <label for="email" class="form-label">Correo Electrónico</label>
+        <label for="email" class="form-label">
+          {{ rolSeleccionado === 'cliente' ? 'Correo Electrónico' : 'Nombre de Usuario o Correo' }}
+        </label>
         <input
-          type="email"
+          type="text"
           id="email"
           formControlName="email"
           autocomplete="off"
-          placeholder="nombre@ejemplo.com"
+          [placeholder]="rolSeleccionado === 'cliente' ? 'nombre@ejemplo.com' : (rolSeleccionado === 'operador' ? 'Ej: chef_camilo o operador@elwey.com' : 'Ej: admin_elwey o admin@elwey.com')"
           class="form-input"
         />
         @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
           <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
-            Ingresa un correo electrónico válido
+            {{ rolSeleccionado === 'cliente' ? 'Ingresa un correo electrónico válido' : 'El usuario es obligatorio (mínimo 3 caracteres)' }}
           </small>
         }
       </div>
@@ -80,35 +131,69 @@
 
       <!-- Botón de Envío -->
       <button type="submit" id="btn-submit-login" class="btn-submit-login">
-        INICIAR SESIÓN
+        INGRESAR COMO {{ rolSeleccionado.toUpperCase() }}
       </button>
     </form>
 
-    <!-- Enlace a Registro -->
-    <div class="login-footer-box">
-      <a [routerLink]="['/registro']" class="link-registro">
-        ¿No tienes cuenta? Regístrate aquí
-      </a>
+    <!-- Enlace a Registro (Solo visible para Clientes) -->
+    @if (rolSeleccionado === 'cliente') {
+      <div class="login-footer-box">
+        <a [routerLink]="['/registro']" class="link-registro">
+          ¿No tienes cuenta de cliente? Regístrate aquí
+        </a>
+      </div>
+    }
+
+    <!-- Credenciales de prueba oficiales (DataLoader) dinámicas según la pestaña activa -->
+    <div class="caja-credenciales">
+      <p class="titulo-credenciales">
+        🔑 Credenciales de prueba (DataLoader) para <strong>{{ rolSeleccionado.toUpperCase() }}</strong>:
+      </p>
+
+      @if (rolSeleccionado === 'cliente') {
+        <div class="lista-credenciales">
+          <div (click)="cargarCredencial('lionel.messi@email.com', 'messi10')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo">👤 Lionel Messi:</span>
+            lionel.messi&#64;email.com / <span class="badge-clave">messi10</span>
+          </div>
+          <div (click)="cargarCredencial('cristiano.ronaldo@email.com', 'cr7siuu')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo">👤 Cristiano Ronaldo:</span>
+            cristiano.ronaldo&#64;email.com / <span class="badge-clave">cr7siuu</span>
+          </div>
+        </div>
+      } @else if (rolSeleccionado === 'operador') {
+        <div class="lista-credenciales">
+          <div (click)="cargarCredencial('chef_camilo', 'cocina123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #38bdf8;">🍳 Chef Juan Camilo:</span>
+            chef_camilo / <span class="badge-clave">cocina123</span>
+          </div>
+          <div (click)="cargarCredencial('paola_despachos', 'despacho123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #38bdf8;">🍳 Paola Despachos:</span>
+            paola_despachos / <span class="badge-clave">despacho123</span>
+          </div>
+          <div (click)="cargarCredencial('operador@elwey.com', 'operador123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #38bdf8;">🍳 Operador General:</span>
+            operador&#64;elwey.com / <span class="badge-clave">operador123</span>
+          </div>
+        </div>
+      } @else {
+        <div class="lista-credenciales">
+          <div (click)="cargarCredencial('admin_elwey', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #fbbf24;">👑 Admin Principal:</span>
+            admin_elwey / <span class="badge-clave">admin123</span>
+          </div>
+          <div (click)="cargarCredencial('gerencia_elwey', 'gerente2026')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #fbbf24;">👑 Gerencia:</span>
+            gerencia_elwey / <span class="badge-clave">gerente2026</span>
+          </div>
+          <div (click)="cargarCredencial('admin@elwey.com', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #fbbf24;">👑 Admin Correo:</span>
+            admin&#64;elwey.com / <span class="badge-clave">admin123</span>
+          </div>
+        </div>
+      }
     </div>
 
-    <!-- Credenciales de prueba oficiales -->
-    <div class="caja-credenciales">
-      <p class="titulo-credenciales">Credenciales de prueba:</p>
-      <div class="lista-credenciales">
-        <div (click)="cargarCredencial('lionel.messi@email.com', 'messi10')" style="cursor: pointer;" title="Clic para rellenar">
-          <span style="color: #facc15; font-weight: 700;">👤 Cliente:</span>
-          lionel.messi&#64;email.com / <span class="badge-clave">messi10</span>
-        </div>
-        <div (click)="cargarCredencial('operador@elwey.com', 'operador123')" style="cursor: pointer;" title="Clic para rellenar">
-          <span style="color: #38bdf8; font-weight: 700;">🍳 Operador:</span>
-          operador&#64;elwey.com / <span class="badge-clave">operador123</span>
-        </div>
-        <div (click)="cargarCredencial('admin@elwey.com', 'admin123')" style="cursor: pointer;" title="Clic para rellenar">
-          <span style="color: #ef4444; font-weight: 700;">⚙️ Admin:</span>
-          admin&#64;elwey.com / <span class="badge-clave">admin123</span>
-        </div>
-      </div>
-    </div>
   </div>
 </main>
 

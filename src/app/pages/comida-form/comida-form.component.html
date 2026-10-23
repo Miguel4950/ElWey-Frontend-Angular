@@ -2,7 +2,6 @@
 
 <main class="main-crear-plato">
   <div class="crear-plato-container">
-    <!-- Tarjeta del formulario idéntica a crear-plato.html -->
     <div class="crear-plato-card">
       <div class="crear-plato-header">
         <h2 class="crear-plato-titulo">
@@ -195,12 +194,38 @@
               }
               @if (comidaForm.get("imagen_url")?.errors?.["pattern"]) {
                 <small class="campo-error"
-                  >Debe ser una URL válida (ej: https://ejemplo.com/foto.jpg
-                  ).</small
+                  >Debe ser una URL válida (ej: https://ejemplo.com/foto.jpg).</small
                 >
               }
             </div>
           }
+        </div>
+
+        <!-- Sección: Selección de Adicionales Disponibles -->
+        <div class="campo-grupo">
+          <label class="campo-label">ADICIONALES DISPONIBLES PARA ESTE PLATO</label>
+          <p class="adic-ayuda-texto">
+            Selecciona los adicionales, extras o salsas que estarán disponibles para pedir con este plato:
+          </p>
+          <div class="adic-grid-selector">
+            @for (adic of adicionalesList; track adic.id) {
+              <label
+                class="adic-check-card"
+                [class.adic-check-activo]="isAdicionalSelected(adic.id)"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="isAdicionalSelected(adic.id)"
+                  (change)="toggleAdicional(adic.id)"
+                  class="adic-checkbox-input"
+                />
+                <div class="adic-check-info">
+                  <span class="adic-check-nombre">{{ adic.nombre }}</span>
+                  <span class="adic-check-precio">+${{ adic.precio | number:'1.0-0' }}</span>
+                </div>
+              </label>
+            }
+          </div>
         </div>
 
         <!-- Botones de Acción -->

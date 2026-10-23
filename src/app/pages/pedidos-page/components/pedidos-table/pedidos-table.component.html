@@ -10,11 +10,11 @@
         <th class="col-centrada">Cant. Adicionales</th>
         <th class="col-estado">Estado</th>
         <th>Total</th>
-        <th class="col-acciones">Acciones</th>
+        <th class="col-acciones">Gestión & Acciones</th>
       </tr>
     </thead>
     <tbody>
-      @for (pedido of pedidosArray(); track $index) {
+      @for (pedido of pedidosArray(); track pedido.id) {
         <tr>
           <td class="celda-id">
             <strong>#{{ pedido.id }}</strong>
@@ -49,12 +49,17 @@
           <td class="celda-estado">
             <span
               class="badge-estado"
-              [class.badge-preparacion]="pedido.estado === 'En preparación'"
-              [class.badge-camino]="pedido.estado === 'En camino'"
+              [class.badge-preparacion]="pedido.estado === 'En preparación' || pedido.estado === 'Cocinando'"
+              [class.badge-camino]="pedido.estado === 'En camino' || pedido.estado === 'Enviado'"
               [class.badge-entregado]="pedido.estado === 'Entregado'"
             >
               {{ pedido.estado }}
             </span>
+            @if (pedido.domiciliarioNombre) {
+              <div class="info-domiciliario-tabla">
+                🛵 {{ pedido.domiciliarioNombre }}
+              </div>
+            }
           </td>
 
           <td class="celda-precio">
@@ -62,14 +67,65 @@
           </td>
 
           <td class="celda-acciones">
-            <div class="grupo-acciones">
+            <div class="grupo-acciones-completo">
+              @if (puedeGestionar) {
+                <!-- Estado: Recibido o Pendiente -> Pasar a En preparación / Cocinando -->
+                @if (pedido.estado === 'Recibido' || pedido.estado === 'Pendiente') {
+                  <button
+                    type="button"
+                    (click)="pasarAEnPreparacion(pedido.id)"
+                    class="btn-accion btn-preparar"
+                    title="Pasar a cocina"
+                  >
+                    🔥 Iniciar Preparación
+                  </button>
+                }
+
+                <!-- Estado: En preparación / Cocinando -> Asignar Domiciliario y Enviar -->
+                @if (pedido.estado === 'En preparación' || pedido.estado === 'Cocinando') {
+                  <div class="caja-despacho">
+                    <select
+                      [ngModel]="domiciliarioSeleccionadoPorPedido[pedido.id]"
+                      (ngModelChange)="onSelectDomiciliario(pedido.id, $event)"
+                      class="select-domiciliario-tabla"
+                    >
+                      <option [ngValue]="undefined" disabled selected>-- Domiciliario --</option>
+                      @for (dom of domiciliariosDisponibles(); track dom.id) {
+                        <option [ngValue]="dom.id">{{ dom.nombre }}</option>
+                      }
+                    </select>
+                    <button
+                      type="button"
+                      (click)="enviarPedido(pedido.id)"
+                      class="btn-accion btn-camino"
+                      title="Asignar y enviar pedido"
+                    >
+                      🛵 Enviar Pedido (En camino)
+                    </button>
+                  </div>
+                }
+
+                <!-- Estado: En camino / Enviado -> Marcar como Entregado -->
+                @if (pedido.estado === 'En camino' || pedido.estado === 'Enviado') {
+                  <button
+                    type="button"
+                    (click)="marcarEntregado(pedido.id)"
+                    class="btn-accion btn-entregado"
+                    title="Confirmar entrega al cliente"
+                  >
+                    ✅ Marcar Entregado
+                  </button>
+                }
+              }
+
+              <!-- Botón Ver Detalle -->
               <button
                 type="button"
                 (click)="verDetallePedido(pedido)"
                 class="btn-accion btn-detalle"
-                title="Ver detalle"
+                title="Inspeccionar detalle de la comanda"
               >
-                Ver detalle
+                🔍 Detalle
               </button>
             </div>
           </td>
@@ -77,7 +133,7 @@
       } @empty {
         <tr>
           <td colspan="9" class="celda-vacia">
-            No se encontraron pedidos registrados en la base de datos.
+            No se encontraron pedidos registrados con los criterios seleccionados.
           </td>
         </tr>
       }

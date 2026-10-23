@@ -233,3 +233,65 @@
   color: #fff;
   font-family: monospace;
 }
+
+
+/* Selector de las 3 Pestañas de Rol */
+.selector-roles-login {
+  display: flex;
+  background-color: #120e0d;
+  border-radius: 6px;
+  padding: 4px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 4px;
+}
+
+.tab-rol-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #a89f91;
+  padding: 8px 6px;
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-rol-btn:hover {
+  color: #fcf2e9;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab-rol-activa {
+  background-color: #ab1d19;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(171, 29, 25, 0.5);
+}
+
+.tab-rol-activa:hover {
+  background-color: #ab1d19;
+  color: #ffffff;
+}
+
+.item-credencial-click {
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.item-credencial-click:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.etiqueta-user-demo {
+  color: #facc15;
+  font-weight: 700;
+  margin-right: 4px;
+}
