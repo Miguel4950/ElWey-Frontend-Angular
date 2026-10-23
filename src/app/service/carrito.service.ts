@@ -56,7 +56,7 @@ export class CarritoService {
 
   getCantidadTotalAdicionales(): number {
     return this.items.reduce((acc, it) => {
-      const sumAdics = it.adicionales.reduce((sub, a) => sub + a.cantidad, 0);
+      const sumAdics = it.adicionales.reduce((sub, a) => sub + a.cantidad * it.cantidad, 0);
       return acc + sumAdics;
     }, 0);
   }
@@ -76,7 +76,7 @@ export class CarritoService {
   private recalcularItem(item: ItemCarritoDTO): void {
     item.subtotalComida = item.comidaPrecio * item.cantidad;
     item.subtotalAdicionales = item.adicionales.reduce(
-      (sub, adic) => sub + adic.precio * adic.cantidad,
+      (sub, adic) => sub + adic.precio * adic.cantidad * item.cantidad,
       0
     );
     item.subtotal = item.subtotalComida + item.subtotalAdicionales;

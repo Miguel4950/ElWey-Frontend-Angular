@@ -41,6 +41,14 @@
         (adicionalesChange)="onAdicionalesChange($event)"
       ></app-comida-adicionales>
 
+      <!-- Resumen acumulado estimado en tiempo real -->
+      <div class="caja-subtotal-estimado">
+        <div class="fila-resumen-subtotal">
+          <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}):</span>
+          <strong class="precio-subtotal-estimado">${{ subtotalAcumulado | number:'1.0-0' }}</strong>
+        </div>
+      </div>
+
       <!-- Botones de Acción: Carrito y Pedido Directo -->
       <div class="fila-botones-compra">
         <button type="button" class="btn-ordenar-pedido" (click)="agregarAlCarrito(c)">

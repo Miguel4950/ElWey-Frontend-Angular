@@ -98,7 +98,8 @@ export class CarritoPageComponent implements OnDestroy {
         cantidad: it.cantidad,
         adicionales: it.adicionales.map((ad) => ({
           adicionalId: ad.adicionalId,
-          cantidad: ad.cantidad,
+          // Se envía la cantidad total de adicionales para esa línea (ad.cantidad * it.cantidad)
+          cantidad: ad.cantidad * it.cantidad,
         })),
       })),
     };

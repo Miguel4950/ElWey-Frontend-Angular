@@ -105,12 +105,12 @@
                   <!-- Adicionales elegidos para este plato -->
                   @if (item.adicionales.length > 0) {
                     <div class="item-adicionales-box">
-                      <span class="titulo-adics-box">Adicionales seleccionados:</span>
+                      <span class="titulo-adics-box">Adicionales seleccionados (por plato):</span>
                       <ul class="lista-adics-item">
                         @for (adic of item.adicionales; track adic.adicionalId) {
                           <li>
-                            + {{ adic.cantidad }}x {{ adic.nombre }}
-                            <span class="precio-adic-item">(+${{ adic.subtotal | number:'1.0-0' }})</span>
+                            + {{ adic.cantidad * item.cantidad }}x {{ adic.nombre }}
+                            <span class="precio-adic-item">({{ adic.cantidad }} por plato &bull; +${{ (adic.precio * adic.cantidad * item.cantidad) | number:'1.0-0' }})</span>
                           </li>
                         }
                       </ul>

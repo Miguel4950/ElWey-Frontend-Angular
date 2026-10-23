@@ -36,6 +36,25 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
     return this.clienteService.esAdmin();
   }
 
+  get subtotalAcumulado(): number {
+    const plato = this.comida();
+    if (!plato) return 0;
+    const subtotalPlato = (plato.precio || 0) * this.cantidadProducto;
+    const subtotalAdicsPorcion = this.adicionalesSeleccionados.reduce((sum, item) => {
+      const adicObj = plato.adicionales?.find((a) => a.id === item.adicionalId);
+      const precio = adicObj?.precio || 0;
+      return sum + precio * item.cantidad;
+    }, 0);
+    return subtotalPlato + subtotalAdicsPorcion * this.cantidadProducto;
+  }
+
+  get totalAdicionalesCantidad(): number {
+    return this.adicionalesSeleccionados.reduce(
+      (sum, item) => sum + item.cantidad * this.cantidadProducto,
+      0
+    );
+  }
+
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
@@ -64,7 +83,7 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
         nombre,
         precio,
         cantidad: item.cantidad,
-        subtotal: precio * item.cantidad,
+        subtotal: precio * item.cantidad * this.cantidadProducto,
       };
     });
 
@@ -96,10 +115,17 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
     this.errorMessage = '';
     this.pedidoCreado = null;
 
+    // Para pedidos directos al backend, si el backend aplica los adicionales por ítem o en total,
+    // multiplicamos la cantidad del adicional por la cantidad de platos para que no se cobre solo una vez
+    const adicionalesTotales: AdicionalCantidadDTO[] = this.adicionalesSeleccionados.map((item) => ({
+      adicionalId: item.adicionalId,
+      cantidad: item.cantidad * this.cantidadProducto,
+    }));
+
     const nuevoPedido: CrearPedidoDTO = {
       comidaId: c.id,
       cantidad: this.cantidadProducto,
-      adicionales: this.adicionalesSeleccionados,
+      adicionales: adicionalesTotales,
       clienteId: this.clienteService.getClienteActual()?.id,
     };
 
