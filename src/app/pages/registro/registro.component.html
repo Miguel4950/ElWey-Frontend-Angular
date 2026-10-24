@@ -28,22 +28,43 @@
         </div>
       }
 
-      <!-- Campo 1: Nombre Completo -->
-      <div class="form-grupo">
-        <label for="nombre" class="form-label">Nombre Completo</label>
-        <input
-          type="text"
-          id="nombre"
-          formControlName="nombre"
-          autocomplete="off"
-          placeholder="Ej. Carlos Santana"
-          class="form-input"
-        />
-        @if (registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid) {
-          <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
-            El nombre debe tener al menos 3 caracteres
-          </small>
-        }
+      <!-- Campos Nombre y Apellido en dos columnas -->
+      <div class="form-fila-dos">
+        <!-- Campo: Nombre -->
+        <div class="form-grupo">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            type="text"
+            id="nombre"
+            formControlName="nombre"
+            autocomplete="off"
+            placeholder="Ej. Carlos"
+            class="form-input"
+          />
+          @if (registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid) {
+            <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
+              El nombre debe tener al menos 2 caracteres
+            </small>
+          }
+        </div>
+
+        <!-- Campo: Apellido -->
+        <div class="form-grupo">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input
+            type="text"
+            id="apellido"
+            formControlName="apellido"
+            autocomplete="off"
+            placeholder="Ej. Santana"
+            class="form-input"
+          />
+          @if (registroForm.get('apellido')?.touched && registroForm.get('apellido')?.invalid) {
+            <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
+              El apellido debe tener al menos 2 caracteres
+            </small>
+          }
+        </div>
       </div>
 
       <!-- Campo 2: Correo Electrónico -->

@@ -33,7 +33,8 @@ export class RegistroComponent implements OnDestroy {
   errorMessage: string = '';
 
   registroForm = new FormGroup({
-    nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    apellido: new FormControl('', [Validators.required, Validators.minLength(2)]),
     correo: new FormControl('', [Validators.required, Validators.email]),
     contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
     telefono: new FormControl('', [Validators.required]),
@@ -47,11 +48,12 @@ export class RegistroComponent implements OnDestroy {
       return;
     }
 
-    const { nombre, correo, contrasena, telefono, direccion } = this.registroForm.value;
+    const { nombre, apellido, correo, contrasena, telefono, direccion } = this.registroForm.value;
     const emailLimpio = (correo ?? '').trim().toLowerCase();
 
     const nuevoCliente: ClienteDTO = {
       nombre: nombre!.trim(),
+      apellido: apellido!.trim(),
       correo: emailLimpio,
       contrasena: contrasena!,
       telefono: telefono!.trim(),

@@ -45,7 +45,8 @@ export class MiPortalComponent implements OnInit, OnDestroy {
 
   portalForm = new FormGroup({
     id: new FormControl<number | null>(null),
-    nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    apellido: new FormControl('', [Validators.required, Validators.minLength(2)]),
     correo: new FormControl('', [Validators.required, Validators.email]),
     telefono: new FormControl('', [Validators.required]),
     direccion: new FormControl('', [Validators.required]),
@@ -116,6 +117,7 @@ export class MiPortalComponent implements OnInit, OnDestroy {
     this.portalForm.patchValue({
       id: cliente.id,
       nombre: cliente.nombre,
+      apellido: cliente.apellido || '',
       correo: cliente.correo,
       telefono: cliente.telefono,
       direccion: cliente.direccion,
@@ -134,11 +136,12 @@ export class MiPortalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const { nombre, correo, telefono, direccion } = this.portalForm.value;
+    const { nombre, apellido, correo, telefono, direccion } = this.portalForm.value;
 
     const clienteActualizado: ClienteDTO = {
       id: this.cliente.id,
       nombre: nombre!.trim(),
+      apellido: apellido!.trim(),
       correo: correo!.trim(),
       contrasena: this.cliente.contrasena,
       telefono: telefono!.trim(),
