@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -10,22 +8,27 @@ import { ClienteService } from '../../service/cliente.service';
 import { PedidoService } from '../../service/pedido.service';
 import { ClienteDTO } from '../../dtos/cliente.dto';
 import { PedidoDTO } from '../../dtos/pedido.dto';
+import { PortalPedidosActivosComponent } from './components/portal-pedidos-activos/portal-pedidos-activos.component';
+import { PortalHistorialPedidosComponent } from './components/portal-historial-pedidos/portal-historial-pedidos.component';
+import { PortalPerfilFormComponent } from './components/portal-perfil-form/portal-perfil-form.component';
 
 /**
  * Portal del Cliente en "El Wey".
- * Permite gestionar la información de perfil, actualizar dirección, eliminar cuenta
- * y realizar seguimiento detallado de pedidos activos e historial de entregados.
+ * Estructurado modularmente en subcomponentes pequeños:
+ * - PortalPedidosActivosComponent: Monitoreo en tiempo real de órdenes activas.
+ * - PortalHistorialPedidosComponent: Tabla de historial de pedidos completados.
+ * - PortalPerfilFormComponent: Formulario reactivo de actualización de perfil y eliminación de cuenta.
  */
 @Component({
   selector: 'app-mi-portal',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    RouterLink,
-    DecimalPipe,
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
+    PortalPedidosActivosComponent,
+    PortalHistorialPedidosComponent,
+    PortalPerfilFormComponent,
   ],
   templateUrl: './mi-portal.component.html',
   styleUrl: './mi-portal.component.css',
@@ -42,16 +45,6 @@ export class MiPortalComponent implements OnInit, OnDestroy {
   mensajeActualizado: boolean = false;
   mensajeBienvenido: boolean = false;
   errorMessage: string = '';
-
-  portalForm = new FormGroup({
-    id: new FormControl<number | null>(null),
-    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    apellido: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    correo: new FormControl('', [Validators.required, Validators.email]),
-    telefono: new FormControl('', [Validators.required]),
-    direccion: new FormControl('', [Validators.required]),
-    fechaRegistro: new FormControl(''),
-  });
 
   ngOnInit(): void {
     this.subscription.add(
@@ -71,7 +64,6 @@ export class MiPortalComponent implements OnInit, OnDestroy {
         this.clienteService.getClienteById(Number(idParam)).subscribe({
           next: (cliente) => {
             this.cliente = cliente;
-            this.cargarFormulario(cliente);
             if (cliente.id) {
               this.cargarPedidosCliente(cliente.id);
             }
@@ -81,11 +73,8 @@ export class MiPortalComponent implements OnInit, OnDestroy {
       );
     } else {
       this.cliente = this.clienteService.getClienteActual();
-      if (this.cliente) {
-        this.cargarFormulario(this.cliente);
-        if (this.cliente.id) {
-          this.cargarPedidosCliente(this.cliente.id);
-        }
+      if (this.cliente && this.cliente.id) {
+        this.cargarPedidosCliente(this.cliente.id);
       }
     }
   }
@@ -113,41 +102,22 @@ export class MiPortalComponent implements OnInit, OnDestroy {
     return this.pedidosCliente.filter((p) => p.estado === 'Entregado');
   }
 
-  cargarFormulario(cliente: ClienteDTO): void {
-    this.portalForm.patchValue({
-      id: cliente.id,
-      nombre: cliente.nombre,
-      apellido: cliente.apellido || '',
-      correo: cliente.correo,
-      telefono: cliente.telefono,
-      direccion: cliente.direccion,
-      fechaRegistro: cliente.fechaRegistro || '15 de Enero, 2026',
-    });
-  }
-
-  onActualizar(): void {
-    if (this.portalForm.invalid) {
-      this.portalForm.markAllAsTouched();
-      this.errorMessage = 'Por favor completa todos los campos con valores válidos.';
-      return;
-    }
-
-    if (!this.cliente || !this.cliente.id) {
-      return;
-    }
-
-    const { nombre, apellido, correo, telefono, direccion } = this.portalForm.value;
+  onActualizarPerfil(datos: {
+    nombre: string;
+    apellido?: string;
+    correo: string;
+    telefono: string;
+    direccion: string;
+  }): void {
+    if (!this.cliente || !this.cliente.id) return;
 
     const clienteActualizado: ClienteDTO = {
-      id: this.cliente.id,
-      nombre: nombre!.trim(),
-      apellido: apellido!.trim(),
-      correo: correo!.trim(),
-      contrasena: this.cliente.contrasena,
-      telefono: telefono!.trim(),
-      direccion: direccion!.trim(),
-      activo: this.cliente.activo,
-      fechaRegistro: this.cliente.fechaRegistro,
+      ...this.cliente,
+      nombre: datos.nombre,
+      apellido: datos.apellido,
+      correo: datos.correo,
+      telefono: datos.telefono,
+      direccion: datos.direccion,
     };
 
     this.subscription.add(
@@ -167,18 +137,8 @@ export class MiPortalComponent implements OnInit, OnDestroy {
     );
   }
 
-  onRestablecer(): void {
-    if (this.cliente) {
-      this.cargarFormulario(this.cliente);
-      this.mensajeActualizado = false;
-      this.errorMessage = '';
-    }
-  }
-
   onEliminarCuenta(): void {
-    if (!this.cliente || !this.cliente.id) {
-      return;
-    }
+    if (!this.cliente || !this.cliente.id) return;
 
     const confirmado = confirm(
       '¿Estás seguro de que deseas eliminar tu cuenta permanentemente? Esta acción no se puede deshacer.'

@@ -17,22 +17,23 @@
 
 .tabla-elwey thead tr {
   background-color: #211c1a;
-  border-bottom: 2px solid #ee1a0e;
+  border-bottom: 2px solid #ab1d19;
 }
 
 .tabla-elwey th {
-  padding: 14px 18px;
-  font-size: 0.75rem;
+  padding: 16px 20px;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #fbbf24;
 }
 
 .tabla-elwey td {
-  padding: 14px 18px;
+  padding: 16px 20px;
   font-size: 0.88rem;
   border-bottom: 1px solid #26211e;
+  vertical-align: middle;
 }
 
 .tabla-elwey tbody tr:hover {
@@ -40,13 +41,14 @@
 }
 
 .celda-id {
-  color: #a89f95;
+  color: #8c8278;
   width: 70px;
 }
 
 .nombre-adicional-texto {
   font-weight: 600;
   color: #ffffff;
+  font-size: 0.92rem;
 }
 
 .celda-precio {
@@ -60,77 +62,114 @@
 }
 
 .col-estado {
-  width: 120px;
+  width: 140px;
 }
 
 .badge-estado {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-verde {
+  background-color: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+.dot-gris {
+  background-color: #71717a;
 }
 
 .badge-activo {
-  background-color: rgba(34, 197, 94, 0.15);
+  background-color: rgba(34, 197, 94, 0.12);
   color: #4ade80;
-  border: 1px solid rgba(34, 197, 94, 0.4);
+  border: 1px solid rgba(34, 197, 94, 0.35);
 }
 
 .badge-inactivo {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background-color: rgba(113, 113, 122, 0.15);
+  color: #a1a1aa;
+  border: 1px solid rgba(113, 113, 122, 0.35);
 }
 
 .col-acciones {
-  width: 190px;
+  width: 200px;
+  min-width: 190px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.celda-acciones {
+  white-space: nowrap;
   text-align: center;
 }
 
 .grupo-acciones {
-  display: flex;
-  gap: 8px;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .btn-accion {
-  padding: 6px 12px;
+  height: 32px;
+  padding: 0 14px;
   border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .btn-editar {
-  background-color: #2d231e;
+  background-color: transparent;
+  border-color: #d97706;
   color: #fbbf24;
-  border: 1px solid #eab308;
 }
 
 .btn-editar:hover {
-  background-color: #eab308;
-  color: #000000;
+  background-color: #d97706;
+  color: #ffffff;
 }
 
 .btn-eliminar {
-  background-color: rgba(239, 68, 68, 0.15);
+  background-color: transparent;
+  border-color: #dc2626;
   color: #f87171;
-  border: 1px solid #ef4444;
 }
 
 .btn-eliminar:hover {
-  background-color: #ef4444;
+  background-color: #dc2626;
   color: #ffffff;
 }
 
 .celda-vacia {
   text-align: center;
-  padding: 36px !important;
-  color: #a89f95;
+  padding: 48px;
+  color: #8c8278;
   font-style: italic;
 }

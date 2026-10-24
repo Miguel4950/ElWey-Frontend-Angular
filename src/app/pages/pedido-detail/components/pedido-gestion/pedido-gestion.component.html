@@ -1,0 +1,62 @@
+@if (puedeGestionar()) {
+  <div class="panel-gestion-operador">
+    <div class="info-panel-gestion">
+      <span class="subtitulo-panel">Control de Operaciones</span>
+      <h3 class="titulo-panel">Gestión de Comanda y Despacho</h3>
+    </div>
+
+    <div class="acciones-panel-gestion">
+      @if (pedido().estado === 'Recibido' || pedido().estado === 'Pendiente') {
+        <button
+          type="button"
+          (click)="onPreparar()"
+          class="btn-gestion btn-preparar-grande"
+        >
+          Iniciar Preparación (Cocinar)
+        </button>
+      }
+
+      @if (pedido().estado === 'En preparación' || pedido().estado === 'Cocinando') {
+        <div class="bloque-asignacion">
+          <select
+            [(ngModel)]="domiciliarioSeleccionadoId"
+            class="select-dom-detalle"
+          >
+            <option [ngValue]="undefined" disabled selected>-- Seleccionar Domiciliario --</option>
+            @for (dom of domiciliariosDisponibles(); track dom.id) {
+              <option [ngValue]="dom.id">{{ dom.nombre }} ({{ dom.celular }})</option>
+            }
+          </select>
+          <button
+            type="button"
+            (click)="onDespachar()"
+            class="btn-gestion btn-camino-grande"
+          >
+            Despachar Pedido
+          </button>
+        </div>
+      }
+
+      @if (pedido().estado === 'En camino' || pedido().estado === 'Enviado') {
+        <div class="bloque-asignacion">
+          <span class="badge-dom-detalle">
+            En ruta con: <strong>{{ pedido().domiciliarioNombre || 'Repartidor asignado' }}</strong>
+          </span>
+          <button
+            type="button"
+            (click)="onEntregar()"
+            class="btn-gestion btn-entregar-grande"
+          >
+            Confirmar Entrega
+          </button>
+        </div>
+      }
+
+      @if (pedido().estado === 'Entregado') {
+        <span class="badge-finalizado-detalle">
+          Pedido Finalizado y Entregado
+        </span>
+      }
+    </div>
+  </div>
+}

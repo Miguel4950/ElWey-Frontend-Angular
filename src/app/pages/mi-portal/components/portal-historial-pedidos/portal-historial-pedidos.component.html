@@ -1,0 +1,54 @@
+<div class="portal-card seccion-pedidos-portal">
+  <div class="header-card-pedidos">
+    <div>
+      <span class="subtitulo-card-pedidos">Historial</span>
+      <h2 class="portal-card-titulo">Pedidos Anteriores Finalizados ({{ pedidos().length }})</h2>
+    </div>
+  </div>
+
+  @if (pedidos().length > 0) {
+    <div class="tabla-historial-responsive">
+      <table class="tabla-historial-portal">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Platos</th>
+            <th>Repartidor</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ped of pedidos(); track ped.id) {
+            <tr>
+              <td><strong>#{{ ped.id }}</strong></td>
+              <td>{{ ped.fechaCreacion }}</td>
+              <td>
+                @for (it of ped.items; track $index) {
+                  <div>{{ it.comidaNombre }} (x{{ it.cantidad }})</div>
+                }
+              </td>
+              <td>{{ ped.domiciliarioNombre || 'Repartidor El Wey' }}</td>
+              <td><strong style="color: #4caf50;">${{ ped.total | number:'1.0-0' }}</strong></td>
+              <td>
+                <span class="badge-entregado-mini">
+                  <span class="status-dot dot-verde"></span>
+                  Entregado
+                </span>
+              </td>
+              <td>
+                <a [routerLink]="['/pedidos', ped.id]" class="link-detalle-mini">Ver &rarr;</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="estado-sin-pedidos">
+      <p>Aún no tienes pedidos finalizados en tu historial.</p>
+    </div>
+  }
+</div>

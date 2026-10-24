@@ -1,0 +1,63 @@
+<div class="portal-card seccion-pedidos-portal">
+  <div class="header-card-pedidos">
+    <div>
+      <span class="subtitulo-card-pedidos">En Tiempo Real</span>
+      <h2 class="portal-card-titulo">Tus Pedidos Activos ({{ pedidos().length }})</h2>
+    </div>
+    <a [routerLink]="['/comidas/tarjetas']" class="btn-ordenar-mas">+ Ordenar Algo Más</a>
+  </div>
+
+  @if (pedidos().length > 0) {
+    <div class="lista-pedidos-portal">
+      @for (ped of pedidos(); track ped.id) {
+        <div class="tarjeta-pedido-activo">
+          <div class="header-pedido-activo">
+            <div>
+              <span class="pedido-id-tag">Pedido #{{ ped.id }}</span>
+              <span class="pedido-fecha-tag">{{ ped.fechaCreacion }}</span>
+            </div>
+            <span
+              class="badge-estado-portal"
+              [class.badge-preparacion]="ped.estado === 'En preparación' || ped.estado === 'Cocinando'"
+              [class.badge-camino]="ped.estado === 'En camino' || ped.estado === 'Enviado'"
+              [class.badge-recibido]="ped.estado === 'Recibido' || ped.estado === 'Pendiente'"
+            >
+              <span
+                class="status-dot"
+                [class.dot-ambar]="ped.estado === 'En preparación' || ped.estado === 'Cocinando'"
+                [class.dot-azul]="ped.estado === 'En camino' || ped.estado === 'Enviado'"
+                [class.dot-amarillo]="ped.estado === 'Recibido' || ped.estado === 'Pendiente'"
+              ></span>
+              {{ ped.estado }}
+            </span>
+          </div>
+
+          @if (ped.domiciliarioNombre) {
+            <div class="aviso-domiciliario-activo">
+              <strong>Repartidor asignado:</strong> {{ ped.domiciliarioNombre }} (va en camino a tu dirección)
+            </div>
+          }
+
+          <!-- Resumen de Platos -->
+          <div class="items-resumen-portal">
+            @for (it of ped.items; track $index) {
+              <span class="chip-item-portal">
+                {{ it.comidaNombre }} <strong>x{{ it.cantidad }}</strong>
+              </span>
+            }
+          </div>
+
+          <div class="footer-pedido-activo">
+            <span class="total-pedido-portal">Total: ${{ ped.total | number:'1.0-0' }}</span>
+            <a [routerLink]="['/pedidos', ped.id]" class="btn-ver-comanda">Ver Comanda &rarr;</a>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="estado-sin-pedidos">
+      <p>No tienes ningún pedido en curso en este momento.</p>
+      <a [routerLink]="['/comidas/tarjetas']" class="btn-ir-menu">Explorar Menú</a>
+    </div>
+  }
+</div>

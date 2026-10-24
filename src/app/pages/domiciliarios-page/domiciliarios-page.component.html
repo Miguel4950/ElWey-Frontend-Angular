@@ -26,13 +26,13 @@
     <!-- Mensajes de feedback -->
     @if (mensajeExito) {
       <div class="alerta-exito">
-        <span>✅ {{ mensajeExito }}</span>
+        <span>{{ mensajeExito }}</span>
       </div>
     }
 
     @if (errorMessage) {
       <div class="alerta-error">
-        <span>⚠️ {{ errorMessage }}</span>
+        <span>{{ errorMessage }}</span>
       </div>
     }
 

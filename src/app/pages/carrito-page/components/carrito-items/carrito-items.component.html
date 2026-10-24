@@ -1,0 +1,94 @@
+<section class="seccion-items-carrito">
+  <div class="barra-acciones-lista">
+    <span class="contador-items-badge">
+      {{ cantidadTotal() }} plato(s) en total ({{ items().length }} tipos)
+    </span>
+    <button type="button" (click)="onVaciar()" class="btn-vaciar-carrito" title="Vaciar todos los productos">
+      Vaciar Carrito
+    </button>
+  </div>
+
+  <div class="lista-items">
+    @for (item of items(); track item.id) {
+      <article class="card-item-carrito">
+        <!-- Imagen -->
+        <div class="item-img-contenedor">
+          <img
+            [src]="item.imagenUrl || '/images/comida 7.webp'"
+            [alt]="item.comidaNombre"
+            class="item-img"
+          />
+        </div>
+
+        <!-- Información del plato -->
+        <div class="item-info">
+          <span class="item-categoria">{{ item.categoriaNombre || 'Especialidad' }}</span>
+          <h3 class="item-nombre">{{ item.comidaNombre }}</h3>
+          <p class="item-precio-unit">
+            Precio unitario: <strong>${{ item.comidaPrecio | number:'1.0-0' }}</strong>
+          </p>
+
+          <!-- Adicionales elegidos para este plato -->
+          @if (item.adicionales.length > 0) {
+            <div class="item-adicionales-box">
+              <span class="titulo-adics-box">Adicionales seleccionados (por plato):</span>
+              <ul class="lista-adics-item">
+                @for (adic of item.adicionales; track adic.adicionalId) {
+                  <li>
+                    + {{ adic.cantidad * item.cantidad }}x {{ adic.nombre }}
+                    <span class="precio-adic-item">({{ adic.cantidad }} por plato &bull; +${{ (adic.precio * adic.cantidad * item.cantidad) | number:'1.0-0' }})</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          } @else {
+            <p class="sin-adics-texto">Sin adicionales extras</p>
+          }
+        </div>
+
+        <!-- Controles de Cantidad y Subtotal -->
+        <div class="item-acciones">
+          <div class="control-cantidad">
+            <button
+              type="button"
+              (click)="onDelta(item.id, -1)"
+              class="btn-cant"
+              title="Disminuir"
+            >
+              -
+            </button>
+            <span class="cant-num">{{ item.cantidad }}</span>
+            <button
+              type="button"
+              (click)="onDelta(item.id, 1)"
+              class="btn-cant"
+              title="Aumentar"
+            >
+              +
+            </button>
+          </div>
+
+          <div class="item-subtotal-box">
+            <span class="etiqueta-subtotal">Subtotal:</span>
+            <span class="monto-subtotal">${{ item.subtotal | number:'1.0-0' }}</span>
+          </div>
+
+          <button
+            type="button"
+            (click)="onEliminar(item.id)"
+            class="btn-eliminar-item"
+            title="Quitar este plato del carrito"
+          >
+            Quitar
+          </button>
+        </div>
+      </article>
+    }
+  </div>
+
+  <div class="enlace-seguir-comprando-caja">
+    <a [routerLink]="['/comidas/tarjetas']" class="btn-seguir-explorando">
+      &larr; Agregar más platos desde el Menú
+    </a>
+  </div>
+</section>

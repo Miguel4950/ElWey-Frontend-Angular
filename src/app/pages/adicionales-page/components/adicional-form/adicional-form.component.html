@@ -3,7 +3,7 @@
     <h3 class="titulo-form">
       {{ adicionalEditar() ? 'Editar Adicional' : 'Nuevo Adicional' }}
     </h3>
-    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">✕</button>
+    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">&times;</button>
   </div>
 
   <form [formGroup]="adicionalForm" (ngSubmit)="submitForm()" class="formulario-adic">

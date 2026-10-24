@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -11,21 +9,25 @@ import { DomiciliarioDTO } from '../../dtos/domiciliario.dto';
 import { PedidoService } from '../../service/pedido.service';
 import { DomiciliarioService } from '../../service/domiciliario.service';
 import { ClienteService } from '../../service/cliente.service';
+import { PedidoGestionComponent } from './components/pedido-gestion/pedido-gestion.component';
+import { PedidoInfoComponent } from './components/pedido-info/pedido-info.component';
 
 /**
  * Detalle consolidado de un pedido (Comanda).
- * Utiliza getPedidoConItems(id) con mergeMap para consultar pedido e ítems reactivamente.
- * Permite a los roles de cocina y administración gestionar el ciclo de entrega.
+ * Estructurado en subcomponentes visuales especializados:
+ * - PedidoGestionComponent: Barra de operaciones de cocina y asignación/despacho de repartidores.
+ * - PedidoInfoComponent: Datos del comensal, desglose de platos, adicionales y totales.
  */
 @Component({
   selector: 'app-pedido-detail',
+  standalone: true,
   imports: [
     RouterLink,
-    DecimalPipe,
-    FormsModule,
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
+    PedidoGestionComponent,
+    PedidoInfoComponent,
   ],
   templateUrl: './pedido-detail.component.html',
   styleUrl: './pedido-detail.component.css',
@@ -40,7 +42,6 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
   pedidoId = -1;
   pedido: PedidoDTO | undefined;
   domiciliariosDisponibles: DomiciliarioDTO[] = [];
-  domiciliarioSeleccionadoId?: number;
 
   mensajeExito: string = '';
   errorMessage: string = '';
@@ -69,9 +70,6 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
       this.pedidoService.getPedidoConItems(this.pedidoId).subscribe({
         next: (pedido) => {
           this.pedido = pedido;
-          if (pedido.domiciliarioId) {
-            this.domiciliarioSeleccionadoId = pedido.domiciliarioId;
-          }
         },
         error: (err) => {
           console.error('Error al obtener el detalle del pedido:', err);
@@ -93,29 +91,16 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Cambia el estado del pedido a 'En preparación'.
-   */
   pasarAEnPreparacion(): void {
     if (!this.pedidoId) return;
     this.actualizarEstado('En preparación');
   }
 
-  /**
-   * Despacha el pedido en ruta ('En camino') con el domiciliario seleccionado.
-   */
-  enviarPedido(): void {
+  enviarPedido(domiciliarioId: number): void {
     if (!this.pedidoId) return;
-    if (!this.domiciliarioSeleccionadoId) {
-      alert('Debes seleccionar un domiciliario disponible para despachar el pedido.');
-      return;
-    }
-    this.actualizarEstado('En camino', this.domiciliarioSeleccionadoId);
+    this.actualizarEstado('En camino', domiciliarioId);
   }
 
-  /**
-   * Marca el pedido como 'Entregado' al cliente y libera al repartidor.
-   */
   marcarEntregado(): void {
     if (!this.pedidoId) return;
     this.actualizarEstado('Entregado');

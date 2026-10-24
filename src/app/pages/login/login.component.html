@@ -11,7 +11,7 @@
         class="tab-rol-btn"
         [class.tab-rol-activa]="rolSeleccionado === 'cliente'"
       >
-        🧑 Cliente
+        Cliente
       </button>
       <button
         type="button"
@@ -19,7 +19,7 @@
         class="tab-rol-btn"
         [class.tab-rol-activa]="rolSeleccionado === 'operador'"
       >
-        👨‍🍳 Operador
+        Operador
       </button>
       <button
         type="button"
@@ -27,7 +27,7 @@
         class="tab-rol-btn"
         [class.tab-rol-activa]="rolSeleccionado === 'admin'"
       >
-        👑 Administrador
+        Administrador
       </button>
     </div>
 
@@ -147,47 +147,47 @@
     <!-- Credenciales de prueba oficiales (DataLoader) dinámicas según la pestaña activa -->
     <div class="caja-credenciales">
       <p class="titulo-credenciales">
-        🔑 Credenciales de prueba (DataLoader) para <strong>{{ rolSeleccionado.toUpperCase() }}</strong>:
+        Credenciales de prueba (DataLoader) para <strong>{{ rolSeleccionado.toUpperCase() }}</strong>:
       </p>
 
       @if (rolSeleccionado === 'cliente') {
         <div class="lista-credenciales">
           <div (click)="cargarCredencial('lionel.messi@email.com', 'messi10')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo">👤 Lionel Messi:</span>
+            <span class="etiqueta-user-demo">Lionel Messi:</span>
             lionel.messi&#64;email.com / <span class="badge-clave">messi10</span>
           </div>
           <div (click)="cargarCredencial('cristiano.ronaldo@email.com', 'cr7siuu')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo">👤 Cristiano Ronaldo:</span>
+            <span class="etiqueta-user-demo">Cristiano Ronaldo:</span>
             cristiano.ronaldo&#64;email.com / <span class="badge-clave">cr7siuu</span>
           </div>
         </div>
       } @else if (rolSeleccionado === 'operador') {
         <div class="lista-credenciales">
           <div (click)="cargarCredencial('chef_camilo', 'cocina123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #38bdf8;">🍳 Chef Juan Camilo:</span>
+            <span class="etiqueta-user-demo" style="color: #38bdf8;">Chef Juan Camilo:</span>
             chef_camilo / <span class="badge-clave">cocina123</span>
           </div>
           <div (click)="cargarCredencial('paola_despachos', 'despacho123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #38bdf8;">🍳 Paola Despachos:</span>
+            <span class="etiqueta-user-demo" style="color: #38bdf8;">Paola Despachos:</span>
             paola_despachos / <span class="badge-clave">despacho123</span>
           </div>
           <div (click)="cargarCredencial('operador@elwey.com', 'operador123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #38bdf8;">🍳 Operador General:</span>
+            <span class="etiqueta-user-demo" style="color: #38bdf8;">Operador General:</span>
             operador&#64;elwey.com / <span class="badge-clave">operador123</span>
           </div>
         </div>
       } @else {
         <div class="lista-credenciales">
           <div (click)="cargarCredencial('admin_elwey', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #fbbf24;">👑 Admin Principal:</span>
+            <span class="etiqueta-user-demo" style="color: #fbbf24;">Admin Principal:</span>
             admin_elwey / <span class="badge-clave">admin123</span>
           </div>
           <div (click)="cargarCredencial('gerencia_elwey', 'gerente2026')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #fbbf24;">👑 Gerencia:</span>
+            <span class="etiqueta-user-demo" style="color: #fbbf24;">Gerencia:</span>
             gerencia_elwey / <span class="badge-clave">gerente2026</span>
           </div>
           <div (click)="cargarCredencial('admin@elwey.com', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #fbbf24;">👑 Admin Correo:</span>
+            <span class="etiqueta-user-demo" style="color: #fbbf24;">Admin Correo:</span>
             admin&#64;elwey.com / <span class="badge-clave">admin123</span>
           </div>
         </div>

@@ -53,11 +53,17 @@
               [class.badge-camino]="pedido.estado === 'En camino' || pedido.estado === 'Enviado'"
               [class.badge-entregado]="pedido.estado === 'Entregado'"
             >
+              <span
+                class="status-dot"
+                [class.dot-ambar]="pedido.estado === 'En preparación' || pedido.estado === 'Cocinando'"
+                [class.dot-azul]="pedido.estado === 'En camino' || pedido.estado === 'Enviado'"
+                [class.dot-verde]="pedido.estado === 'Entregado'"
+              ></span>
               {{ pedido.estado }}
             </span>
             @if (pedido.domiciliarioNombre) {
               <div class="info-domiciliario-tabla">
-                🛵 {{ pedido.domiciliarioNombre }}
+                Repartidor: {{ pedido.domiciliarioNombre }}
               </div>
             }
           </td>
@@ -77,7 +83,7 @@
                     class="btn-accion btn-preparar"
                     title="Pasar a cocina"
                   >
-                    🔥 Iniciar Preparación
+                    Iniciar Preparación
                   </button>
                 }
 
@@ -100,7 +106,7 @@
                       class="btn-accion btn-camino"
                       title="Asignar y enviar pedido"
                     >
-                      🛵 Enviar Pedido (En camino)
+                      Despachar Pedido
                     </button>
                   </div>
                 }
@@ -113,7 +119,7 @@
                     class="btn-accion btn-entregado"
                     title="Confirmar entrega al cliente"
                   >
-                    ✅ Marcar Entregado
+                    Marcar Entregado
                   </button>
                 }
               }
@@ -125,7 +131,7 @@
                 class="btn-accion btn-detalle"
                 title="Inspeccionar detalle de la comanda"
               >
-                🔍 Detalle
+                Ver Detalle
               </button>
             </div>
           </td>

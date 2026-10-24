@@ -14,19 +14,27 @@
 }
 
 .tabla-elwey thead th {
-  background-color: #ab1d19;
-  color: #ffffff;
-  padding: 14px 16px;
+  background-color: #241f1e;
+  color: #fcf2e9;
+  padding: 16px 18px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  border-bottom: 2px solid #ee1a0e;
+  letter-spacing: 1.2px;
+  border-bottom: 2px solid #ab1d19;
+}
+
+.tabla-elwey tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.tabla-elwey tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.025);
 }
 
 .tabla-elwey tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   color: #fcf2e9;
   vertical-align: middle;
 }
@@ -105,40 +113,66 @@
 }
 
 .badge-estado {
-  display: inline-block;
-  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: 5px 12px;
+  border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   text-align: center;
   white-space: nowrap;
 }
 
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dot-ambar {
+  background-color: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+.dot-azul {
+  background-color: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+.dot-verde {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
 .badge-preparacion {
-  background-color: rgba(245, 158, 11, 0.2);
+  background-color: rgba(245, 158, 11, 0.15);
   color: #fbbf24;
   border: 1px solid rgba(245, 158, 11, 0.4);
 }
 
 .badge-camino {
-  background-color: rgba(56, 189, 248, 0.2);
+  background-color: rgba(56, 189, 248, 0.15);
   color: #38bdf8;
   border: 1px solid rgba(56, 189, 248, 0.4);
 }
 
 .badge-entregado {
-  background-color: rgba(46, 125, 50, 0.2);
-  color: #4caf50;
-  border: 1px solid rgba(76, 175, 80, 0.4);
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.4);
 }
 
 .info-domiciliario-tabla {
-  margin-top: 4px;
+  margin-top: 6px;
   font-size: 11px;
   color: #93c5fd;
   font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 .celda-precio {
@@ -149,22 +183,29 @@
   white-space: nowrap;
 }
 
-.col-acciones,
-.celda-acciones {
+.col-acciones {
+  min-width: 320px;
   white-space: nowrap;
 }
 
+.celda-acciones {
+  white-space: nowrap;
+  min-width: 320px;
+}
+
 .grupo-acciones-completo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .caja-despacho {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: nowrap;
 }
 
 .select-domiciliario-tabla {
@@ -172,14 +213,17 @@
   color: #fcf2e9;
   border: 1px solid #4a3f3a;
   border-radius: 4px;
-  padding: 5px 8px;
+  padding: 0 8px;
+  height: 32px;
+  box-sizing: border-box;
   font-size: 11px;
   max-width: 140px;
   cursor: pointer;
 }
 
 .btn-accion {
-  padding: 6px 12px;
+  height: 32px;
+  padding: 0 14px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -187,49 +231,57 @@
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
-  border: none;
+  border: 1px solid transparent;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .btn-preparar {
   background-color: #d97706;
+  border-color: #d97706;
   color: #ffffff;
 }
 
 .btn-preparar:hover {
   background-color: #f59e0b;
+  border-color: #f59e0b;
 }
 
 .btn-camino {
   background-color: #0284c7;
+  border-color: #0284c7;
   color: #ffffff;
 }
 
 .btn-camino:hover {
   background-color: #38bdf8;
+  border-color: #38bdf8;
 }
 
 .btn-entregado {
   background-color: #16a34a;
+  border-color: #16a34a;
   color: #ffffff;
 }
 
 .btn-entregado:hover {
   background-color: #22c55e;
+  border-color: #22c55e;
 }
 
 .btn-detalle {
   background-color: transparent;
   color: #fcf2e9;
-  border: 1px solid rgba(252, 242, 233, 0.3);
+  border: 1px solid rgba(252, 242, 233, 0.35);
 }
 
 .btn-detalle:hover {
   background-color: #fcf2e9;
+  border-color: #fcf2e9;
   color: #171614;
 }
 

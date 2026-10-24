@@ -1,0 +1,31 @@
+<div class="grid-tarjetas-menu">
+  @for (item of comidas(); track item.id) {
+    <article class="tarjeta-plato">
+      <div class="caja-foto-plato">
+        <img [src]="item.imagen_url" [alt]="item.nombre" class="img-plato" />
+        <span
+          class="badge-etiqueta-flotante"
+          [class.etiqueta-verde]="item.etiqueta === 'Vegano' || item.etiqueta === 'Favorito' || item.etiqueta === 'Top Ventas' || item.etiqueta === 'Clásico'"
+          [class.etiqueta-roja]="item.etiqueta !== 'Vegano' && item.etiqueta !== 'Favorito' && item.etiqueta !== 'Top Ventas' && item.etiqueta !== 'Clásico'"
+        >
+          {{ item.etiqueta }}
+        </span>
+      </div>
+      <div class="contenido-plato">
+        <span class="sub-categoria">{{ item.categoriaNombre ?? 'General' }}</span>
+        <h3>{{ item.nombre }}</h3>
+        <p>{{ item.descripcion }}</p>
+        <div class="fila-precio">
+          <span class="texto-precio">${{ item.precio | number:'1.0-0' }}</span>
+          <a [routerLink]="['/comidas', item.id]" class="enlace-pedir">
+            VER DETALLE &rarr;
+          </a>
+        </div>
+      </div>
+    </article>
+  } @empty {
+    <div class="vacio-tarjetas">
+      <p>No se encontraron platos con los criterios de búsqueda.</p>
+    </div>
+  }
+</div>

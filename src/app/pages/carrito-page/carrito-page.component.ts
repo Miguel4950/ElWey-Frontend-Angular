@@ -10,7 +10,15 @@ import { PedidoService } from '../../service/pedido.service';
 import { ClienteService } from '../../service/cliente.service';
 import { ItemCarritoDTO } from '../../dtos/carrito.dto';
 import { CrearPedidoDTO, PedidoDTO } from '../../dtos/pedido.dto';
+import { CarritoItemsComponent } from './components/carrito-items/carrito-items.component';
+import { CarritoResumenComponent } from './components/carrito-resumen/carrito-resumen.component';
 
+/**
+ * Página principal del Carrito de Compras en "El Wey".
+ * Dividida en subcomponentes visuales reutilizables:
+ * - CarritoItemsComponent: Lista de platos, adicionales, modificadores de cantidad y eliminación.
+ * - CarritoResumenComponent: Resumen de totales, desglose financiero y botón de checkout.
+ */
 @Component({
   selector: 'app-carrito-page',
   standalone: true,
@@ -20,6 +28,8 @@ import { CrearPedidoDTO, PedidoDTO } from '../../dtos/pedido.dto';
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
+    CarritoItemsComponent,
+    CarritoResumenComponent,
   ],
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css',
@@ -67,11 +77,11 @@ export class CarritoPageComponent implements OnDestroy {
     return this.clienteService.getClienteActual();
   }
 
-  actualizarCantidad(id: string, delta: number): void {
-    this.carritoService.actualizarCantidad(id, delta);
+  onModificarCantidad(event: { id: string; delta: number }): void {
+    this.carritoService.actualizarCantidad(event.id, event.delta);
   }
 
-  eliminarItem(id: string): void {
+  onEliminarItem(id: string): void {
     this.carritoService.eliminarItem(id);
   }
 
@@ -98,23 +108,22 @@ export class CarritoPageComponent implements OnDestroy {
         cantidad: it.cantidad,
         adicionales: it.adicionales.map((ad) => ({
           adicionalId: ad.adicionalId,
-          // Se envía la cantidad total de adicionales para esa línea (ad.cantidad * it.cantidad)
-          cantidad: ad.cantidad * it.cantidad,
+          cantidad: ad.cantidad,
         })),
       })),
     };
 
     this.subscription = this.pedidoService.crearPedido(payload).subscribe({
-      next: (pedido) => {
+      next: (pedidoCreado: PedidoDTO) => {
         this.cargando = false;
-        this.pedidoExitoso = pedido;
+        this.pedidoExitoso = pedidoCreado;
         this.carritoService.limpiar();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.cargando = false;
-        console.error('Error al confirmar pedido:', err);
+        console.error('Error al registrar pedido en backend:', err);
         this.errorMessage =
-          err?.error?.mensaje || 'No se pudo crear el pedido en la base de datos. Intenta nuevamente.';
+          err?.error?.mensaje || 'Ocurrió un error al procesar tu pedido. Por favor, intenta de nuevo.';
       },
     });
   }

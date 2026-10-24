@@ -1,0 +1,289 @@
+.card-pedido-detalle {
+  background-color: #1a1716;
+  border: 1px solid #282420;
+  border-radius: 8px;
+  padding: 36px 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.cabecera-pedido-detalle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.subtitulo-comanda {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #ee1a0e;
+  margin-bottom: 4px;
+}
+
+.titulo-pedido-num {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 34px;
+  color: #fcf2e9;
+  margin: 0 0 6px 0;
+}
+
+.fecha-pedido-texto {
+  font-size: 12px;
+  color: #8c8278;
+  margin: 0;
+}
+
+.badge-estado-grande {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-ambar {
+  background-color: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+.dot-azul {
+  background-color: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+.dot-verde {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+.badge-preparacion {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+}
+
+.badge-camino {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+}
+
+.badge-entregado {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.45);
+}
+
+.grid-info-pedido {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.caja-info-bloque {
+  background-color: #12100f;
+  border: 1px solid #282420;
+  border-radius: 6px;
+  padding: 20px 24px;
+}
+
+.etiqueta-bloque {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ee1a0e;
+  margin: 0 0 10px 0;
+}
+
+.nombre-cliente-detalle {
+  font-size: 18px;
+  color: #fcf2e9;
+  margin: 0 0 8px 0;
+}
+
+.dato-secundario {
+  font-size: 13px;
+  color: #8c8278;
+  margin: 0 0 6px 0;
+}
+
+.dato-secundario span {
+  color: #fcf2e9;
+}
+
+.resalte-blanco {
+  color: #fcf2e9;
+}
+
+.resalte-ambar {
+  color: #fbbf24;
+}
+
+.seccion-tabla-items {
+  margin-bottom: 24px;
+}
+
+.titulo-seccion-items {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fcf2e9;
+  margin: 0 0 14px 0;
+}
+
+.tabla-items-responsive {
+  overflow-x: auto;
+}
+
+.tabla-detalle-items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tabla-detalle-items th {
+  background-color: #12100f;
+  color: #8c8278;
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid #282420;
+}
+
+.tabla-detalle-items td {
+  padding: 14px;
+  border-bottom: 1px solid #201d1a;
+  vertical-align: middle;
+}
+
+.col-centro {
+  text-align: center;
+}
+
+.col-derecha {
+  text-align: right;
+}
+
+.nombre-plato-item {
+  color: #fcf2e9;
+  display: block;
+}
+
+.cat-plato-item {
+  font-size: 11px;
+  color: #8c8278;
+}
+
+.badge-cant-tabla {
+  background-color: #241f1c;
+  color: #fcf2e9;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.lista-chips-adic {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.adic-chip {
+  background-color: #12100f;
+  border: 1px solid #332b28;
+  color: #d8c8ba;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.adic-chip strong {
+  color: #fbbf24;
+}
+
+.precio-chip {
+  color: #a89a8c;
+  font-size: 10px;
+}
+
+.sin-adic-texto {
+  color: #5a504a;
+  font-style: italic;
+  font-size: 11px;
+}
+
+.celda-subtotal-item {
+  font-weight: 700;
+  color: #fcf2e9;
+}
+
+.etiqueta-pie-subtotal {
+  text-align: right;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #8c8278;
+}
+
+.valor-pie-subtotal {
+  text-align: right;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fcf2e9;
+}
+
+.fila-total-general th {
+  background-color: #12100f;
+  border-top: 2px solid #ee1a0e;
+  border-bottom: none;
+  padding: 16px 14px;
+}
+
+.etiqueta-total-general {
+  text-align: right;
+  color: #fcf2e9 !important;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.valor-total-general {
+  text-align: right;
+  color: #f59e0b !important;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+@media (max-width: 768px) {
+  .card-pedido-detalle {
+    padding: 24px;
+  }
+  .grid-info-pedido {
+    grid-template-columns: 1fr;
+  }
+}

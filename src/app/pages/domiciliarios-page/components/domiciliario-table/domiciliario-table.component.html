@@ -26,14 +26,20 @@
           </td>
 
           <td>
-            <a [href]="'tel:' + d.celular" class="link-celular">📞 {{ d.celular }}</a>
+            <a [href]="'tel:' + d.celular" class="link-celular">{{ d.celular }}</a>
           </td>
 
           <td class="col-disponibilidad">
             @if (d.disponible) {
-              <span class="badge-disponible">✅ Disponible</span>
+              <span class="badge-estado badge-disponible">
+                <span class="status-dot dot-verde"></span>
+                Disponible
+              </span>
             } @else {
-              <span class="badge-ocupado">🛑 Ocupado / No disponible</span>
+              <span class="badge-estado badge-ocupado">
+                <span class="status-dot dot-rojo"></span>
+                Ocupado
+              </span>
             }
           </td>
 
@@ -45,7 +51,7 @@
                 class="btn-accion btn-toggle"
                 [title]="d.disponible ? 'Marcar como Ocupado' : 'Marcar como Disponible'"
               >
-                🛵 {{ d.disponible ? 'Poner Ocupado' : 'Poner Disponible' }}
+                {{ d.disponible ? 'Poner Ocupado' : 'Poner Disponible' }}
               </button>
               <button
                 type="button"
@@ -53,7 +59,7 @@
                 class="btn-accion btn-editar"
                 title="Editar datos del domiciliario"
               >
-                ✏️ Editar
+                Editar
               </button>
               <button
                 type="button"
@@ -61,7 +67,7 @@
                 class="btn-accion btn-eliminar"
                 title="Eliminar domiciliario"
               >
-                🗑️ Eliminar
+                Eliminar
               </button>
             </div>
           </td>

@@ -1,0 +1,66 @@
+<aside class="seccion-resumen-carrito">
+  <div class="card-resumen-fijo">
+    <h2 class="titulo-resumen">Resumen del Pedido</h2>
+    <div class="divider-resumen"></div>
+
+    <div class="fila-resumen">
+      <span>Cantidad de Platos:</span>
+      <strong>{{ cantidadTotal() }} unidades</strong>
+    </div>
+
+    <div class="fila-resumen">
+      <span>Subtotal Platos:</span>
+      <strong>${{ subtotalComidas() | number:'1.0-0' }}</strong>
+    </div>
+
+    <div class="fila-resumen">
+      <span>Cantidad Adicionales:</span>
+      <strong>{{ cantidadAdicionales() }} porciones</strong>
+    </div>
+
+    <div class="fila-resumen">
+      <span>Subtotal Adicionales:</span>
+      <strong>${{ subtotalAdicionales() | number:'1.0-0' }}</strong>
+    </div>
+
+    <div class="divider-resumen"></div>
+
+    <div class="fila-resumen total-fila">
+      <span>TOTAL:</span>
+      <span class="total-monto">${{ total() | number:'1.0-0' }}</span>
+    </div>
+
+    <!-- Información del Cliente comprador -->
+    <div class="info-cliente-resumen">
+      @if (clienteActual()) {
+        <p>Comprador: <strong>{{ clienteActual()?.nombre }}</strong></p>
+        <small>Email: {{ clienteActual()?.correo }}</small>
+        <small>Dirección: {{ clienteActual()?.direccion || 'A coordinar en entrega' }}</small>
+      } @else {
+        <p>Comprando como: <strong>Invitado / Cliente Frecuente</strong></p>
+        <small>Se asociará al perfil de cliente por defecto en BD.</small>
+        <a [routerLink]="['/login']" class="link-iniciar-sesion-resumen">
+          ¿Tienes cuenta? Inicia sesión aquí &rarr;
+        </a>
+      }
+    </div>
+
+    <!-- Botón de Confirmación y Creación del Pedido -->
+    <button
+      type="button"
+      (click)="onConfirmar()"
+      [disabled]="cargando()"
+      class="btn-confirmar-pedido"
+    >
+      @if (cargando()) {
+        Enviando a Cocina...
+      } @else {
+        Confirmar y Enviar Pedido
+      }
+    </button>
+
+    <p class="nota-estado-defecto">
+      El pedido se registrará con estado <strong>En preparación</strong> y se enviará de inmediato a los operadores de cocina.
+    </p>
+  </div>
+</aside>

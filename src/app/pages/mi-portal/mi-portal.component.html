@@ -17,7 +17,6 @@
     <!-- Mensaje de confirmación al actualizar datos -->
     @if (mensajeActualizado) {
       <div class="alerta-actualizado">
-        <span style="font-size: 18px;">✅</span>
         <span><strong>¡Cambios confirmados!</strong> Tu información personal ha sido actualizada con éxito en el sistema.</span>
       </div>
     }
@@ -25,257 +24,35 @@
     <!-- Mensaje de bienvenida tras registro -->
     @if (mensajeBienvenido) {
       <div class="alerta-bienvenido">
-        <span>🎉 <strong>¡Bienvenido a El Wey!</strong> Tu cuenta ha sido creada exitosamente. Este es tu portal personal.</span>
+        <span><strong>¡Bienvenido a El Wey!</strong> Tu cuenta ha sido creada exitosamente. Este es tu portal personal.</span>
       </div>
     }
 
     <!-- Alerta de Error -->
     @if (errorMessage) {
       <div class="alerta-error-portal">
-        <span>⚠️ {{ errorMessage }}</span>
+        <span>{{ errorMessage }}</span>
       </div>
     }
 
-    <!-- SECCIÓN 1: PEDIDOS ACTIVOS EN TIEMPO REAL -->
-    <div class="portal-card seccion-pedidos-portal">
-      <div class="header-card-pedidos">
-        <div>
-          <span class="subtitulo-card-pedidos">En Tiempo Real</span>
-          <h2 class="portal-card-titulo">Tus Pedidos Activos ({{ pedidosActivos.length }})</h2>
-        </div>
-        <a [routerLink]="['/comidas/tarjetas']" class="btn-ordenar-mas">+ Ordenar Algo Más</a>
-      </div>
+    <!-- Subcomponente 1: Pedidos Activos en Tiempo Real -->
+    <app-portal-pedidos-activos
+      [pedidos]="pedidosActivos"
+    ></app-portal-pedidos-activos>
 
-      @if (pedidosActivos.length > 0) {
-        <div class="lista-pedidos-portal">
-          @for (ped of pedidosActivos; track ped.id) {
-            <div class="tarjeta-pedido-activo">
-              <div class="header-pedido-activo">
-                <div>
-                  <span class="pedido-id-tag">Pedido #{{ ped.id }}</span>
-                  <span class="pedido-fecha-tag">{{ ped.fechaCreacion }}</span>
-                </div>
-                <span
-                  class="badge-estado-portal"
-                  [class.badge-preparacion]="ped.estado === 'En preparación' || ped.estado === 'Cocinando'"
-                  [class.badge-camino]="ped.estado === 'En camino' || ped.estado === 'Enviado'"
-                  [class.badge-recibido]="ped.estado === 'Recibido' || ped.estado === 'Pendiente'"
-                >
-                  {{ ped.estado }}
-                </span>
-              </div>
+    <!-- Subcomponente 2: Historial de Pedidos Entregados -->
+    <app-portal-historial-pedidos
+      [pedidos]="pedidosEntregados"
+    ></app-portal-historial-pedidos>
 
-              @if (ped.domiciliarioNombre) {
-                <div class="aviso-domiciliario-activo">
-                  🛵 <strong>Repartidor asignado:</strong> {{ ped.domiciliarioNombre }} (va en camino a tu dirección)
-                </div>
-              }
-
-              <!-- Resumen de Platos -->
-              <div class="items-resumen-portal">
-                @for (it of ped.items; track $index) {
-                  <span class="chip-item-portal">
-                    {{ it.comidaNombre }} <strong>x{{ it.cantidad }}</strong>
-                  </span>
-                }
-              </div>
-
-              <div class="footer-pedido-activo">
-                <span class="total-pedido-portal">Total: ${{ ped.total | number:'1.0-0' }}</span>
-                <a [routerLink]="['/pedidos', ped.id]" class="btn-ver-comanda">Ver Comanda &rarr;</a>
-              </div>
-            </div>
-          }
-        </div>
-      } @else {
-        <div class="estado-sin-pedidos">
-          <p>No tienes ningún pedido en curso en este momento.</p>
-          <a [routerLink]="['/comidas/tarjetas']" class="btn-ir-menu">Explorar Menú</a>
-        </div>
-      }
-    </div>
-
-    <!-- SECCIÓN 2: HISTORIAL DE PEDIDOS ENTREGADOS -->
-    <div class="portal-card seccion-pedidos-portal">
-      <div class="header-card-pedidos">
-        <div>
-          <span class="subtitulo-card-pedidos">Historial</span>
-          <h2 class="portal-card-titulo">Pedidos Anteriores Finalizados ({{ pedidosEntregados.length }})</h2>
-        </div>
-      </div>
-
-      @if (pedidosEntregados.length > 0) {
-        <div class="tabla-historial-responsive">
-          <table class="tabla-historial-portal">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Fecha</th>
-                <th>Platos</th>
-                <th>Repartidor</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (ped of pedidosEntregados; track ped.id) {
-                <tr>
-                  <td><strong>#{{ ped.id }}</strong></td>
-                  <td>{{ ped.fechaCreacion }}</td>
-                  <td>
-                    @for (it of ped.items; track $index) {
-                      <div>{{ it.comidaNombre }} (x{{ it.cantidad }})</div>
-                    }
-                  </td>
-                  <td>{{ ped.domiciliarioNombre || 'Repartidor El Wey' }}</td>
-                  <td><strong style="color: #4caf50;">${{ ped.total | number:'1.0-0' }}</strong></td>
-                  <td><span class="badge-entregado-mini">✅ Entregado</span></td>
-                  <td>
-                    <a [routerLink]="['/pedidos', ped.id]" class="link-detalle-mini">Ver &rarr;</a>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      } @else {
-        <div class="estado-sin-pedidos">
-          <p>Aún no tienes pedidos finalizados en tu historial.</p>
-        </div>
-      }
-    </div>
-
-    <!-- SECCIÓN 3: INFORMACIÓN PERSONAL -->
-    <div class="portal-card">
-      <h2 class="portal-card-titulo">Información Personal</h2>
-
-      <form [formGroup]="portalForm" (ngSubmit)="onActualizar()" class="portal-form">
-
-        <!-- Fila 1: Nombre y Apellido -->
-        <div class="fila-dos-campos">
-          <div class="campo-grupo">
-            <label for="nombre" class="campo-label">NOMBRE</label>
-            <input
-              type="text"
-              id="nombre"
-              formControlName="nombre"
-              placeholder="Tu nombre"
-              class="campo-input"
-            />
-            @if (portalForm.get('nombre')?.touched && portalForm.get('nombre')?.invalid) {
-              <small class="error-texto" style="color: #f87171; font-size: 11px;">
-                El nombre debe tener al menos 2 caracteres
-              </small>
-            }
-          </div>
-
-          <div class="campo-grupo">
-            <label for="apellido" class="campo-label">APELLIDO</label>
-            <input
-              type="text"
-              id="apellido"
-              formControlName="apellido"
-              placeholder="Tu apellido"
-              class="campo-input"
-            />
-            @if (portalForm.get('apellido')?.touched && portalForm.get('apellido')?.invalid) {
-              <small class="error-texto" style="color: #f87171; font-size: 11px;">
-                El apellido debe tener al menos 2 caracteres
-              </small>
-            }
-          </div>
-        </div>
-
-        <!-- Campo 2: Correo Electrónico -->
-        <div class="campo-grupo">
-          <label for="correo" class="campo-label">CORREO ELECTRÓNICO</label>
-          <input
-            type="email"
-            id="correo"
-            formControlName="correo"
-            placeholder="correo@ejemplo.com"
-            class="campo-input"
-          />
-          @if (portalForm.get('correo')?.touched && portalForm.get('correo')?.invalid) {
-            <small class="error-texto" style="color: #f87171; font-size: 11px;">
-              Ingresa un correo electrónico válido
-            </small>
-          }
-        </div>
-
-        <!-- Fila 3: Teléfono + Fecha de Registro (solo lectura) -->
-        <div class="fila-dos-campos">
-          <div class="campo-grupo">
-            <label for="telefono" class="campo-label">TELÉFONO</label>
-            <input
-              type="tel"
-              id="telefono"
-              formControlName="telefono"
-              placeholder="3XX XXX XXXX"
-              class="campo-input"
-            />
-            @if (portalForm.get('telefono')?.touched && portalForm.get('telefono')?.invalid) {
-              <small class="error-texto" style="color: #f87171; font-size: 11px;">
-                El teléfono es obligatorio
-              </small>
-            }
-          </div>
-
-          <div class="campo-grupo">
-            <label for="fechaRegistro" class="campo-label">MIEMBRO DESDE</label>
-            <input
-              type="text"
-              id="fechaRegistro"
-              formControlName="fechaRegistro"
-              readonly
-              class="campo-input campo-readonly"
-            />
-          </div>
-        </div>
-
-        <!-- Fila 4: Dirección -->
-        <div class="campo-grupo">
-          <label for="direccion" class="campo-label">DIRECCIÓN EN BOGOTÁ</label>
-          <input
-            type="text"
-            id="direccion"
-            formControlName="direccion"
-            placeholder="Calle 123 # 45 - 67, Bogotá"
-            class="campo-input"
-          />
-          @if (portalForm.get('direccion')?.touched && portalForm.get('direccion')?.invalid) {
-            <small class="error-texto" style="color: #f87171; font-size: 11px;">
-              La dirección es obligatoria
-            </small>
-          }
-        </div>
-
-        <!-- Botones: Restablecer + Confirmar -->
-        <div class="portal-acciones">
-          <button type="button" (click)="onRestablecer()" class="btn-restablecer">
-            RESTABLECER
-          </button>
-          <button type="submit" class="btn-confirmar">
-            CONFIRMAR CAMBIOS
-          </button>
-        </div>
-
-      </form>
-    </div>
-
-    <!-- Zona de Peligro: Eliminar Cuenta -->
-    <div class="zona-peligro">
-      <div class="zona-peligro-info">
-        <h3 class="zona-peligro-titulo">ZONA DE PELIGRO</h3>
-        <p class="zona-peligro-desc">
-          Esta acción es permanente. Al eliminar tu cuenta, perderás todos tus datos y no podrás recuperarlos.
-        </p>
-      </div>
-      <button type="button" (click)="onEliminarCuenta()" class="btn-eliminar-cuenta">
-        ELIMINAR CUENTA
-      </button>
-    </div>
+    <!-- Subcomponente 3: Formulario de Información Personal y Zona de Peligro -->
+    @if (cliente) {
+      <app-portal-perfil-form
+        [cliente]="cliente"
+        (guardar)="onActualizarPerfil($event)"
+        (eliminar)="onEliminarCuenta()"
+      ></app-portal-perfil-form>
+    }
 
   </div>
 </main>

@@ -3,7 +3,7 @@
     <h3 class="titulo-form">
       {{ domiciliarioEditar() ? 'Editar Domiciliario' : 'Registrar Nuevo Domiciliario' }}
     </h3>
-    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">✕</button>
+    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">&times;</button>
   </div>
 
   <form [formGroup]="domiciliarioForm" (ngSubmit)="submitForm()" class="formulario-domiciliario">
@@ -80,8 +80,8 @@
     <div class="grupo-campo">
       <label for="disponible" class="etiqueta-campo">ESTADO DE DISPONIBILIDAD</label>
       <select id="disponible" formControlName="disponible" class="input-texto input-select">
-        <option [ngValue]="true">✅ Disponible (Listo para asignar entregas)</option>
-        <option [ngValue]="false">🛑 Ocupado / Fuera de turno</option>
+        <option [ngValue]="true">Disponible (Listo para asignar entregas)</option>
+        <option [ngValue]="false">Ocupado / Fuera de turno</option>
       </select>
     </div>
 

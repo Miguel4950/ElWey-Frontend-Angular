@@ -1,0 +1,221 @@
+.seccion-pedidos-portal {
+  margin-bottom: 32px;
+}
+
+.portal-card {
+  background-color: #1a1716;
+  border: 1px solid #2d2422;
+  border-radius: 6px;
+  padding: 32px 36px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  margin-bottom: 24px;
+}
+
+.portal-card-titulo {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 1.2rem;
+  color: #fcf2e9;
+  margin: 0;
+}
+
+.header-card-pedidos {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid #2d2422;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.subtitulo-card-pedidos {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ee1a0e;
+}
+
+.btn-ordenar-mas {
+  background-color: #ab1d19;
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-ordenar-mas:hover {
+  background-color: #ee1a0e;
+}
+
+.lista-pedidos-portal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tarjeta-pedido-activo {
+  background-color: #141110;
+  border: 1px solid #332b28;
+  border-left: 4px solid #f59e0b;
+  border-radius: 6px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header-pedido-activo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pedido-id-tag {
+  font-weight: 700;
+  color: #fbbf24;
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+.pedido-fecha-tag {
+  font-size: 0.75rem;
+  color: #a89f91;
+}
+
+.badge-estado-portal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-amarillo {
+  background-color: #eab308;
+  box-shadow: 0 0 6px rgba(234, 179, 8, 0.6);
+}
+
+.dot-ambar {
+  background-color: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+.dot-azul {
+  background-color: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+.badge-recibido {
+  background-color: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.badge-preparacion {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.badge-camino {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.aviso-domiciliario-activo {
+  background-color: rgba(56, 189, 248, 0.08);
+  border: 1px dashed rgba(56, 189, 248, 0.35);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #bae6fd;
+}
+
+.items-resumen-portal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-item-portal {
+  background-color: #211c1a;
+  border: 1px solid #3d3430;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #e5e7eb;
+}
+
+.footer-pedido-activo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #28211f;
+  padding-top: 10px;
+}
+
+.total-pedido-portal {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #4ade80;
+}
+
+.btn-ver-comanda {
+  color: #f59e0b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn-ver-comanda:hover {
+  text-decoration: underline;
+}
+
+.estado-sin-pedidos {
+  text-align: center;
+  padding: 30px 16px;
+  color: #8c8278;
+  font-size: 0.85rem;
+}
+
+.btn-ir-menu {
+  display: inline-block;
+  margin-top: 10px;
+  background-color: #2b231f;
+  border: 1px solid #facc15;
+  color: #facc15;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.btn-ir-menu:hover {
+  background-color: #facc15;
+  color: #171614;
+}

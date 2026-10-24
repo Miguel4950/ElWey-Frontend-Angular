@@ -1,0 +1,117 @@
+.seccion-resumen-carrito {
+  width: 100%;
+}
+
+.card-resumen-fijo {
+  background-color: #211c19;
+  border: 1px solid #332b28;
+  border-radius: 8px;
+  padding: 24px;
+  position: sticky;
+  top: 100px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.titulo-resumen {
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fcf2e9;
+  margin: 0 0 12px 0;
+}
+
+.divider-resumen {
+  height: 1px;
+  background-color: #332b28;
+  margin: 14px 0;
+}
+
+.fila-resumen {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #d8c8ba;
+  padding: 6px 0;
+}
+
+.fila-resumen strong {
+  color: #fcf2e9;
+}
+
+.fila-resumen.total-fila {
+  font-size: 18px;
+  font-weight: 900;
+  color: #fcf2e9;
+  padding: 10px 0;
+}
+
+.total-monto {
+  color: #facc15;
+  font-size: 22px;
+}
+
+.info-cliente-resumen {
+  background-color: #171614;
+  border: 1px solid #2b231f;
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin: 16px 0;
+  font-size: 12px;
+  color: #d8c8ba;
+}
+
+.info-cliente-resumen p {
+  margin: 0 0 2px 0;
+}
+
+.info-cliente-resumen small {
+  color: #a89a8c;
+  display: block;
+}
+
+.link-iniciar-sesion-resumen {
+  color: #facc15;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.btn-confirmar-pedido {
+  width: 100%;
+  background-color: #ab1d19;
+  color: #ffffff;
+  border: none;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(171, 29, 25, 0.4);
+}
+
+.btn-confirmar-pedido:hover:not(:disabled) {
+  background-color: #ee1a0e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(238, 26, 14, 0.5);
+}
+
+.btn-confirmar-pedido:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.nota-estado-defecto {
+  font-size: 11px;
+  color: #a89a8c;
+  margin: 12px 0 0 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.nota-estado-defecto strong {
+  color: #facc15;
+}

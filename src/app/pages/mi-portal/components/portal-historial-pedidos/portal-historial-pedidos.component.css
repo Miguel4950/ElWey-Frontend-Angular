@@ -1,0 +1,110 @@
+.seccion-pedidos-portal {
+  margin-bottom: 32px;
+}
+
+.portal-card {
+  background-color: #1a1716;
+  border: 1px solid #2d2422;
+  border-radius: 6px;
+  padding: 32px 36px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  margin-bottom: 24px;
+}
+
+.portal-card-titulo {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 1.2rem;
+  color: #fcf2e9;
+  margin: 0;
+}
+
+.header-card-pedidos {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid #2d2422;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.subtitulo-card-pedidos {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ee1a0e;
+}
+
+.tabla-historial-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabla-historial-portal {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  color: #fcf2e9;
+  text-align: left;
+}
+
+.tabla-historial-portal th {
+  background-color: #241f1e;
+  color: #fbbf24;
+  padding: 10px 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 2px solid #332b28;
+}
+
+.tabla-historial-portal td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #241f1e;
+  vertical-align: middle;
+}
+
+.badge-entregado-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #4ade80;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-verde {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+.link-detalle-mini {
+  color: #f59e0b;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.link-detalle-mini:hover {
+  text-decoration: underline;
+}
+
+.estado-sin-pedidos {
+  text-align: center;
+  padding: 30px 16px;
+  color: #8c8278;
+  font-size: 0.85rem;
+}

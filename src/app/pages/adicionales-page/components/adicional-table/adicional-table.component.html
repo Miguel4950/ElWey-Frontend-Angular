@@ -24,12 +24,13 @@
             ${{ adic.precio | number:'1.0-0' }}
           </td>
 
-          <td class="celda-estado">
+          <td class="col-estado">
             <span
               class="badge-estado"
               [class.badge-activo]="adic.activo !== false"
               [class.badge-inactivo]="adic.activo === false"
             >
+              <span class="status-dot" [class.dot-verde]="adic.activo !== false" [class.dot-gris]="adic.activo === false"></span>
               {{ adic.activo !== false ? 'Activo' : 'Inactivo' }}
             </span>
           </td>
@@ -42,7 +43,7 @@
                 class="btn-accion btn-editar"
                 title="Editar adicional"
               >
-                ✏️ Editar
+                Editar
               </button>
               <button
                 type="button"
@@ -50,7 +51,7 @@
                 class="btn-accion btn-eliminar"
                 title="Eliminar adicional"
               >
-                🗑️ Eliminar
+                Eliminar
               </button>
             </div>
           </td>
@@ -58,7 +59,7 @@
       } @empty {
         <tr>
           <td colspan="5" class="celda-vacia">
-            No hay adicionales registrados en el sistema.
+            No se han registrado adicionales en el sistema.
           </td>
         </tr>
       }

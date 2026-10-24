@@ -4,13 +4,19 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { PageTitleComponent } from './components/page-title/page-title.component';
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
+import { ComidaCardsComponent } from './components/comida-cards/comida-cards.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
 import { ComidaService } from '../../service/comida.service';
 import { ClienteService } from '../../service/cliente.service';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
-import { DecimalPipe } from '@angular/common';
 
+/**
+ * Página principal del catálogo de comidas.
+ * Soporta dos modos visuales divididos en subcomponentes:
+ * - ComidaTableComponent: Vista de inventario tabular para administración.
+ * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú para clientes.
+ */
 @Component({
   selector: 'app-comida-table-page',
   standalone: true,
@@ -20,8 +26,8 @@ import { DecimalPipe } from '@angular/common';
     CalaverasComponent,
     PageTitleComponent,
     ComidaTableComponent,
+    ComidaCardsComponent,
     RouterLink,
-    DecimalPipe,
   ],
   templateUrl: './comida-table-page.component.html',
   styleUrl: './comida-table-page.component.css',
@@ -49,41 +55,36 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
   ngOnInit(): void {
-    this.detectarVista();
+    this.evaluarRuta();
     this.cargarComidas();
 
     this.subscription.add(
       this.router.events
         .pipe(filter((event) => event instanceof NavigationEnd))
         .subscribe(() => {
-          const vistaAnterior = this.esVistaTarjetas;
-          this.detectarVista();
-          if (vistaAnterior !== this.esVistaTarjetas) {
-            this.cargarComidas();
-          }
+          this.evaluarRuta();
         })
     );
   }
 
-  cargarComidas(): void {
-    const peticion$ = this.esVistaTarjetas
-      ? this.comidaService.getComidasActivas()
-      : this.comidaService.getComidas();
+  evaluarRuta(): void {
+    const url = this.router.url;
+    this.esVistaTarjetas = url.includes('tarjetas');
+  }
 
+  cargarComidas(): void {
+    this.errorMessage = '';
     this.subscription.add(
-      peticion$.subscribe({
-        next: (comidas) => {
+      this.comidaService.getComidas().subscribe({
+        next: (comidas: ComidaDTO[]) => {
           this.comidaArray = comidas;
         },
-        error: (err) => {
-          console.error('Error al cargar comidas desde el backend:', err);
+        error: (err: any) => {
+          console.error('Error al cargar comidas:', err);
+          this.errorMessage = 'No se pudieron consultar los platos desde el servidor.';
         },
       })
     );
-  }
-
-  detectarVista(): void {
-    this.esVistaTarjetas = this.router.url.includes('tarjetas');
   }
 
   seleccionarCategoria(cat: string): void {
@@ -96,36 +97,35 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
   }
 
   get comidasFiltradas(): ComidaDTO[] {
-    return this.comidaArray.filter((item) => {
+    return this.comidaArray.filter((c) => {
       const matchCat =
         !this.filtroCategoria ||
-        (item.categoriaNombre &&
-          item.categoriaNombre.toLowerCase() ===
-          this.filtroCategoria.toLowerCase());
-      const matchText =
+        (c.categoriaNombre &&
+          c.categoriaNombre.toLowerCase() === this.filtroCategoria.toLowerCase());
+      const matchBusqueda =
         !this.busqueda ||
-        item.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
-        item.descripcion.toLowerCase().includes(this.busqueda.toLowerCase());
-      return matchCat && matchText;
+        c.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
+        c.descripcion.toLowerCase().includes(this.busqueda.toLowerCase());
+      return matchCat && matchBusqueda;
     });
   }
 
   eliminarComida(comida: ComidaDTO): void {
-    if (comida.id) {
-      this.errorMessage = '';
-      this.subscription.add(
-        this.comidaService.eliminarComida(comida.id).subscribe({
-          next: () => {
-            this.errorMessage = '';
-            this.cargarComidas();
-          },
-          error: (err) => {
-            console.error('Error al eliminar comida:', err);
-            this.errorMessage =
-              err?.error?.mensaje || 'Error al eliminar el plato. Por favor, intenta de nuevo.';
-          },
-        })
-      );
-    }
+    if (!comida.id) return;
+
+    this.errorMessage = '';
+    this.subscription.add(
+      this.comidaService.eliminarComida(comida.id).subscribe({
+        next: () => {
+          this.cargarComidas();
+        },
+        error: (err: any) => {
+          console.error('Error al eliminar comida en backend:', err);
+          this.errorMessage =
+            err?.error?.mensaje ||
+            'No es posible eliminar el plato porque tiene registros o pedidos asociados en el restaurante.';
+        },
+      })
+    );
   }
 }

@@ -4,7 +4,7 @@
     <h3 class="titulo-form">
       {{ operadorEditar() ? 'Editar Operador' : 'Registrar Nuevo Operador' }}
     </h3>
-    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">✕</button>
+    <button type="button" (click)="cancelar()" class="btn-cerrar-x" title="Cerrar">&times;</button>
   </div>
 
   <form [formGroup]="operadorForm" (ngSubmit)="submitForm()" class="formulario-operador">
