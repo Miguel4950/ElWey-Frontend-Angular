@@ -101,14 +101,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscription = this.clienteService
       .autenticarPorRol(credenciales, this.rolSeleccionado)
       .subscribe({
-        next: (cliente) => {
-          this.clienteService.setClienteActual(cliente);
+        next: (usuario) => {
+          this.clienteService.setClienteActual(usuario);
           this.errorMessage = '';
 
           // Redirección inteligente según el rol autenticado
-          if (this.rolSeleccionado === 'operador' || cliente.rol === 'OPERADOR') {
+          if (this.rolSeleccionado === 'operador' || usuario.rol === 'OPERADOR') {
             this.router.navigate(['/pedidos']);
-          } else if (this.rolSeleccionado === 'admin' || cliente.rol === 'ADMIN') {
+          } else if (this.rolSeleccionado === 'admin' || usuario.rol === 'ADMIN') {
             this.router.navigate(['/comidas/tabla']);
           } else {
             this.router.navigate(['/cliente/portal']);

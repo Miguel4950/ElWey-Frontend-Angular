@@ -72,9 +72,34 @@ export class MiPortalComponent implements OnInit, OnDestroy {
         })
       );
     } else {
-      this.cliente = this.clienteService.getClienteActual();
-      if (this.cliente && this.cliente.id) {
-        this.cargarPedidosCliente(this.cliente.id);
+      const usuarioActual = this.clienteService.getClienteActual();
+      if (usuarioActual && usuarioActual.id) {
+        this.subscription.add(
+          this.clienteService.getClienteById(usuarioActual.id).subscribe({
+            next: (cliente) => {
+              this.cliente = cliente;
+              if (cliente.id) {
+                this.cargarPedidosCliente(cliente.id);
+              }
+            },
+            error: (err) => {
+              console.warn('No se pudo obtener cliente completo desde backend, usando usuario de sesión:', err);
+              this.cliente = {
+                id: usuarioActual.id,
+                nombre: usuarioActual.nombre,
+                apellido: usuarioActual.apellido,
+                correo: usuarioActual.correo,
+                telefono: usuarioActual.telefono || '',
+                direccion: usuarioActual.direccion || '',
+                activo: usuarioActual.activo,
+                fechaRegistro: usuarioActual.fechaRegistro,
+              };
+              if (this.cliente.id) {
+                this.cargarPedidosCliente(this.cliente.id);
+              }
+            },
+          })
+        );
       }
     }
   }

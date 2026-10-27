@@ -2,10 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DomiciliarioDTO } from '../dtos/domiciliario.dto';
+import { UsuarioDTO } from '../dtos/usuario.dto';
+import { LoginDTO } from '../dtos/login.dto';
 
 /**
- * Servicio para la gestión del personal de reparto (domiciliarios) y su disponibilidad.
- * Conecta con el controlador REST DomiciliarioController de Spring Boot en el puerto 8080.
+ * Servicio para la gestión y autenticación del personal de reparto (domiciliarios).
+ * Conecta con DomiciliarioController y AuthController de Spring Boot en el puerto 8080.
  */
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,14 @@ import { DomiciliarioDTO } from '../dtos/domiciliario.dto';
 export class DomiciliarioService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/domiciliarios';
+  private authUrl = 'http://localhost:8080/api/auth';
+
+  /**
+   * Autenticación exclusiva para el rol de Domiciliario.
+   */
+  autenticar(credenciales: LoginDTO): Observable<UsuarioDTO> {
+    return this.http.post<UsuarioDTO>(`${this.authUrl}/login/domiciliario`, credenciales);
+  }
 
   /**
    * Obtiene la lista completa de todos los domiciliarios registrados.

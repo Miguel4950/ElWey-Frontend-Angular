@@ -2,10 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OperadorDTO } from '../dtos/operador.dto';
+import { UsuarioDTO } from '../dtos/usuario.dto';
+import { LoginDTO } from '../dtos/login.dto';
 
 /**
- * Servicio para la gestión administrativa de Operadores de cocina y despacho.
- * Conecta con el controlador REST OperadorController de Spring Boot en el puerto 8080.
+ * Servicio para la gestión administrativa y autenticación de Operadores de cocina y despacho.
+ * Conecta con OperadorController y AuthController de Spring Boot en el puerto 8080.
  */
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,14 @@ import { OperadorDTO } from '../dtos/operador.dto';
 export class OperadorService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/operadores';
+  private authUrl = 'http://localhost:8080/api/auth';
+
+  /**
+   * Autenticación exclusiva para el rol de Operador.
+   */
+  autenticar(credenciales: LoginDTO): Observable<UsuarioDTO> {
+    return this.http.post<UsuarioDTO>(`${this.authUrl}/login/operador`, credenciales);
+  }
 
   /**
    * Consulta el listado completo de operadores registrados.
