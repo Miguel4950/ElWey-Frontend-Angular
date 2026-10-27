@@ -4,7 +4,8 @@ import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ComidaDTO } from '../../../../dtos/comida.dto';
 import { AdicionalDTO } from '../../../../dtos/adicional.dto';
-import { AdicionalCantidadDTO, CrearPedidoDTO, PedidoDTO } from '../../../../dtos/pedido.dto';
+import { AdicionalCantidadDTO, CrearPedidoDTO } from '../../../../dtos/crear-pedido.dto';
+import { PedidoDTO } from '../../../../dtos/pedido.dto';
 import { ItemCarritoDTO } from '../../../../dtos/carrito.dto';
 import { PedidoService } from '../../../../service/pedido.service';
 import { ClienteService } from '../../../../service/cliente.service';
@@ -116,19 +117,27 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
   ordenarPedido(c: ComidaDTO): void {
     if (!c.id) return;
 
+    const clienteId = this.clienteService.getClienteActual()?.id;
+    if (clienteId == null) {
+      this.errorMessage = 'Debes iniciar sesión para confirmar tu pedido.';
+      return;
+    }
+
     this.errorMessage = '';
     this.pedidoCreado = null;
 
-    const adicionalesTotales: AdicionalCantidadDTO[] = this.adicionalesSeleccionados.map((item) => ({
-      adicionalId: item.adicionalId,
-      cantidad: item.cantidad * this.cantidadProducto,
-    }));
-
     const nuevoPedido: CrearPedidoDTO = {
-      comidaId: c.id,
-      cantidad: this.cantidadProducto,
-      adicionales: adicionalesTotales,
-      clienteId: this.clienteService.getClienteActual()?.id,
+      clienteId,
+      items: [
+        {
+          comidaId: c.id,
+          cantidad: this.cantidadProducto,
+          adicionales: this.adicionalesSeleccionados.map((item) => ({
+            adicionalId: item.adicionalId,
+            cantidad: item.cantidad,
+          })),
+        },
+      ],
     };
 
     this.subscription = this.pedidoService.crearPedido(nuevoPedido).subscribe({

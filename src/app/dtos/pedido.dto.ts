@@ -1,12 +1,4 @@
 /**
- * DTO para la selección de adicionales con cantidad en la orden.
- */
-export interface AdicionalCantidadDTO {
-  adicionalId: number;
-  cantidad: number;
-}
-
-/**
  * DTO para representar un adicional seleccionado dentro del detalle de un ítem de pedido.
  */
 export interface AdicionalSeleccionadoDTO {
@@ -68,22 +60,3 @@ export interface ActualizarEstadoPedidoDTO {
   domiciliarioId?: number;
 }
 
-/**
- * DTO para ítem individual en creación de pedido compuesto.
- */
-export interface ItemCrearPedidoDTO {
-  comidaId: number;
-  cantidad: number;
-  adicionales: AdicionalCantidadDTO[];
-}
-
-/**
- * DTO para creación de nuevo pedido (unitario o múltiple vía carrito).
- */
-export interface CrearPedidoDTO {
-  comidaId?: number;
-  cantidad?: number;
-  adicionales?: AdicionalCantidadDTO[];
-  clienteId?: number;
-  items?: ItemCrearPedidoDTO[];
-}

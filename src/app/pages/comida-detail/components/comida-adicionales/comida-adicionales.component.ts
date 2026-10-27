@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { AdicionalDTO } from '../../../../dtos/adicional.dto';
-import { AdicionalCantidadDTO } from '../../../../dtos/pedido.dto';
+import { AdicionalCantidadDTO } from '../../../../dtos/crear-pedido.dto';
 
 @Component({
   selector: 'app-comida-adicionales',

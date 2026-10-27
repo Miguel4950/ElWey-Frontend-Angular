@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, mergeMap, map } from 'rxjs';
-import { ActualizarEstadoPedidoDTO, CrearPedidoDTO, ItemPedidoDTO, PedidoDTO } from '../dtos/pedido.dto';
+import { CrearPedidoDTO } from '../dtos/crear-pedido.dto';
+import { ActualizarEstadoPedidoDTO, ItemPedidoDTO, PedidoDTO } from '../dtos/pedido.dto';
 
 /**
  * Servicio para la gestión integral de pedidos, comanda y ciclo de estados.

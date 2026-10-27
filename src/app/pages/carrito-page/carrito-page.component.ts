@@ -9,7 +9,8 @@ import { CarritoService } from '../../service/carrito.service';
 import { PedidoService } from '../../service/pedido.service';
 import { ClienteService } from '../../service/cliente.service';
 import { ItemCarritoDTO } from '../../dtos/carrito.dto';
-import { CrearPedidoDTO, PedidoDTO } from '../../dtos/pedido.dto';
+import { CrearPedidoDTO } from '../../dtos/crear-pedido.dto';
+import { PedidoDTO } from '../../dtos/pedido.dto';
 import { CarritoItemsComponent } from './components/carrito-items/carrito-items.component';
 import { CarritoResumenComponent } from './components/carrito-resumen/carrito-resumen.component';
 
@@ -97,12 +98,18 @@ export class CarritoPageComponent implements OnDestroy {
       return;
     }
 
+    const clienteId = this.clienteActual?.id;
+    if (clienteId == null) {
+      this.errorMessage = 'Debes iniciar sesión para confirmar tu pedido.';
+      return;
+    }
+
     this.cargando = true;
     this.errorMessage = '';
     this.pedidoExitoso = null;
 
     const payload: CrearPedidoDTO = {
-      clienteId: this.clienteActual?.id,
+      clienteId,
       items: this.items.map((it) => ({
         comidaId: it.comidaId,
         cantidad: it.cantidad,
