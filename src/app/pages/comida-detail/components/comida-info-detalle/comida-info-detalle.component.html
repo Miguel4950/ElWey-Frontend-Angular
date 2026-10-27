@@ -36,7 +36,7 @@
 
       <!-- Adicionales Disponibles (Subcomponente fraccionado) -->
       <app-comida-adicionales
-        [adicionales]="c.adicionales"
+        [adicionales]="adicionales()"
         [categoriaNombre]="c.categoriaNombre"
         (adicionalesChange)="onAdicionalesChange($event)"
       ></app-comida-adicionales>

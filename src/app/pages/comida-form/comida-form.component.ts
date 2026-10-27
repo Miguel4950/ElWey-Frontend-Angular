@@ -19,7 +19,7 @@ import { AdicionalService } from '../../service/adicional.service';
 
 /**
  * Componente de formulario reactivo para la creación y edición de platos de comida.
- * Permite seleccionar dinámicamente los adicionales disponibles para el plato.
+ * Realiza 2 consultas independientes en modo edición: una para ComidaDTO y otra para AdicionalDTO[].
  */
 @Component({
   selector: 'app-comida-form',
@@ -106,8 +106,10 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
 
     if (this.comidaId) {
       this.isEdit = true;
+
+      // Consulta 1: Obtener datos planos del plato (ComidaDTO)
       this.subscription.add(
-        this.comidaService.getComidaConAdicionales(this.comidaId).subscribe({
+        this.comidaService.getComidaById(this.comidaId).subscribe({
           next: (comida) => {
             if (comida) {
               this.comidaForm.patchValue({
@@ -119,19 +121,26 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
                 imagen_url: comida.imagen_url,
                 activo: comida.activo,
               });
-
-              // Preseleccionar los adicionales asignados a este plato
-              if (comida.adicionales && comida.adicionales.length > 0) {
-                this.adicionalesSeleccionados = comida.adicionales
-                  .map((a) => a.id)
-                  .filter((id): id is number => id !== undefined);
-              } else if (comida.adicionalesIds && comida.adicionalesIds.length > 0) {
-                this.adicionalesSeleccionados = [...comida.adicionalesIds];
-              }
             }
           },
           error: (err) => {
-            console.error('Error al obtener comida con adicionales:', err);
+            console.error('Error al obtener comida:', err);
+          },
+        })
+      );
+
+      // Consulta 2: Obtener adicionales disponibles de este plato (AdicionalDTO[])
+      this.subscription.add(
+        this.adicionalService.getAdicionalesByComidaId(this.comidaId).subscribe({
+          next: (adicionales) => {
+            if (adicionales && adicionales.length > 0) {
+              this.adicionalesSeleccionados = adicionales
+                .map((a) => a.id)
+                .filter((id): id is number => id !== undefined);
+            }
+          },
+          error: (err) => {
+            console.error('Error al obtener adicionales de la comida:', err);
           },
         })
       );
@@ -186,7 +195,6 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
       activo: val.activo ?? true,
       categoriaId: cat ? cat.id : 1,
       categoriaNombre: cat ? cat.nombre : 'General',
-      adicionalesIds: this.adicionalesSeleccionados,
     };
 
     if (this.isEdit && this.comidaId) {

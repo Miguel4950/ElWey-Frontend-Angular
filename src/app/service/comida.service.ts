@@ -1,21 +1,18 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, mergeMap, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ComidaDTO } from '../dtos/comida.dto';
 import { CategoriaDTO } from '../dtos/categoria.dto';
-import { AdicionalService } from './adicional.service';
 
 /**
  * Servicio para la gestión del catálogo de comidas y categorías.
  * Conecta con ComidaController de Spring Boot en el puerto 8080.
- * Demuestra encadenamiento reactivo con mergeMap para consultas secundarias sin anidar subscribe.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class ComidaService {
   private http = inject(HttpClient);
-  private adicionalService = inject(AdicionalService);
   private apiUrl = 'http://localhost:8080/api';
 
   /**
@@ -40,23 +37,6 @@ export class ComidaService {
   }
 
   /**
-   * Consulta una comida y encadena la búsqueda secundaria de sus adicionales
-   * utilizando RxJS mergeMap sin anidar llamadas a subscribe().
-   */
-  getComidaConAdicionales(id: number): Observable<ComidaDTO> {
-    return this.getComidaById(id).pipe(
-      mergeMap((comida: ComidaDTO) => {
-        return this.adicionalService.getAdicionalesByComidaId(id).pipe(
-          map((adicionales) => {
-            comida.adicionales = adicionales;
-            return comida;
-          })
-        );
-      })
-    );
-  }
-
-  /**
    * Consulta las categorías disponibles para selección en el formulario.
    */
   getCategorias(): Observable<CategoriaDTO[]> {
@@ -64,14 +44,14 @@ export class ComidaService {
   }
 
   /**
-   * Registra un nuevo plato enviando su categoría y lista de IDs de adicionales disponibles.
+   * Registra un nuevo plato enviando su categoría.
    */
   addComida(comida: ComidaDTO): Observable<ComidaDTO> {
     return this.http.post<ComidaDTO>(`${this.apiUrl}/comidas`, comida);
   }
 
   /**
-   * Actualiza los datos de un plato y su relación de adicionales disponibles.
+   * Actualiza los datos de un plato y su categoría.
    */
   updateComida(id: number, comida: ComidaDTO): Observable<ComidaDTO> {
     return this.http.put<ComidaDTO>(`${this.apiUrl}/comidas/${id}`, comida);

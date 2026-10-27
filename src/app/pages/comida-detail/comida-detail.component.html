@@ -24,14 +24,17 @@
           </span>
         </div>
 
-        <!-- Columna Derecha: Información del Plato (Subcomponente fraccionado) -->
-        <app-comida-info-detalle [comida]="comida"></app-comida-info-detalle>
+        <!-- Columna Derecha: Información del Plato y Adicionales (Subcomponente fraccionado) -->
+        <app-comida-info-detalle
+          [comida]="comida"
+          [adicionales]="adicionalesDisponibles"
+        ></app-comida-info-detalle>
 
       </div>
     } @else {
       <div class="no-encontrado">
         <h2>Plato no encontrado</h2>
-        <p>No se encontró ninguna comida con el ID especificado en la base de datos quemada.</p>
+        <p>No se encontró ninguna comida con el ID especificado en la base de datos.</p>
         <a [routerLink]="['/comidas']" class="btn-volver-tabla-detalle">Volver al Inventario</a>
       </div>
     }

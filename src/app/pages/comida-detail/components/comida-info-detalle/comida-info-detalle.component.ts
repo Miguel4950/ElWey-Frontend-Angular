@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ComidaDTO } from '../../../../dtos/comida.dto';
+import { AdicionalDTO } from '../../../../dtos/adicional.dto';
 import { AdicionalCantidadDTO, CrearPedidoDTO, PedidoDTO } from '../../../../dtos/pedido.dto';
 import { ItemCarritoDTO } from '../../../../dtos/carrito.dto';
 import { PedidoService } from '../../../../service/pedido.service';
@@ -22,8 +23,9 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
   private carritoService = inject(CarritoService);
   private subscription?: Subscription;
 
-  // Signal Input
+  // Signal Inputs independientes (ComidaDTO y AdicionalDTO[])
   comida = input<ComidaDTO>();
+  adicionales = input<AdicionalDTO[]>([]);
 
   cantidadProducto: number = 1;
   adicionalesSeleccionados: AdicionalCantidadDTO[] = [];
@@ -39,9 +41,10 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
   get subtotalAcumulado(): number {
     const plato = this.comida();
     if (!plato) return 0;
+    const listaAdicionales = this.adicionales() || [];
     const subtotalPlato = (plato.precio || 0) * this.cantidadProducto;
     const subtotalAdicsPorcion = this.adicionalesSeleccionados.reduce((sum, item) => {
-      const adicObj = plato.adicionales?.find((a) => a.id === item.adicionalId);
+      const adicObj = listaAdicionales.find((a) => a.id === item.adicionalId);
       const precio = adicObj?.precio || 0;
       return sum + precio * item.cantidad;
     }, 0);
@@ -72,10 +75,11 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
   agregarAlCarrito(c: ComidaDTO): void {
     if (!c.id) return;
 
+    const listaAdicionales = this.adicionales() || [];
     const subtotalComida = (c.precio || 0) * this.cantidadProducto;
 
     const adicsMapeados = this.adicionalesSeleccionados.map((item) => {
-      const adicObj = c.adicionales?.find((a) => a.id === item.adicionalId);
+      const adicObj = listaAdicionales.find((a) => a.id === item.adicionalId);
       const nombre = adicObj?.nombre || `Adicional #${item.adicionalId}`;
       const precio = adicObj?.precio || 0;
       return {
@@ -115,8 +119,6 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
     this.errorMessage = '';
     this.pedidoCreado = null;
 
-    // Para pedidos directos al backend, si el backend aplica los adicionales por ítem o en total,
-    // multiplicamos la cantidad del adicional por la cantidad de platos para que no se cobre solo una vez
     const adicionalesTotales: AdicionalCantidadDTO[] = this.adicionalesSeleccionados.map((item) => ({
       adicionalId: item.adicionalId,
       cantidad: item.cantidad * this.cantidadProducto,
