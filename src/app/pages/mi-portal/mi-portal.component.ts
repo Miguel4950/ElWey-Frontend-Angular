@@ -148,7 +148,7 @@ export class MiPortalComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.clienteService.updateCliente(this.cliente.id, clienteActualizado).subscribe({
         next: (confirmado) => {
-          this.clienteService.setClienteActual(confirmado);
+          this.clienteService.setClienteActual({ ...confirmado, rol: 'CLIENTE' });
           this.cliente = confirmado;
           this.mensajeActualizado = true;
           this.mensajeBienvenido = false;

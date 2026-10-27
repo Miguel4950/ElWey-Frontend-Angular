@@ -2,6 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ClienteDTO } from '../../../../dtos/cliente.dto';
+import { UsuarioDTO } from '../../../../dtos/usuario.dto';
 
 /**
  * Subcomponente visual para la columna de resumen de orden y confirmación del carrito.
@@ -19,7 +20,7 @@ export class CarritoResumenComponent {
   cantidadAdicionales = input<number>(0);
   subtotalAdicionales = input<number>(0);
   total = input<number>(0);
-  clienteActual = input<ClienteDTO | null>(null);
+  clienteActual = input<UsuarioDTO | ClienteDTO | null>(null);
   cargando = input<boolean>(false);
 
   confirmar = output<void>();

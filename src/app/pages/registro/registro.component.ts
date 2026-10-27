@@ -63,7 +63,7 @@ export class RegistroComponent implements OnDestroy {
 
     this.subscription = this.clienteService.addCliente(nuevoCliente).subscribe({
       next: (clienteRegistrado) => {
-        this.clienteService.setClienteActual(clienteRegistrado);
+        this.clienteService.setClienteActual({ ...clienteRegistrado, rol: 'CLIENTE' });
         this.router.navigate(['/cliente/portal'], { queryParams: { bienvenido: 'true' } });
       },
       error: (err) => {

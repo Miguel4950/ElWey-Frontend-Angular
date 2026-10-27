@@ -5,6 +5,7 @@ import { DomiciliarioDTO } from '../../../../dtos/domiciliario.dto';
 /**
  * Componente hijo: Formulario Reactivo para la creación y edición de Domiciliarios.
  * Emplea Angular 19 signals input() y output() junto al ciclo de vida ngOnInit().
+ * Solicita contraseña al crear el domiciliario y no permite editarla al actualizar.
  */
 @Component({
   selector: 'app-domiciliario-form',
@@ -36,6 +37,11 @@ export class DomiciliarioFormComponent implements OnInit {
       Validators.minLength(10),
       Validators.maxLength(15),
     ]),
+    contrasena: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(100),
+    ]),
     disponible: new FormControl<boolean>(true, [Validators.required]),
   });
 
@@ -50,8 +56,18 @@ export class DomiciliarioFormComponent implements OnInit {
         cedula: dom.cedula,
         nombre: dom.nombre,
         celular: dom.celular,
+        contrasena: '',
         disponible: dom.disponible,
       });
+      // Al actualizar no se edita la contraseña
+      this.domiciliarioForm.get('contrasena')?.clearValidators();
+      this.domiciliarioForm.get('contrasena')?.updateValueAndValidity();
+    } else {
+      // Al crear un nuevo domiciliario la contraseña es obligatoria
+      this.domiciliarioForm
+        .get('contrasena')
+        ?.setValidators([Validators.required, Validators.minLength(4), Validators.maxLength(100)]);
+      this.domiciliarioForm.get('contrasena')?.updateValueAndValidity();
     }
   }
 
@@ -67,6 +83,7 @@ export class DomiciliarioFormComponent implements OnInit {
       cedula: val.cedula!.trim(),
       nombre: val.nombre!.trim(),
       celular: val.celular!.trim(),
+      contrasena: !this.domiciliarioEditar() && val.contrasena ? val.contrasena.trim() : undefined,
       disponible: val.disponible ?? true,
     };
 

@@ -5,14 +5,14 @@ import { AdicionalDTO } from '../dtos/adicional.dto';
 
 /**
  * Servicio para la gestión integral de Adicionales (extras, salsas y guarniciones).
- * Conecta con el controlador REST AdicionalController de Spring Boot en el puerto 8080.
+ * Conecta con el controlador REST AdicionalController de Spring Boot en el puerto 8080 (sin /api).
  */
 @Injectable({
   providedIn: 'root',
 })
 export class AdicionalService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/adicionales';
+  private apiUrl = 'http://localhost:8080/adicionales';
 
   /**
    * Obtiene la lista completa de todos los adicionales registrados.

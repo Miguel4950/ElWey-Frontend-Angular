@@ -3,7 +3,7 @@
 <main class="login-main">
   <div class="login-card">
 
-    <!-- Selector de las 3 Pestañas de Rol (Sprint 10) -->
+    <!-- Selector de las 4 Pestañas de Rol -->
     <div class="selector-roles-login">
       <button
         type="button"
@@ -23,6 +23,14 @@
       </button>
       <button
         type="button"
+        (click)="seleccionarRol('domiciliario')"
+        class="tab-rol-btn"
+        [class.tab-rol-activa]="rolSeleccionado === 'domiciliario'"
+      >
+        Domiciliario
+      </button>
+      <button
+        type="button"
         (click)="seleccionarRol('admin')"
         class="tab-rol-btn"
         [class.tab-rol-activa]="rolSeleccionado === 'admin'"
@@ -38,6 +46,8 @@
           Portal de Clientes · Pedidos y Seguimiento
         } @else if (rolSeleccionado === 'operador') {
           Cocina y Despachos · Gestión de Comandas
+        } @else if (rolSeleccionado === 'domiciliario') {
+          Reparto y Entregas · Domiciliarios de El Wey
         } @else {
           Administración General · Control Total de El Wey
         }
@@ -47,6 +57,8 @@
           Iniciar Sesión
         } @else if (rolSeleccionado === 'operador') {
           Acceso Operador
+        } @else if (rolSeleccionado === 'domiciliario') {
+          Acceso Domiciliario
         } @else {
           Acceso Administrador
         }
@@ -54,6 +66,8 @@
       <p class="login-desc">
         @if (rolSeleccionado === 'cliente') {
           Ingresa tu correo registrado y contraseña para acceder a tu portal.
+        } @else if (rolSeleccionado === 'domiciliario') {
+          Ingresa tu número de cédula o celular registrado y tu contraseña.
         } @else {
           Ingresa tu usuario asignado o correo oficial y tu contraseña.
         }
@@ -91,22 +105,42 @@
         </div>
       }
 
-      <!-- Campo 1: Identificador (Correo para Cliente / Usuario o Correo para Operador o Admin) -->
+      <!-- Campo 1: Identificador -->
       <div class="form-grupo">
         <label for="email" class="form-label">
-          {{ rolSeleccionado === 'cliente' ? 'Correo Electrónico' : 'Nombre de Usuario o Correo' }}
+          @if (rolSeleccionado === 'cliente') {
+            Correo Electrónico
+          } @else if (rolSeleccionado === 'domiciliario') {
+            Número de Cédula o Celular
+          } @else {
+            Nombre de Usuario o Correo
+          }
         </label>
         <input
           type="text"
           id="email"
           formControlName="email"
           autocomplete="off"
-          [placeholder]="rolSeleccionado === 'cliente' ? 'nombre@ejemplo.com' : (rolSeleccionado === 'operador' ? 'Ej: chef_camilo o operador@elwey.com' : 'Ej: admin_elwey o admin@elwey.com')"
+          [placeholder]="
+            rolSeleccionado === 'cliente'
+              ? 'nombre@ejemplo.com'
+              : rolSeleccionado === 'operador'
+              ? 'Ej: chef_camilo'
+              : rolSeleccionado === 'domiciliario'
+              ? 'Ej: 1010203040 o +57 311 222 3333'
+              : 'Ej: admin_elwey'
+          "
           class="form-input"
         />
         @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
           <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
-            {{ rolSeleccionado === 'cliente' ? 'Ingresa un correo electrónico válido' : 'El usuario es obligatorio (mínimo 3 caracteres)' }}
+            {{
+              rolSeleccionado === 'cliente'
+                ? 'Ingresa un correo electrónico válido'
+                : rolSeleccionado === 'domiciliario'
+                ? 'Ingresa tu cédula o celular (mínimo 3 caracteres)'
+                : 'El usuario es obligatorio (mínimo 3 caracteres)'
+            }}
           </small>
         }
       </div>
@@ -156,9 +190,9 @@
             <span class="etiqueta-user-demo">Lionel Messi:</span>
             lionel.messi&#64;email.com / <span class="badge-clave">messi10</span>
           </div>
-          <div (click)="cargarCredencial('cristiano.ronaldo@email.com', 'cr7siuu')" class="item-credencial-click" title="Clic para rellenar">
+          <div (click)="cargarCredencial('cristiano.ronaldo@email.com', 'cr7cr7')" class="item-credencial-click" title="Clic para rellenar">
             <span class="etiqueta-user-demo">Cristiano Ronaldo:</span>
-            cristiano.ronaldo&#64;email.com / <span class="badge-clave">cr7siuu</span>
+            cristiano.ronaldo&#64;email.com / <span class="badge-clave">cr7cr7</span>
           </div>
         </div>
       } @else if (rolSeleccionado === 'operador') {
@@ -171,9 +205,20 @@
             <span class="etiqueta-user-demo" style="color: #38bdf8;">Paola Despachos:</span>
             paola_despachos / <span class="badge-clave">despacho123</span>
           </div>
-          <div (click)="cargarCredencial('operador@elwey.com', 'operador123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #38bdf8;">Operador General:</span>
-            operador&#64;elwey.com / <span class="badge-clave">operador123</span>
+        </div>
+      } @else if (rolSeleccionado === 'domiciliario') {
+        <div class="lista-credenciales">
+          <div (click)="cargarCredencial('1010203040', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #4ade80;">Carlos Gómez:</span>
+            1010203040 / <span class="badge-clave">domi123</span>
+          </div>
+          <div (click)="cargarCredencial('1020304050', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #4ade80;">Andrés Parra:</span>
+            1020304050 / <span class="badge-clave">domi123</span>
+          </div>
+          <div (click)="cargarCredencial('1030405060', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
+            <span class="etiqueta-user-demo" style="color: #4ade80;">Mateo Quintana:</span>
+            1030405060 / <span class="badge-clave">domi123</span>
           </div>
         </div>
       } @else {
@@ -181,14 +226,6 @@
           <div (click)="cargarCredencial('admin_elwey', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
             <span class="etiqueta-user-demo" style="color: #fbbf24;">Admin Principal:</span>
             admin_elwey / <span class="badge-clave">admin123</span>
-          </div>
-          <div (click)="cargarCredencial('gerencia_elwey', 'gerente2026')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #fbbf24;">Gerencia:</span>
-            gerencia_elwey / <span class="badge-clave">gerente2026</span>
-          </div>
-          <div (click)="cargarCredencial('admin@elwey.com', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #fbbf24;">Admin Correo:</span>
-            admin&#64;elwey.com / <span class="badge-clave">admin123</span>
           </div>
         </div>
       }

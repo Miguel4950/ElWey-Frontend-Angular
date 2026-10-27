@@ -76,6 +76,30 @@
       }
     </div>
 
+    <!-- Contraseña (solo al registrar nuevo domiciliario) -->
+    @if (!domiciliarioEditar()) {
+      <div class="grupo-campo">
+        <label for="contrasena" class="etiqueta-campo">CONTRASEÑA (MÍNIMO 4 CARACTERES)</label>
+        <input
+          type="password"
+          id="contrasena"
+          formControlName="contrasena"
+          placeholder="••••••••"
+          class="input-texto"
+        />
+        @if (domiciliarioForm.get('contrasena')?.touched && domiciliarioForm.get('contrasena')?.invalid) {
+          <div class="contenedor-error">
+            @if (domiciliarioForm.get('contrasena')?.errors?.['required']) {
+              <small class="texto-error">La contraseña es obligatoria para registrar un domiciliario.</small>
+            }
+            @if (domiciliarioForm.get('contrasena')?.errors?.['minlength']) {
+              <small class="texto-error">La contraseña debe tener al menos 4 caracteres.</small>
+            }
+          </div>
+        }
+      </div>
+    }
+
     <!-- Disponibilidad -->
     <div class="grupo-campo">
       <label for="disponible" class="etiqueta-campo">ESTADO DE DISPONIBILIDAD</label>

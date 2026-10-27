@@ -52,29 +52,31 @@
       }
     </div>
 
-    <!-- Campo Contraseña -->
-    <div class="grupo-campo">
-      <label for="contrasena" class="etiqueta-campo">
-        CONTRASEÑA {{ operadorEditar() ? '(OPCIONAL SI NO DESEA CAMBIARLA)' : '(MÍNIMO 4 CARACTERES)' }}
-      </label>
-      <input
-        type="password"
-        id="contrasena"
-        formControlName="contrasena"
-        [placeholder]="operadorEditar() ? 'Dejar en blanco para mantener la contraseña actual' : '••••••••'"
-        class="input-texto"
-      />
-      @if (operadorForm.get('contrasena')?.touched && operadorForm.get('contrasena')?.invalid) {
-        <div class="contenedor-error">
-          @if (operadorForm.get('contrasena')?.errors?.['required']) {
-            <small class="texto-error">La contraseña es obligatoria para nuevos operadores.</small>
-          }
-          @if (operadorForm.get('contrasena')?.errors?.['minlength']) {
-            <small class="texto-error">La contraseña debe tener al menos 4 caracteres.</small>
-          }
-        </div>
-      }
-    </div>
+    <!-- Campo Contraseña (solo al registrar nuevo operador) -->
+    @if (!operadorEditar()) {
+      <div class="grupo-campo">
+        <label for="contrasena" class="etiqueta-campo">
+          CONTRASEÑA (MÍNIMO 4 CARACTERES)
+        </label>
+        <input
+          type="password"
+          id="contrasena"
+          formControlName="contrasena"
+          placeholder="••••••••"
+          class="input-texto"
+        />
+        @if (operadorForm.get('contrasena')?.touched && operadorForm.get('contrasena')?.invalid) {
+          <div class="contenedor-error">
+            @if (operadorForm.get('contrasena')?.errors?.['required']) {
+              <small class="texto-error">La contraseña es obligatoria para nuevos operadores.</small>
+            }
+            @if (operadorForm.get('contrasena')?.errors?.['minlength']) {
+              <small class="texto-error">La contraseña debe tener al menos 4 caracteres.</small>
+            }
+          </div>
+        }
+      </div>
+    }
 
     <!-- Acciones del Formulario -->
     <div class="acciones-form">

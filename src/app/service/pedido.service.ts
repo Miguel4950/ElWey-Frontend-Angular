@@ -5,7 +5,7 @@ import { ActualizarEstadoPedidoDTO, CrearPedidoDTO, ItemPedidoDTO, PedidoDTO } f
 
 /**
  * Servicio para la gestión integral de pedidos, comanda y ciclo de estados.
- * Conecta con el controlador REST PedidoController de Spring Boot en el puerto 8080.
+ * Conecta con el controlador REST PedidoController de Spring Boot en el puerto 8080 (sin /api).
  * Demuestra encadenamiento reactivo con mergeMap para consultas secundarias sin anidar subscribe.
  */
 @Injectable({
@@ -13,7 +13,7 @@ import { ActualizarEstadoPedidoDTO, CrearPedidoDTO, ItemPedidoDTO, PedidoDTO } f
 })
 export class PedidoService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/pedidos';
+  private apiUrl = 'http://localhost:8080/pedidos';
 
   /**
    * Consulta la lista completa de pedidos en el restaurante.
@@ -79,6 +79,6 @@ export class PedidoService {
    * Elimina un pedido por su identificador ID.
    */
   eliminarPedido(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 }

@@ -24,6 +24,10 @@ export class NavbarComponent {
     return this.clienteService.esOperador();
   }
 
+  get esDomiciliario(): boolean {
+    return this.clienteService.esDomiciliario();
+  }
+
   get esAdmin(): boolean {
     return this.clienteService.esAdmin();
   }

@@ -14,7 +14,7 @@
         <a [routerLink]="['/admin/operadores']">Operadores</a>
         <a [routerLink]="['/admin/domiciliarios']">Domiciliarios</a>
         <a [routerLink]="['/pedidos']">Pedidos</a>
-      } @else if (esOperador) {
+      } @else if (esOperador || esDomiciliario) {
         <a [routerLink]="['/']">Inicio</a>
         <a [routerLink]="['/comidas/tarjetas']">Menú</a>
         <a [routerLink]="['/admin/domiciliarios']">Domiciliarios</a>
@@ -46,11 +46,13 @@
       </a>
       <a [routerLink]="['/comidas/tarjetas']" class="btn-pedido-nav">Haz Tu Pedido</a>
       @if (clienteActual) {
-        <a [routerLink]="[esOperador ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav enlace-usuario-logueado" title="Ir al Portal">
+        <a [routerLink]="[(esOperador || esDomiciliario) ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav enlace-usuario-logueado" title="Ir al Portal">
           @if (esAdmin) {
             <span class="badge-rol-nav badge-admin">Admin</span>
           } @else if (esOperador) {
             <span class="badge-rol-nav badge-cocina">Cocina</span>
+          } @else if (esDomiciliario) {
+            <span class="badge-rol-nav badge-cocina">Domiciliario</span>
           }
           <span class="nombre-usuario-nav">{{ clienteActual.nombre }}</span>
         </a>

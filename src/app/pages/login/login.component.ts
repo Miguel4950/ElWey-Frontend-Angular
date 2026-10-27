@@ -9,9 +9,10 @@ import { ClienteService } from '../../service/cliente.service';
 import { LoginDTO } from '../../dtos/login.dto';
 
 /**
- * Componente de inicio de sesión con soporte explícito para 3 roles:
+ * Componente de inicio de sesión con soporte explícito para 4 roles:
  * - Cliente (acceso a portal y pedidos personales)
  * - Operador (acceso directo a cocina y portal de despachos)
+ * - Domiciliario (acceso de repartidores por cédula o celular)
  * - Administrador (acceso completo a la gestión y CRUDs)
  */
 @Component({
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   // Rol activo seleccionado en las pestañas
-  rolSeleccionado: 'cliente' | 'operador' | 'admin' = 'cliente';
+  rolSeleccionado: 'cliente' | 'operador' | 'domiciliario' | 'admin' = 'cliente';
 
   errorMessage: string = '';
   logoutMessage: boolean = false;
@@ -55,7 +56,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
       if (params['rol']) {
         const rolParam = params['rol'].toLowerCase();
-        if (rolParam === 'operador' || rolParam === 'admin' || rolParam === 'cliente') {
+        if (
+          rolParam === 'operador' ||
+          rolParam === 'domiciliario' ||
+          rolParam === 'admin' ||
+          rolParam === 'cliente'
+        ) {
           this.seleccionarRol(rolParam);
         }
       }
@@ -69,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   /**
    * Cambia la pestaña de rol y ajusta dinámicamente las validaciones del formulario.
    */
-  seleccionarRol(rol: 'cliente' | 'operador' | 'admin'): void {
+  seleccionarRol(rol: 'cliente' | 'operador' | 'domiciliario' | 'admin'): void {
     this.rolSeleccionado = rol;
     this.errorMessage = '';
     const emailControl = this.loginForm.get('email');
@@ -77,7 +83,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (rol === 'cliente') {
       emailControl?.setValidators([Validators.required, Validators.email]);
     } else {
-      // Para Operador o Admin se permite nombre de usuario o correo
+      // Para Operador, Domiciliario o Admin se permite usuario, cédula, celular o correo
       emailControl?.setValidators([Validators.required, Validators.minLength(3)]);
     }
     emailControl?.updateValueAndValidity();
@@ -86,10 +92,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.errorMessage =
-        this.rolSeleccionado === 'cliente'
-          ? 'Por favor ingresa un correo y contraseña válidos.'
-          : 'Por favor ingresa tu usuario o correo y tu contraseña.';
+      if (this.rolSeleccionado === 'cliente') {
+        this.errorMessage = 'Por favor ingresa un correo y contraseña válidos.';
+      } else if (this.rolSeleccionado === 'domiciliario') {
+        this.errorMessage = 'Por favor ingresa tu cédula o celular y tu contraseña.';
+      } else {
+        this.errorMessage = 'Por favor ingresa tu usuario o correo y tu contraseña.';
+      }
       return;
     }
 
@@ -106,7 +115,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.errorMessage = '';
 
           // Redirección inteligente según el rol autenticado
-          if (this.rolSeleccionado === 'operador' || usuario.rol === 'OPERADOR') {
+          if (
+            this.rolSeleccionado === 'operador' ||
+            usuario.rol === 'OPERADOR' ||
+            this.rolSeleccionado === 'domiciliario' ||
+            usuario.rol === 'DOMICILIARIO'
+          ) {
             this.router.navigate(['/pedidos']);
           } else if (this.rolSeleccionado === 'admin' || usuario.rol === 'ADMIN') {
             this.router.navigate(['/comidas/tabla']);
