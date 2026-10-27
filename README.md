@@ -79,6 +79,7 @@ src/
 | | `/comidas/new` | `ComidaFormComponent` | Registro de nuevo plato en la carta. |
 | | `/comidas/editar/:id` | `ComidaFormComponent` | Edición de plato existente. |
 | | `/comidas/:id` | `ComidaDetailComponent` | Ficha técnica de detalle de la comida. |
+| **Administración** | `/admin/categorias-adicionales` | `CategoriasAdicionalesPageComponent` | Asignación de adicionales a categorías. |
 | **Clientes** | `/login` | `LoginComponent` | Inicio de sesión con credenciales de prueba. |
 | | `/registro` | `RegistroComponent` | Registro de cliente nuevo (Create). |
 | | `/cliente/portal` | `MiPortalComponent` | Portal personal para consulta y edición de datos (Read / Update). |

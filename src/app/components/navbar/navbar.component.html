@@ -11,6 +11,7 @@
         <a [routerLink]="['/']">Inicio</a>
         <a [routerLink]="['/comidas/tabla']">Comidas</a>
         <a [routerLink]="['/admin/adicionales']">Adicionales</a>
+        <a [routerLink]="['/admin/categorias-adicionales']">Categorías de adicionales</a>
         <a [routerLink]="['/admin/operadores']">Operadores</a>
         <a [routerLink]="['/admin/domiciliarios']">Domiciliarios</a>
         <a [routerLink]="['/pedidos']">Pedidos</a>
@@ -32,19 +33,21 @@
 
     <!-- Botones de acción a la derecha -->
     <div class="acciones-nav">
-      <a [routerLink]="['/carrito']" class="btn-carrito-nav" title="Ver carrito de compras">
-        <!-- Icono vectorial SVG nativo para el carrito -->
-        <svg class="icono-carrito-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="8" cy="21" r="1"></circle>
-          <circle cx="19" cy="21" r="1"></circle>
-          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
-        </svg>
-        <span class="texto-carrito-nav">Carrito</span>
-        @if (cantidadCarrito > 0) {
-          <span class="badge-carrito">{{ cantidadCarrito }}</span>
-        }
-      </a>
-      <a [routerLink]="['/comidas/tarjetas']" class="btn-pedido-nav">Haz Tu Pedido</a>
+      @if (!esAdmin) {
+        <a [routerLink]="['/carrito']" class="btn-carrito-nav" title="Ver carrito de compras">
+          <!-- Icono vectorial SVG nativo para el carrito -->
+          <svg class="icono-carrito-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="21" r="1"></circle>
+            <circle cx="19" cy="21" r="1"></circle>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+          </svg>
+          <span class="texto-carrito-nav">Carrito</span>
+          @if (cantidadCarrito > 0) {
+            <span class="badge-carrito">{{ cantidadCarrito }}</span>
+          }
+        </a>
+        <a [routerLink]="['/comidas/tarjetas']" class="btn-pedido-nav">Haz Tu Pedido</a>
+      }
       @if (clienteActual) {
         <a [routerLink]="[(esOperador || esDomiciliario) ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav enlace-usuario-logueado" title="Ir al Portal">
           @if (esAdmin) {

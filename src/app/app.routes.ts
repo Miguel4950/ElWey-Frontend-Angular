@@ -10,6 +10,7 @@ import { PedidosPageComponent } from './pages/pedidos-page/pedidos-page.componen
 import { PedidoDetailComponent } from './pages/pedido-detail/pedido-detail.component';
 import { CarritoPageComponent } from './pages/carrito-page/carrito-page.component';
 import { AdicionalesPageComponent } from './pages/adicionales-page/adicionales-page.component';
+import { CategoriasAdicionalesPageComponent } from './pages/categorias-adicionales-page/categorias-adicionales-page.component';
 import { OperadoresPageComponent } from './pages/operadores-page/operadores-page.component';
 import { DomiciliariosPageComponent } from './pages/domiciliarios-page/domiciliarios-page.component';
 
@@ -54,6 +55,10 @@ export const routes: Routes = [
   {
     path: 'admin/adicionales',
     component: AdicionalesPageComponent,
+  },
+  {
+    path: 'admin/categorias-adicionales',
+    component: CategoriasAdicionalesPageComponent,
   },
   {
     path: 'adicionales',

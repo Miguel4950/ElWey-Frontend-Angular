@@ -12,7 +12,8 @@ import { AdicionalDTO } from '../dtos/adicional.dto';
 })
 export class AdicionalService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/adicionales';
+  private apiBaseUrl = 'http://localhost:8080';
+  private apiUrl = `${this.apiBaseUrl}/adicionales`;
 
   /**
    * Obtiene la lista completa de todos los adicionales registrados.
@@ -48,6 +49,19 @@ export class AdicionalService {
    */
   updateAdicional(id: number, adicional: AdicionalDTO): Observable<AdicionalDTO> {
     return this.http.put<AdicionalDTO>(`${this.apiUrl}/${id}`, adicional);
+  }
+
+  /**
+   * Guarda en una sola operación los adicionales seleccionados para una categoría.
+   */
+  guardarAdicionalesPorCategoria(
+    categoriaId: number,
+    adicionales: { id: number; seleccionado: boolean }[]
+  ): Observable<void> {
+    return this.http.post<void>(`${this.apiBaseUrl}/categoria/adicionales`, {
+      categoriaId,
+      adicionales,
+    });
   }
 
   /**

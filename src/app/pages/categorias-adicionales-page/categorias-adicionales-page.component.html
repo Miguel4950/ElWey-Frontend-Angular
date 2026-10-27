@@ -1,0 +1,94 @@
+<app-navbar></app-navbar>
+
+<main class="main-categorias-adicionales">
+  <section class="contenedor-categorias-adicionales">
+    <header class="encabezado-pagina">
+      <span class="subtitulo-seccion">Administración del menú</span>
+      <h1>Adicionales por categoría</h1>
+      <p>Selecciona una categoría y marca los adicionales que estarán disponibles para ella.</p>
+    </header>
+
+    @if (mensajeExito) {
+      <div class="alerta-exito" role="status">{{ mensajeExito }}</div>
+    }
+
+    @if (errorMessage) {
+      <div class="alerta-error" role="alert">{{ errorMessage }}</div>
+    }
+
+    <section class="panel-asignacion" aria-labelledby="titulo-asignacion">
+      <div class="selector-categoria">
+        <label for="categoria">Categoría</label>
+        <select
+          id="categoria"
+          [value]="categoriaSeleccionadaId ?? ''"
+          [disabled]="cargando || guardando || categorias.length === 0"
+          (change)="cambiarCategoria($event)"
+        >
+          <option value="">Selecciona una categoría</option>
+          @for (categoria of categorias; track categoria.id) {
+            <option [value]="categoria.id">{{ categoria.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="encabezado-lista">
+        <div>
+          <h2 id="titulo-asignacion">
+            {{ categoriaSeleccionada ? 'Adicionales disponibles' : 'Selecciona una categoría' }}
+          </h2>
+          @if (categoriaSeleccionada) {
+            <p>Marca los adicionales que pertenecen a {{ categoriaSeleccionada.nombre }}.</p>
+          }
+        </div>
+        @if (categoriaSeleccionada) {
+          <span class="contador-seleccion">
+            {{ adicionalesSeleccionados.size }} seleccionados
+          </span>
+        }
+      </div>
+
+      @if (cargando) {
+        <p class="estado-lista">Cargando categorías y adicionales...</p>
+      } @else if (categorias.length === 0) {
+        <p class="estado-lista">No hay categorías registradas.</p>
+      } @else if (!categoriaSeleccionada) {
+        <p class="estado-lista">Selecciona una categoría para ver sus adicionales.</p>
+      } @else if (adicionales.length === 0) {
+        <p class="estado-lista">No hay adicionales registrados para asignar.</p>
+      } @else {
+        <div class="lista-adicionales">
+          @for (adicional of adicionales; track adicional.id) {
+            <label class="fila-adicional" [class.fila-seleccionada]="estaSeleccionado(adicional.id)">
+              <input
+                type="checkbox"
+                [checked]="estaSeleccionado(adicional.id)"
+                [disabled]="guardando"
+                (change)="cambiarSeleccion(adicional.id, $event)"
+              />
+              <span class="nombre-adicional">{{ adicional.nombre }}</span>
+              <span class="precio-adicional">${{ adicional.precio | number:'1.0-0' }}</span>
+              @if (adicional.categoriaId && adicional.categoriaId !== categoriaSeleccionadaId) {
+                <span class="categoria-actual">Actualmente: {{ adicional.categoriaNombre ?? 'otra categoría' }}</span>
+              }
+            </label>
+          }
+        </div>
+      }
+
+      <footer class="acciones-asignacion">
+        <button
+          type="button"
+          class="btn-guardar"
+          [disabled]="!categoriaSeleccionada || cargando || guardando || adicionales.length === 0"
+          (click)="guardarAsignaciones()"
+        >
+          {{ guardando ? 'Guardando...' : 'Guardar asignaciones' }}
+        </button>
+      </footer>
+    </section>
+  </section>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

@@ -7,6 +7,6 @@ export interface AdicionalDTO {
   nombre: string;
   precio: number;
   activo?: boolean;
-  categoriaId?: number;
+  categoriaId?: number | null;
   categoriaNombre?: string;
 }
