@@ -18,15 +18,13 @@
             </div>
             <span
               class="badge-estado-portal"
-              [class.badge-preparacion]="ped.estado === 'En preparación' || ped.estado === 'Cocinando'"
-              [class.badge-camino]="ped.estado === 'En camino' || ped.estado === 'Enviado'"
-              [class.badge-recibido]="ped.estado === 'Recibido' || ped.estado === 'Pendiente'"
+              [class.badge-preparacion]="ped.estado === 'Cocinando' || ped.estado === 'En preparación'"
+              [class.badge-camino]="ped.estado === 'Enviado' || ped.estado === 'Enviando' || ped.estado === 'En camino'"
             >
               <span
                 class="status-dot"
-                [class.dot-ambar]="ped.estado === 'En preparación' || ped.estado === 'Cocinando'"
-                [class.dot-azul]="ped.estado === 'En camino' || ped.estado === 'Enviado'"
-                [class.dot-amarillo]="ped.estado === 'Recibido' || ped.estado === 'Pendiente'"
+                [class.dot-ambar]="ped.estado === 'Cocinando' || ped.estado === 'En preparación'"
+                [class.dot-azul]="ped.estado === 'Enviado' || ped.estado === 'Enviando' || ped.estado === 'En camino'"
               ></span>
               {{ ped.estado }}
             </span>

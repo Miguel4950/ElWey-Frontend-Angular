@@ -49,14 +49,14 @@
           <td class="celda-estado">
             <span
               class="badge-estado"
-              [class.badge-preparacion]="pedido.estado === 'En preparación' || pedido.estado === 'Cocinando'"
-              [class.badge-camino]="pedido.estado === 'En camino' || pedido.estado === 'Enviado'"
+              [class.badge-preparacion]="pedido.estado === 'Cocinando' || pedido.estado === 'En preparación'"
+              [class.badge-camino]="pedido.estado === 'Enviado' || pedido.estado === 'Enviando' || pedido.estado === 'En camino'"
               [class.badge-entregado]="pedido.estado === 'Entregado'"
             >
               <span
                 class="status-dot"
-                [class.dot-ambar]="pedido.estado === 'En preparación' || pedido.estado === 'Cocinando'"
-                [class.dot-azul]="pedido.estado === 'En camino' || pedido.estado === 'Enviado'"
+                [class.dot-ambar]="pedido.estado === 'Cocinando' || pedido.estado === 'En preparación'"
+                [class.dot-azul]="pedido.estado === 'Enviado' || pedido.estado === 'Enviando' || pedido.estado === 'En camino'"
                 [class.dot-verde]="pedido.estado === 'Entregado'"
               ></span>
               {{ pedido.estado }}
@@ -75,20 +75,8 @@
           <td class="celda-acciones">
             <div class="grupo-acciones-completo">
               @if (puedeGestionar) {
-                <!-- Estado: Recibido o Pendiente -> Pasar a En preparación / Cocinando -->
-                @if (pedido.estado === 'Recibido' || pedido.estado === 'Pendiente') {
-                  <button
-                    type="button"
-                    (click)="pasarAEnPreparacion(pedido.id)"
-                    class="btn-accion btn-preparar"
-                    title="Pasar a cocina"
-                  >
-                    Iniciar Preparación
-                  </button>
-                }
-
-                <!-- Estado: En preparación / Cocinando -> Asignar Domiciliario y Enviar -->
-                @if (pedido.estado === 'En preparación' || pedido.estado === 'Cocinando') {
+                <!-- Estado 1: Cocinando -> Asignar Domiciliario y Enviar -->
+                @if (pedido.estado === 'Cocinando' || pedido.estado === 'En preparación') {
                   <div class="caja-despacho">
                     <select
                       [ngModel]="domiciliarioSeleccionadoPorPedido[pedido.id]"
@@ -111,8 +99,8 @@
                   </div>
                 }
 
-                <!-- Estado: En camino / Enviado -> Marcar como Entregado -->
-                @if (pedido.estado === 'En camino' || pedido.estado === 'Enviado') {
+                <!-- Estado 2: Enviado -> Marcar como Entregado -->
+                @if (pedido.estado === 'Enviado' || pedido.estado === 'Enviando' || pedido.estado === 'En camino') {
                   <button
                     type="button"
                     (click)="marcarEntregado(pedido.id)"

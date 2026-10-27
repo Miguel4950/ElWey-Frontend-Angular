@@ -6,17 +6,7 @@
     </div>
 
     <div class="acciones-panel-gestion">
-      @if (pedido().estado === 'Recibido' || pedido().estado === 'Pendiente') {
-        <button
-          type="button"
-          (click)="onPreparar()"
-          class="btn-gestion btn-preparar-grande"
-        >
-          Iniciar Preparación (Cocinar)
-        </button>
-      }
-
-      @if (pedido().estado === 'En preparación' || pedido().estado === 'Cocinando') {
+      @if (pedido().estado === 'Cocinando' || pedido().estado === 'En preparación') {
         <div class="bloque-asignacion">
           <select
             [(ngModel)]="domiciliarioSeleccionadoId"
@@ -37,7 +27,7 @@
         </div>
       }
 
-      @if (pedido().estado === 'En camino' || pedido().estado === 'Enviado') {
+      @if (pedido().estado === 'Enviado' || pedido().estado === 'Enviando' || pedido().estado === 'En camino') {
         <div class="bloque-asignacion">
           <span class="badge-dom-detalle">
             En ruta con: <strong>{{ pedido().domiciliarioNombre || 'Repartidor asignado' }}</strong>

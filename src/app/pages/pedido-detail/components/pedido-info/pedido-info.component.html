@@ -10,14 +10,14 @@
     <div>
       <span
         class="badge-estado-grande"
-        [class.badge-preparacion]="pedido().estado === 'En preparación' || pedido().estado === 'Cocinando'"
-        [class.badge-camino]="pedido().estado === 'En camino' || pedido().estado === 'Enviado'"
+        [class.badge-preparacion]="pedido().estado === 'Cocinando' || pedido().estado === 'En preparación'"
+        [class.badge-camino]="pedido().estado === 'Enviado' || pedido().estado === 'Enviando' || pedido().estado === 'En camino'"
         [class.badge-entregado]="pedido().estado === 'Entregado'"
       >
         <span
           class="status-dot"
-          [class.dot-ambar]="pedido().estado === 'En preparación' || pedido().estado === 'Cocinando'"
-          [class.dot-azul]="pedido().estado === 'En camino' || pedido().estado === 'Enviado'"
+          [class.dot-ambar]="pedido().estado === 'Cocinando' || pedido().estado === 'En preparación'"
+          [class.dot-azul]="pedido().estado === 'Enviado' || pedido().estado === 'Enviando' || pedido().estado === 'En camino'"
           [class.dot-verde]="pedido().estado === 'Entregado'"
         ></span>
         {{ pedido().estado }}

@@ -6,27 +6,23 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
 import { CategoriaDTO } from '../../dtos/categoria.dto';
-import { AdicionalDTO } from '../../dtos/adicional.dto';
 import { ComidaService } from '../../service/comida.service';
-import { AdicionalService } from '../../service/adicional.service';
 
 /**
  * Componente de formulario reactivo para la creación y edición de platos de comida.
- * Realiza 2 consultas independientes en modo edición: una para ComidaDTO y otra para AdicionalDTO[].
+ * Los adicionales pertenecen a la categoría seleccionada y no se eligen manualmente por plato.
  */
 @Component({
   selector: 'app-comida-form',
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    DecimalPipe,
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
@@ -36,7 +32,6 @@ import { AdicionalService } from '../../service/adicional.service';
 })
 export class ComidaFormComponent implements OnInit, OnDestroy {
   private comidaService = inject(ComidaService);
-  private adicionalService = inject(AdicionalService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private subscription: Subscription = new Subscription();
@@ -44,8 +39,6 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
   comidaId: number | undefined = undefined;
   isEdit = false;
   categorias: CategoriaDTO[] = [];
-  adicionalesList: AdicionalDTO[] = [];
-  adicionalesSeleccionados: number[] = [];
 
   comidaForm = new FormGroup({
     nombre: new FormControl('', [
@@ -89,25 +82,12 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
       })
     );
 
-    // 2. Cargar todos los adicionales disponibles en el restaurante
-    this.subscription.add(
-      this.adicionalService.getAdicionales().subscribe({
-        next: (adics) => {
-          this.adicionalesList = adics;
-        },
-        error: (err) => {
-          console.error('Error al cargar adicionales:', err);
-        },
-      })
-    );
-
-    // 3. Verificar si estamos en modo edición por el parámetro de ruta :id
+    // 2. Verificar si estamos en modo edición por el parámetro de ruta :id
     this.comidaId = Number(this.activatedRoute.snapshot.params['id']);
 
     if (this.comidaId) {
       this.isEdit = true;
 
-      // Consulta 1: Obtener datos planos del plato (ComidaDTO)
       this.subscription.add(
         this.comidaService.getComidaById(this.comidaId).subscribe({
           next: (comida) => {
@@ -128,47 +108,11 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
           },
         })
       );
-
-      // Consulta 2: Obtener adicionales disponibles de este plato (AdicionalDTO[])
-      this.subscription.add(
-        this.adicionalService.getAdicionalesByComidaId(this.comidaId).subscribe({
-          next: (adicionales) => {
-            if (adicionales && adicionales.length > 0) {
-              this.adicionalesSeleccionados = adicionales
-                .map((a) => a.id)
-                .filter((id): id is number => id !== undefined);
-            }
-          },
-          error: (err) => {
-            console.error('Error al obtener adicionales de la comida:', err);
-          },
-        })
-      );
     }
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  /**
-   * Alterna la selección de un adicional por su ID en el arreglo de IDs seleccionados.
-   */
-  toggleAdicional(adicId?: number): void {
-    if (!adicId) return;
-    const index = this.adicionalesSeleccionados.indexOf(adicId);
-    if (index > -1) {
-      this.adicionalesSeleccionados.splice(index, 1);
-    } else {
-      this.adicionalesSeleccionados.push(adicId);
-    }
-  }
-
-  /**
-   * Retorna true si el adicional con el ID suministrado se encuentra seleccionado.
-   */
-  isAdicionalSelected(adicId?: number): boolean {
-    return !!adicId && this.adicionalesSeleccionados.includes(adicId);
   }
 
   handleSubmit(): void {

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -16,7 +16,7 @@ import { ClienteService } from '../../service/cliente.service';
  * Página principal para la gestión, despacho y monitoreo de pedidos de restaurante "El Wey".
  * Soporta filtrado por estado, por plato y por rango de fechas (fechaDesde - fechaHasta).
  * Configura por defecto la pestaña de pedidos según el rol del usuario:
- * - Operador: ve pedidos activos por defecto.
+ * - Operador / Domiciliario: ve pedidos activos por defecto.
  * - Administrador: ve todos los pedidos (activos y entregados).
  */
 @Component({
@@ -36,6 +36,7 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   private pedidoService = inject(PedidoService);
   private domiciliarioService = inject(DomiciliarioService);
   private clienteService = inject(ClienteService);
+  private router = inject(Router);
   private subscription: Subscription = new Subscription();
 
   pedidosArray: PedidoDTO[] = [];
@@ -64,11 +65,21 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
     return this.clienteService.esOperador();
   }
 
+  get esDomiciliario(): boolean {
+    return this.clienteService.esDomiciliario();
+  }
+
   ngOnInit(): void {
+    // Los clientes no tienen permiso para ver el portal general de pedidos
+    if (!this.esAdmin && !this.esOperador && !this.esDomiciliario) {
+      this.router.navigate(['/cliente/portal']);
+      return;
+    }
+
     // Configurar pestaña por defecto según rol
     if (this.esAdmin) {
       this.pestanaEstado = 'TODOS';
-    } else if (this.esOperador) {
+    } else if (this.esOperador || this.esDomiciliario) {
       this.pestanaEstado = 'ACTIVOS';
     } else {
       this.pestanaEstado = 'TODOS';
@@ -207,7 +218,7 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
     this.fechaHasta = '';
     if (this.esAdmin) {
       this.pestanaEstado = 'TODOS';
-    } else if (this.esOperador) {
+    } else if (this.esOperador || this.esDomiciliario) {
       this.pestanaEstado = 'ACTIVOS';
     } else {
       this.pestanaEstado = 'TODOS';
@@ -215,7 +226,7 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   }
 
   get hayFiltrosActivos(): boolean {
-    const estadoPorDefecto = (this.esOperador && !this.esAdmin) ? 'ACTIVOS' : 'TODOS';
+    const estadoPorDefecto = ((this.esOperador || this.esDomiciliario) && !this.esAdmin) ? 'ACTIVOS' : 'TODOS';
     return (
       this.filtroComida.trim() !== '' ||
       this.fechaDesde !== '' ||

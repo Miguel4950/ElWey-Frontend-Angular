@@ -8,7 +8,7 @@ import { ClienteService } from '../../../../service/cliente.service';
 
 /**
  * Componente hijo para la visualización y gestión del ciclo de vida de pedidos en comanda.
- * Permite a los operadores y administradores cambiar estados y asignar domiciliarios.
+ * Maneja los 3 estados del pedido: 'Cocinando', 'Enviado' y 'Entregado'.
  */
 @Component({
   selector: 'app-pedidos-table',
@@ -31,11 +31,15 @@ export class PedidosTableComponent {
     domiciliarioId?: number;
   }>();
 
-  // Diccionario para almacenar el domiciliario seleccionado por cada pedido en preparación
+  // Diccionario para almacenar el domiciliario seleccionado por cada pedido cocinando
   domiciliarioSeleccionadoPorPedido: { [pedidoId: number]: number } = {};
 
   get puedeGestionar(): boolean {
-    return this.clienteService.esOperador() || this.clienteService.esAdmin();
+    return (
+      this.clienteService.esOperador() ||
+      this.clienteService.esAdmin() ||
+      this.clienteService.esDomiciliario()
+    );
   }
 
   verDetallePedido(pedido: PedidoDTO): void {
@@ -47,17 +51,7 @@ export class PedidosTableComponent {
   }
 
   /**
-   * Cambia el estado del pedido a 'En preparación' (Cocina).
-   */
-  pasarAEnPreparacion(pedidoId: number): void {
-    this.onActualizarEstado.emit({
-      pedidoId,
-      nuevoEstado: 'En preparación',
-    });
-  }
-
-  /**
-   * Asigna un domiciliario y despacha el pedido marcándolo como 'En camino'.
+   * Asigna un domiciliario y despacha el pedido marcándolo como 'Enviado'.
    */
   enviarPedido(pedidoId: number): void {
     const domId = this.domiciliarioSeleccionadoPorPedido[pedidoId];
@@ -68,7 +62,7 @@ export class PedidosTableComponent {
 
     this.onActualizarEstado.emit({
       pedidoId,
-      nuevoEstado: 'En camino',
+      nuevoEstado: 'Enviado',
       domiciliarioId: domId,
     });
   }

@@ -5,7 +5,7 @@ import { DomiciliarioDTO } from '../../../../dtos/domiciliario.dto';
 
 /**
  * Subcomponente para el panel de control y despacho operativo del pedido.
- * Utilizado por Cocina (Operador) y Administrador.
+ * Maneja la transición de 'Cocinando' -> 'Enviado' -> 'Entregado'.
  */
 @Component({
   selector: 'app-pedido-gestion',
@@ -19,15 +19,10 @@ export class PedidoGestionComponent {
   puedeGestionar = input<boolean>(false);
   domiciliariosDisponibles = input<DomiciliarioDTO[]>([]);
 
-  iniciarPreparacion = output<void>();
   despachar = output<number>();
   confirmarEntrega = output<void>();
 
   domiciliarioSeleccionadoId?: number;
-
-  onPreparar(): void {
-    this.iniciarPreparacion.emit();
-  }
 
   onDespachar(): void {
     if (!this.domiciliarioSeleccionadoId) {

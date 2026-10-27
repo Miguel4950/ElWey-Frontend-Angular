@@ -14,8 +14,8 @@ import { filter, Subscription } from 'rxjs';
 /**
  * Página principal del catálogo de comidas.
  * Soporta dos modos visuales divididos en subcomponentes:
- * - ComidaTableComponent: Vista de inventario tabular para administración.
- * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú para clientes.
+ * - ComidaTableComponent: Vista de inventario tabular.
+ * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú.
  */
 @Component({
   selector: 'app-comida-table-page',
@@ -75,7 +75,7 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
   cargarComidas(): void {
     this.errorMessage = '';
     this.subscription.add(
-      this.comidaService.getComidas().subscribe({
+      this.comidaService.getComidasActivas().subscribe({
         next: (comidas: ComidaDTO[]) => {
           this.comidaArray = comidas;
         },

@@ -8,7 +8,11 @@
       <div class="breadcrumb-detalle-nav">
         <a [routerLink]="['/']" class="breadcrumb-item-link">Inicio</a>
         <span>/</span>
-        <a [routerLink]="['/pedidos']" class="breadcrumb-item-link">Portal de Pedidos</a>
+        @if (puedeGestionar) {
+          <a [routerLink]="['/pedidos']" class="breadcrumb-item-link">Portal de Pedidos</a>
+        } @else {
+          <a [routerLink]="['/cliente/portal']" class="breadcrumb-item-link">Mi Portal</a>
+        }
         <span>/</span>
         <span class="breadcrumb-item-activo">Pedido #{{ pedido.id }}</span>
       </div>
@@ -32,7 +36,6 @@
           [pedido]="pedido"
           [puedeGestionar]="puedeGestionar"
           [domiciliariosDisponibles]="domiciliariosDisponibles"
-          (iniciarPreparacion)="pasarAEnPreparacion()"
           (despachar)="enviarPedido($event)"
           (confirmarEntrega)="marcarEntregado()"
         ></app-pedido-gestion>
@@ -45,16 +48,26 @@
 
       <!-- Botón Volver -->
       <div class="pie-acciones-detalle">
-        <a [routerLink]="['/pedidos']" class="btn-volver-pedidos">
-          &larr; Volver al Portal de Pedidos
-        </a>
+        @if (puedeGestionar) {
+          <a [routerLink]="['/pedidos']" class="btn-volver-pedidos">
+            &larr; Volver al Portal de Pedidos
+          </a>
+        } @else {
+          <a [routerLink]="['/cliente/portal']" class="btn-volver-pedidos">
+            &larr; Volver a Mi Portal
+          </a>
+        }
       </div>
 
     } @else {
       <div class="no-encontrado">
         <h2>Pedido no encontrado</h2>
         <p>No se encontró ningún pedido con el ID especificado en la base de datos.</p>
-        <a [routerLink]="['/pedidos']" class="btn-volver-pedidos">Volver al Portal de Pedidos</a>
+        @if (puedeGestionar) {
+          <a [routerLink]="['/pedidos']" class="btn-volver-pedidos">Volver al Portal de Pedidos</a>
+        } @else {
+          <a [routerLink]="['/cliente/portal']" class="btn-volver-pedidos">Volver a Mi Portal</a>
+        }
       </div>
     }
 

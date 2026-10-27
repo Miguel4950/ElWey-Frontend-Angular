@@ -47,7 +47,11 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
   get puedeGestionar(): boolean {
-    return this.clienteService.esOperador() || this.clienteService.esAdmin();
+    return (
+      this.clienteService.esOperador() ||
+      this.clienteService.esAdmin() ||
+      this.clienteService.esDomiciliario()
+    );
   }
 
   ngOnInit(): void {
@@ -91,14 +95,9 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  pasarAEnPreparacion(): void {
-    if (!this.pedidoId) return;
-    this.actualizarEstado('En preparación');
-  }
-
   enviarPedido(domiciliarioId: number): void {
     if (!this.pedidoId) return;
-    this.actualizarEstado('En camino', domiciliarioId);
+    this.actualizarEstado('Enviado', domiciliarioId);
   }
 
   marcarEntregado(): void {
