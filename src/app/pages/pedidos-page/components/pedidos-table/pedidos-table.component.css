@@ -1,6 +1,6 @@
 .tabla-contenedor-responsive {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
   border-radius: 6px;
   border: 1px solid #282420;
   background-color: #1a1716;
@@ -10,17 +10,17 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 13.5px;
+  font-size: 12.5px;
 }
 
 .tabla-elwey thead th {
   background-color: #241f1e;
   color: #fcf2e9;
-  padding: 16px 18px;
-  font-size: 11px;
+  padding: 11px 8px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: 0.5px;
   border-bottom: 2px solid #ab1d19;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .tabla-elwey tbody td {
-  padding: 16px 18px;
+  padding: 10px 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   color: #fcf2e9;
   vertical-align: middle;
@@ -41,37 +41,41 @@
 
 .celda-id {
   color: #f59e0b;
-  font-size: 14px;
+  font-size: 12.5px;
   white-space: nowrap;
+  width: 42px;
 }
 
 .nombre-cliente {
   display: block;
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: #fcf2e9;
+  line-height: 1.2;
 }
 
 .correo-cliente {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   color: #8c8278;
   margin-top: 2px;
+  word-break: break-all;
 }
 
 .celda-fecha {
-  font-size: 11.5px;
+  font-size: 11px;
   color: #a89f95;
-  white-space: nowrap;
+  width: 78px;
+  line-height: 1.25;
 }
 
 .celda-platos {
-  font-size: 12.5px;
+  font-size: 12px;
 }
 
 .linea-item-resumen {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   margin-bottom: 3px;
 }
 
@@ -80,23 +84,25 @@
   color: #d8ccc3;
   font-size: 10px;
   font-weight: 700;
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 10px;
+  flex-shrink: 0;
 }
 
 .col-centrada {
   text-align: center;
-  white-space: nowrap;
+  width: 64px;
+  line-height: 1.15;
 }
 
 .badge-conteo {
   display: inline-block;
-  min-width: 26px;
-  padding: 3px 8px;
+  min-width: 22px;
+  padding: 2px 6px;
   border-radius: 12px;
   background-color: rgba(252, 242, 233, 0.08);
   color: #fcf2e9;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   text-align: center;
 }
@@ -109,26 +115,25 @@
 .col-estado,
 .celda-estado {
   text-align: center;
-  white-space: nowrap;
 }
 
 .badge-estado {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11px;
+  gap: 5px;
+  font-size: 10px;
   font-weight: 700;
-  padding: 5px 12px;
+  padding: 4px 9px;
   border-radius: 20px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   text-align: center;
   white-space: nowrap;
 }
 
 .status-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   display: inline-block;
   flex-shrink: 0;
@@ -168,43 +173,37 @@
 }
 
 .info-domiciliario-tabla {
-  margin-top: 6px;
-  font-size: 11px;
+  margin-top: 4px;
+  font-size: 10px;
   color: #93c5fd;
   font-weight: 600;
-  letter-spacing: 0.3px;
+  line-height: 1.2;
 }
 
 .celda-precio {
   font-family: 'Abril Fatface', Georgia, serif;
-  font-size: 15px;
+  font-size: 14px;
   color: #4caf50;
   font-weight: 700;
   white-space: nowrap;
 }
 
-.col-acciones {
-  min-width: 320px;
-  white-space: nowrap;
-}
-
+.col-acciones,
 .celda-acciones {
   white-space: nowrap;
-  min-width: 320px;
 }
 
 .grupo-acciones-completo {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: nowrap;
-  white-space: nowrap;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
 .caja-despacho {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   flex-wrap: nowrap;
 }
 
@@ -213,21 +212,21 @@
   color: #fcf2e9;
   border: 1px solid #4a3f3a;
   border-radius: 4px;
-  padding: 0 8px;
-  height: 32px;
+  padding: 0 5px;
+  height: 28px;
   box-sizing: border-box;
-  font-size: 11px;
-  max-width: 140px;
+  font-size: 10.5px;
+  max-width: 112px;
   cursor: pointer;
 }
 
 .btn-accion {
-  height: 32px;
-  padding: 0 14px;
-  font-size: 11px;
+  height: 28px;
+  padding: 0 8px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;

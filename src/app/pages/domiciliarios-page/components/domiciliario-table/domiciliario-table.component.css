@@ -10,7 +10,7 @@
 .tabla-elwey {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: #fcf2e9;
   text-align: left;
 }
@@ -19,16 +19,16 @@
   background-color: #241d1a;
   color: #fbbf24;
   font-family: 'Poppins', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 16px 20px;
+  letter-spacing: 0.08em;
+  padding: 12px 14px;
   border-bottom: 2px solid #3d3430;
 }
 
 .tabla-elwey td {
-  padding: 16px 20px;
+  padding: 12px 14px;
   border-bottom: 1px solid #28211f;
   vertical-align: middle;
 }
@@ -42,17 +42,12 @@
 }
 
 .col-id {
-  width: 70px;
+  width: 60px;
 }
 
 .col-disponibilidad {
-  width: 160px;
+  width: 150px;
   text-align: center;
-}
-
-.col-acciones {
-  width: 300px;
-  text-align: right;
 }
 
 .celda-id {
@@ -68,7 +63,7 @@
 
 .nombre-domiciliario-texto {
   color: #ffffff;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
 }
 
 .link-celular {
@@ -126,35 +121,28 @@
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
 }
 
-.col-acciones {
-  width: 360px;
-  min-width: 340px;
-  text-align: right;
-  white-space: nowrap;
-}
-
+.col-acciones,
 .celda-acciones {
   text-align: right;
   white-space: nowrap;
-  min-width: 340px;
 }
 
 .grupo-acciones {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: nowrap;
   white-space: nowrap;
 }
 
 .btn-accion {
-  height: 32px;
-  padding: 0 12px;
+  height: 30px;
+  padding: 0 10px;
   border-radius: 4px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
   border: 1px solid transparent;
