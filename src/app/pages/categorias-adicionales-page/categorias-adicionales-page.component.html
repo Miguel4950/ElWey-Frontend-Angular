@@ -68,9 +68,6 @@
               />
               <span class="nombre-adicional">{{ adicional.nombre }}</span>
               <span class="precio-adicional">${{ adicional.precio | number:'1.0-0' }}</span>
-              @if (adicional.categoriaId && adicional.categoriaId !== categoriaSeleccionadaId) {
-                <span class="categoria-actual">Actualmente: {{ adicional.categoriaNombre ?? 'otra categoría' }}</span>
-              }
             </label>
           }
         </div>
