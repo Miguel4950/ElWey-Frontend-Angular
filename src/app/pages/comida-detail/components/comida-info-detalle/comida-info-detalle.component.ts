@@ -1,15 +1,16 @@
-import { Component, OnDestroy, inject, input } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ComidaDTO } from '../../../../dtos/comida.dto';
 import { AdicionalDTO } from '../../../../dtos/adicional.dto';
-import { AdicionalCantidadDTO, CrearPedidoDTO } from '../../../../dtos/crear-pedido.dto';
+import { AdicionalCantidadDTO, CrearPedidoDTO, ItemCrearPedidoDTO } from '../../../../dtos/crear-pedido.dto';
 import { PedidoDTO } from '../../../../dtos/pedido.dto';
 import { ItemCarritoDTO } from '../../../../dtos/carrito.dto';
 import { PedidoService } from '../../../../service/pedido.service';
 import { ClienteService } from '../../../../service/cliente.service';
 import { CarritoService } from '../../../../service/carrito.service';
+import { ComidaService } from '../../../../service/comida.service';
 import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicionales.component';
 
 @Component({
@@ -18,10 +19,14 @@ import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicion
   templateUrl: './comida-info-detalle.component.html',
   styleUrl: './comida-info-detalle.component.css',
 })
-export class ComidaInfoDetalleComponent implements OnDestroy {
+export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
   private pedidoService = inject(PedidoService);
   private clienteService = inject(ClienteService);
   private carritoService = inject(CarritoService);
+  private comidaService = inject(ComidaService);
+  private subsBebidas?: Subscription;
+  bebidasDisponibles: ComidaDTO[] = [];
+  bebidaSeleccionada: ComidaDTO | null = null;
   private subscription?: Subscription;
 
   // Signal Inputs independientes (ComidaDTO y AdicionalDTO[])
@@ -38,6 +43,29 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
   agregadoAlCarrito: boolean = false;
   errorMessage: string = '';
 
+  ngOnInit(): void {
+    this.subsBebidas = this.comidaService.getComidasActivas().subscribe({
+      next: (comidas) => {
+        this.bebidasDisponibles = comidas.filter(
+          (c) => (c.categoriaNombre || '').toLowerCase() === 'bebidas'
+        );
+      },
+      error: (err) => console.error('Error al cargar bebidas recomendadas:', err),
+    });
+  }
+
+  toggleBebida(b: ComidaDTO): void {
+    if (this.bebidaSeleccionada?.id === b.id) {
+      this.bebidaSeleccionada = null;
+    } else {
+      this.bebidaSeleccionada = b;
+    }
+  }
+
+  get esBebida(): boolean {
+    return (this.comida()?.categoriaNombre || '').toLowerCase() === 'bebidas';
+  }
+
   get esAdmin(): boolean {
     return this.clienteService.esAdmin();
   }
@@ -52,7 +80,8 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
       const precio = adicObj?.precio || 0;
       return sum + precio * item.cantidad;
     }, 0);
-    return subtotalPlato + subtotalAdicsPorcion * this.cantidadProducto;
+    const subtotalBebida = this.bebidaSeleccionada ? (this.bebidaSeleccionada.precio || 0) : 0;
+    return subtotalPlato + subtotalAdicsPorcion * this.cantidadProducto + subtotalBebida;
   }
 
   get totalAdicionalesCantidad(): number {
@@ -64,6 +93,7 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
+    this.subsBebidas?.unsubscribe();
   }
 
   actualizarCantidadProducto(event: Event): void {
@@ -129,9 +159,27 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
     };
 
     this.carritoService.agregarItem(itemCarrito);
+
+    if (this.bebidaSeleccionada && this.bebidaSeleccionada.id) {
+      const b = this.bebidaSeleccionada;
+      const itemBebida: ItemCarritoDTO = {
+        id: `${b.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        comidaId: b.id!,
+        comidaNombre: b.nombre,
+        comidaPrecio: b.precio,
+        categoriaNombre: b.categoriaNombre,
+        imagenUrl: b.imagen_url,
+        cantidad: 1,
+        adicionales: [],
+        subtotalComida: b.precio || 0,
+        subtotalAdicionales: 0,
+        subtotal: b.precio || 0,
+      };
+      this.carritoService.agregarItem(itemBebida);
+    }
     this.agregadoAlCarrito = true;
     this.pedidoCreado = null;
-    this.errorMessage = '';
+    this.errorMessage = "";
   }
 
   ordenarPedido(c: ComidaDTO): void {
@@ -146,18 +194,28 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
     this.errorMessage = '';
     this.pedidoCreado = null;
 
+    const itemsPedido: ItemCrearPedidoDTO[] = [
+      {
+        comidaId: c.id,
+        cantidad: this.cantidadProducto,
+        adicionales: this.adicionalesSeleccionados.map((item) => ({
+          adicionalId: item.adicionalId,
+          cantidad: item.cantidad,
+        })),
+      },
+    ];
+
+    if (this.bebidaSeleccionada && this.bebidaSeleccionada.id) {
+      itemsPedido.push({
+        comidaId: this.bebidaSeleccionada.id!,
+        cantidad: 1,
+        adicionales: [],
+      });
+    }
+
     const nuevoPedido: CrearPedidoDTO = {
       clienteId,
-      items: [
-        {
-          comidaId: c.id,
-          cantidad: this.cantidadProducto,
-          adicionales: this.adicionalesSeleccionados.map((item) => ({
-            adicionalId: item.adicionalId,
-            cantidad: item.cantidad,
-          })),
-        },
-      ],
+      items: itemsPedido,
     };
 
     this.subscription = this.pedidoService.crearPedido(nuevoPedido).subscribe({

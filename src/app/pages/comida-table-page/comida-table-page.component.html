@@ -78,6 +78,10 @@
             [class.pill-activa]="filtroCategoria === 'Burritos'">
             Burritos ({{ contarPorCategoria('Burritos') }})
           </button>
+          <button type="button" (click)="seleccionarCategoria('Bebidas')" class="pill-btn"
+            [class.pill-activa]="filtroCategoria === 'Bebidas'">
+            🥤 Bebidas ({{ contarPorCategoria('Bebidas') }})
+          </button>
         </div>
 
         <div class="caja-buscador">

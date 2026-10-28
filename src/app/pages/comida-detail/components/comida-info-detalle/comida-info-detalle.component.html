@@ -39,12 +39,58 @@
         [adicionales]="adicionales()"
         [categoriaNombre]="c.categoriaNombre"
         (adicionalesChange)="onAdicionalesChange($event)"
-      ></app-comida-adicionales>
+            ></app-comida-adicionales>
+
+      @if (!esBebida && bebidasDisponibles.length > 0) {
+        <div class="caja-maridaje-bebidas">
+          <div class="cabecera-maridaje">
+            <span class="icono-maridaje">🥤</span>
+            <div>
+              <strong class="titulo-maridaje">¿Deseas acompañar tu plato con una bebida fría?</strong>
+              <p class="subtitulo-maridaje">Selecciona tu bebida favorita para sumarla a tu pedido en 1 clic</p>
+            </div>
+          </div>
+
+          <div class="grid-bebidas-recomendadas">
+            @for (bebida of bebidasDisponibles; track bebida.id) {
+              <button
+                type="button"
+                class="tarjeta-bebida-opcion"
+                [class.bebida-seleccionada]="bebidaSeleccionada?.id === bebida.id"
+                (click)="toggleBebida(bebida)"
+              >
+                <img [src]="bebida.imagen_url" [alt]="bebida.nombre" class="img-bebida-opcion" />
+                <div class="info-bebida-opcion">
+                  <span class="nombre-bebida-opcion">{{ bebida.nombre }}</span>
+                  <span class="precio-bebida-opcion">+${{ bebida.precio | number:'1.0-0' }}</span>
+                </div>
+                <div class="check-bebida-opcion">
+                  @if (bebidaSeleccionada?.id === bebida.id) {
+                    <i class="bi bi-check-circle-fill"></i>
+                  } @else {
+                    <i class="bi bi-plus-circle"></i>
+                  }
+                </div>
+              </button>
+            }
+          </div>
+
+          @if (bebidaSeleccionada) {
+            <div class="alerta-bebida-seleccionada">
+              <div>
+                <i class="bi bi-check2-circle me-1"></i>
+                Bebida seleccionada: <strong>{{ bebidaSeleccionada.nombre }}</strong> (+${{ bebidaSeleccionada.precio | number:'1.0-0' }})
+              </div>
+              <button type="button" class="btn-quitar-bebida" (click)="toggleBebida(bebidaSeleccionada)">Quitar</button>
+            </div>
+          }
+        </div>
+      }
 
       <!-- Resumen acumulado estimado en tiempo real -->
       <div class="caja-subtotal-estimado">
         <div class="fila-resumen-subtotal">
-          <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}):</span>
+          <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}@if (bebidaSeleccionada) { + 1x {{ bebidaSeleccionada.nombre }}}):</span>
           <strong class="precio-subtotal-estimado">${{ subtotalAcumulado | number:'1.0-0' }}</strong>
         </div>
       </div>
@@ -97,6 +143,13 @@
                         Incluye <strong>{{ totalAdicionalesCantidad }}</strong> adicional(es) seleccionado(s).
                       </div>
                     }
+
+                    @if (bebidaSeleccionada) {
+                      <div class="modal-detalle-bebida">
+                        <i class="bi bi-cup-straw text-warning"></i>
+                        <span>Incluye bebida: <strong>{{ bebidaSeleccionada.nombre }}</strong> (+${{ bebidaSeleccionada.precio | number:'1.0-0' }})</span>
+                      </div>
+                    }
                   </div>
 
                   <div class="modal-texto-sugerencia">
@@ -124,9 +177,11 @@
 
       @if (agregadoAlCarrito) {
         <div class="alerta-carrito-exito">
-          <strong>¡Plato y adicionales agregados al carrito!</strong>
+          <strong>¡Plato y acompañamiento agregados al carrito!</strong>
           <p class="detalle-exito-pedido">
-            {{ cantidadProducto }}x <strong>{{ c.nombre }}</strong> agregado(s) con éxito.
+            {{ cantidadProducto }}x <strong>{{ c.nombre }}</strong>
+            @if (bebidaSeleccionada) { + 1x <strong>{{ bebidaSeleccionada.nombre }}</strong> }
+            agregado(s) con éxito a tu orden.
           </p>
           <div class="acciones-alerta-carrito">
             <a [routerLink]="['/carrito']" class="btn-ir-carrito-alerta">Ver Mi Carrito &rarr;</a>
