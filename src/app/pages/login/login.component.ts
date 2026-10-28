@@ -124,7 +124,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.rolSeleccionado === 'domiciliario' ||
             usuario.rol === 'DOMICILIARIO'
           ) {
-            this.router.navigate(['/comidas/tabla']);
+            this.router.navigate(['/domiciliario/pedidos']);
           } else if (this.rolSeleccionado === 'admin' || usuario.rol === 'ADMIN') {
             this.router.navigate(['/comidas/tabla']);
           } else {

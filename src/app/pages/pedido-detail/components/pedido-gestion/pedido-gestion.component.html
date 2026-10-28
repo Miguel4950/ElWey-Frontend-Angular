@@ -27,6 +27,30 @@
         </div>
       }
 
+      @if (pedido().estado === 'Listo') {
+        <div class="bloque-asignacion">
+          <span class="badge-dom-detalle" style="background-color: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.35);">
+            🍲 Plato Listo en Barra @if (pedido().domiciliarioNombre) { (Pre-asignado a {{ pedido().domiciliarioNombre }}) }
+          </span>
+          <select
+            [(ngModel)]="domiciliarioSeleccionadoId"
+            class="select-dom-detalle"
+          >
+            <option [ngValue]="undefined" disabled selected>-- Seleccionar Domiciliario --</option>
+            @for (dom of domiciliariosDisponibles(); track dom.id) {
+              <option [ngValue]="dom.id">{{ dom.nombre }} ({{ dom.celular }})</option>
+            }
+          </select>
+          <button
+            type="button"
+            (click)="onDespachar()"
+            class="btn-gestion btn-camino-grande"
+          >
+            🚀 Despachar a Ruta
+          </button>
+        </div>
+      }
+
       @if (pedido().estado === 'Enviado' || pedido().estado === 'Enviando' || pedido().estado === 'En camino') {
         <div class="bloque-asignacion">
           <span class="badge-dom-detalle">

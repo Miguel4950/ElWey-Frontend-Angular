@@ -38,6 +38,13 @@ export class PedidoService {
   }
 
   /**
+   * Consulta los pedidos asignados a un domiciliario específico.
+   */
+  getPedidosPorDomiciliario(domiciliarioId: number): Observable<PedidoDTO[]> {
+    return this.http.get<PedidoDTO[]>(`${this.apiUrl}/domiciliario/${domiciliarioId}`);
+  }
+
+  /**
    * Consulta la lista de ítems detallados de un pedido específico.
    */
   getItemsByPedidoId(id: number): Observable<ItemPedidoDTO[]> {

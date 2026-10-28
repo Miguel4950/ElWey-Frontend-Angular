@@ -13,6 +13,7 @@ import { AdicionalesPageComponent } from './pages/adicionales-page/adicionales-p
 import { CategoriasAdicionalesPageComponent } from './pages/categorias-adicionales-page/categorias-adicionales-page.component';
 import { OperadoresPageComponent } from './pages/operadores-page/operadores-page.component';
 import { DomiciliariosPageComponent } from './pages/domiciliarios-page/domiciliarios-page.component';
+import { DomiciliarioPedidosComponent } from './pages/domiciliario-pedidos/domiciliario-pedidos.component';
 
 /**
  * Definición central de rutas de la aplicación Angular "El Wey".
@@ -99,6 +100,11 @@ export const routes: Routes = [
   {
     path: 'cliente/portal/:id',
     component: MiPortalComponent,
+  },
+  // Portal del Domiciliario (Despachos y Entregas)
+  {
+    path: 'domiciliario/pedidos',
+    component: DomiciliarioPedidosComponent,
   },
   // Gestión y Monitoreo de Pedidos
   {

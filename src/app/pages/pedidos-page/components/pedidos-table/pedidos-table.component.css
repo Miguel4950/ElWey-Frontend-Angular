@@ -290,3 +290,33 @@
   color: #8c8278;
   font-style: italic;
 }
+
+.badge-listo {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.dot-rojo {
+  background-color: #ef4444;
+}
+
+.btn-listo-cocina {
+  background-color: #d97706;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-listo-cocina:hover {
+  background-color: #b45309;
+}
+
+.badge-en-ruta-operador {
+  display: inline-block;
+  font-size: 11px;
+  color: #60a5fa;
+  background-color: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 4px 8px;
+  border-radius: 4px;
+}

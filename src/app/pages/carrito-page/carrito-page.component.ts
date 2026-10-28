@@ -51,7 +51,7 @@ export class CarritoPageComponent implements OnInit, OnDestroy {
   get rutaRetornoPersonal(): string {
     if (this.esAdmin) return '/comidas';
     if (this.esOperador) return '/pedidos';
-    return '/comidas/tabla';
+    return '/domiciliario/pedidos';
   }
 
   ngOnInit(): void {

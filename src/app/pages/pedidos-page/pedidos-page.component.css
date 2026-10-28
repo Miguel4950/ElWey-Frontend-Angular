@@ -276,3 +276,153 @@
   background-color: #c91409;
   color: #ffffff;
 }
+
+/* Panel de Flota de Domiciliarios */
+.card-flota-monitoreo {
+  background-color: #1e1a19;
+  border: 1px solid rgba(252, 242, 233, 0.08);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+
+.cabecera-flota-monitoreo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.subtitulo-flota {
+  display: block;
+  font-size: 11px;
+  color: #ee1a0e;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.titulo-flota {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 20px;
+  color: #fcf2e9;
+  margin: 2px 0 0 0;
+}
+
+.resumen-flota-chips {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.chip-flota {
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.chip-libre {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.chip-total {
+  background-color: #171614;
+  color: #a89f91;
+  border: 1px solid rgba(252, 242, 233, 0.1);
+}
+
+.grid-tarjetas-flota {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.tarjeta-repartidor-carga {
+  background-color: #171614;
+  border: 1px solid rgba(252, 242, 233, 0.08);
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tarjeta-repartidor-carga.carga-libre {
+  border-left: 3px solid #10b981;
+}
+
+.tarjeta-repartidor-carga.carga-moderada {
+  border-left: 3px solid #f59e0b;
+}
+
+.tarjeta-repartidor-carga.carga-saturado {
+  border-left: 3px solid #ef4444;
+}
+
+.repartidor-icono-nombre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar-domi {
+  font-size: 18px;
+}
+
+.nombre-domi-flota {
+  display: block;
+  font-size: 13px;
+  color: #fcf2e9;
+}
+
+.celular-domi-flota {
+  display: block;
+  font-size: 10px;
+  color: #8c827a;
+}
+
+.estado-pedidos-repartidor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(252, 242, 233, 0.05);
+  padding-top: 8px;
+}
+
+.desglose-carga-domi {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+  color: #a89f91;
+}
+
+.item-carga-mini strong {
+  color: #fcf2e9;
+}
+
+.badge-nivel-carga {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.badge-nivel-libre {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.badge-nivel-moderado {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.badge-nivel-saturado {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}

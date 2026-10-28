@@ -35,7 +35,7 @@ export class NavbarComponent {
   get rutaPerfil(): string {
     if (this.esOperador) return '/pedidos';
     if (this.esAdmin) return '/comidas/tabla';
-    if (this.esDomiciliario) return '/comidas/tabla';
+    if (this.esDomiciliario) return '/domiciliario/pedidos';
     return '/cliente/portal';
   }
 

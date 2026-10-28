@@ -52,6 +52,38 @@ export class PedidosTableComponent {
   /**
    * Asigna un domiciliario y despacha el pedido marcándolo como 'Enviado'.
    */
+
+  marcarListo(pedidoId: number): void {
+    const domId = this.domiciliarioSeleccionadoPorPedido[pedidoId];
+    this.onActualizarEstado.emit({
+      pedidoId,
+      nuevoEstado: 'Listo',
+      domiciliarioId: domId,
+    });
+  }
+
+  despacharPedido(pedidoId: number, domIdPreasignado?: number): void {
+    const domId = this.domiciliarioSeleccionadoPorPedido[pedidoId] || domIdPreasignado;
+    if (!domId) {
+      alert('Por favor selecciona un domiciliario para despachar el pedido.');
+      return;
+    }
+    this.onActualizarEstado.emit({
+      pedidoId,
+      nuevoEstado: 'Enviado',
+      domiciliarioId: domId,
+    });
+  }
+
+  getCargaTexto(domId?: number): string {
+    if (!domId) return '';
+    const pedidos = this.pedidosArray() || [];
+    const asignados = pedidos.filter((p) => p.domiciliarioId === domId && p.estado !== 'Entregado').length;
+    if (asignados === 0) return '(0 - Libre)';
+    if (asignados >= 3) return `(${asignados} - Saturado)`;
+    return `(${asignados} activo(s))`;
+  }
+
   enviarPedido(pedidoId: number): void {
     const domId = this.domiciliarioSeleccionadoPorPedido[pedidoId];
     if (!domId) {

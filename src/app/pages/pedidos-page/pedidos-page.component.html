@@ -47,6 +47,59 @@
       </div>
     </div>
 
+
+    <!-- Panel de Monitoreo de Flota y Carga de Domiciliarios -->
+    <div class="card-flota-monitoreo">
+      <div class="cabecera-flota-monitoreo">
+        <div>
+          <span class="subtitulo-flota">Monitoreo de Flota de Despachos</span>
+          <h3 class="titulo-flota">Carga de Trabajo de Repartidores</h3>
+        </div>
+        <div class="resumen-flota-chips">
+          <span class="chip-flota chip-libre">
+            🟢 {{ totalDomiciliariosLibres }} Repartidor(es) Libre(s)
+          </span>
+          <span class="chip-flota chip-total">
+            Total Flota: {{ domiciliariosDisponibles.length }}
+          </span>
+        </div>
+      </div>
+
+      <div class="grid-tarjetas-flota">
+        @for (item of flotaConCarga; track item.domiciliario.id) {
+          <div
+            class="tarjeta-repartidor-carga"
+            [class.carga-libre]="item.estadoCarga === 'LIBRE'"
+            [class.carga-moderada]="item.estadoCarga === 'MODERADA'"
+            [class.carga-saturado]="item.estadoCarga === 'SATURADO'"
+          >
+            <div class="repartidor-icono-nombre">
+              <span class="avatar-domi">🛵</span>
+              <div>
+                <strong class="nombre-domi-flota">{{ item.domiciliario.nombre }}</strong>
+                <span class="celular-domi-flota">{{ item.domiciliario.celular }}</span>
+              </div>
+            </div>
+
+            <div class="estado-pedidos-repartidor">
+              <div class="desglose-carga-domi">
+                <span class="item-carga-mini">En ruta: <strong>{{ item.pedidosEnRuta }}</strong></span>
+                <span class="item-carga-mini">En cola: <strong>{{ item.pedidosEnCola }}</strong></span>
+              </div>
+
+              @if (item.estadoCarga === 'LIBRE') {
+                <span class="badge-nivel-carga badge-nivel-libre">🟢 Libre</span>
+              } @else if (item.estadoCarga === 'MODERADA') {
+                <span class="badge-nivel-carga badge-nivel-moderado">🟡 {{ item.pedidosActivos }} activo(s)</span>
+              } @else {
+                <span class="badge-nivel-carga badge-nivel-saturado">🔴 {{ item.pedidosActivos }} (Saturado)</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
     <!-- Alertas de Éxito y Error -->
     @if (mensajeExito) {
       <div class="alerta-exito-pedidos">

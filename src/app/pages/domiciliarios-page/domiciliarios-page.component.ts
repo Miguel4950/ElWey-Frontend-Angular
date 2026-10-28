@@ -45,7 +45,7 @@ export class DomiciliariosPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (!this.clienteService.esAdmin() && !this.clienteService.esOperador()) {
       if (this.clienteService.esDomiciliario()) {
-        this.router.navigate(['/comidas/tabla']);
+        this.router.navigate(['/domiciliario/pedidos']);
       } else {
         this.router.navigate(['/']);
       }

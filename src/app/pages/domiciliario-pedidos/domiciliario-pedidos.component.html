@@ -1,0 +1,356 @@
+<app-navbar></app-navbar>
+
+<main class="main-domiciliario-portal">
+  <div class="contenedor-domiciliario">
+
+    <!-- Cabecera de Identificación del Domiciliario -->
+    <div class="header-domiciliario">
+      <div>
+        <p class="subtitulo-domiciliario">Portal de Reparto y Logística</p>
+        <h1 class="titulo-domiciliario">Mis Entregas y Envíos</h1>
+        <p class="desc-domiciliario">
+          Gestiona tus despachos asignados, consulta la cola de preparación en cocina y confirma las entregas realizadas.
+        </p>
+      </div>
+
+      <div class="metricas-domiciliario">
+        <div class="tarjeta-metrica-domi metrica-ruta">
+          <span class="icono-metrica">🛵</span>
+          <div>
+            <span class="valor-metrica">{{ pedidosEnRuta.length }}</span>
+            <span class="etiqueta-metrica">En Ruta Ahora</span>
+          </div>
+        </div>
+
+        <div class="tarjeta-metrica-domi metrica-cola">
+          <span class="icono-metrica">🍲</span>
+          <div>
+            <span class="valor-metrica">{{ pedidosEnCola.length }}</span>
+            <span class="etiqueta-metrica">En Cola Cocina</span>
+          </div>
+        </div>
+
+        <div class="tarjeta-metrica-domi metrica-entregados">
+          <span class="icono-metrica">✅</span>
+          <div>
+            <span class="valor-metrica">{{ pedidosEntregados.length }}</span>
+            <span class="etiqueta-metrica">Entregados Hoy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertas de Éxito y Error -->
+    @if (mensajeExito) {
+      <div class="alerta-domi alerta-exito">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>{{ mensajeExito }}</span>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="alerta-domi alerta-error">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Selector de Pestañas / Filtros -->
+    <div class="card-pestanas-domi">
+      <div class="grupo-pestanas">
+        <button
+          type="button"
+          class="btn-pestana-domi"
+          [class.pestana-activa]="pestanaActiva === 'EN_RUTA'"
+          (click)="pestanaActiva = 'EN_RUTA'"
+        >
+          🛵 En Ruta Activa ({{ pedidosEnRuta.length }})
+        </button>
+        <button
+          type="button"
+          class="btn-pestana-domi"
+          [class.pestana-activa]="pestanaActiva === 'EN_COLA'"
+          (click)="pestanaActiva = 'EN_COLA'"
+        >
+          🍲 En Cola / Próximos ({{ pedidosEnCola.length }})
+        </button>
+        <button
+          type="button"
+          class="btn-pestana-domi"
+          [class.pestana-activa]="pestanaActiva === 'ENTREGADOS'"
+          (click)="pestanaActiva = 'ENTREGADOS'"
+        >
+          ✅ Entregados ({{ pedidosEntregados.length }})
+        </button>
+        <button
+          type="button"
+          class="btn-pestana-domi"
+          [class.pestana-activa]="pestanaActiva === 'TODOS'"
+          (click)="pestanaActiva = 'TODOS'"
+        >
+          Todos ({{ pedidosArray.length }})
+        </button>
+      </div>
+
+      <button type="button" class="btn-recargar-domi" (click)="cargarPedidos()" title="Actualizar pedidos">
+        <i class="bi bi-arrow-clockwise"></i> Actualizar
+      </button>
+    </div>
+
+    <!-- SECCIÓN 1: PEDIDOS EN RUTA (PESTAÑA EN_RUTA) -->
+    @if (pestanaActiva === 'EN_RUTA') {
+      <section class="seccion-bloque-pedidos">
+        <h2 class="subtitulo-seccion">
+          <i class="bi bi-geo-alt-fill text-danger me-2"></i> Pedidos en Despacho Activo
+        </h2>
+
+        <div class="grid-pedidos-domi">
+          @for (p of pedidosEnRuta; track p.id) {
+            <article class="card-pedido-entrega borde-ruta">
+              <header class="cabecera-card-pedido">
+                <div>
+                  <span class="badge-estado-domi badge-en-camino">
+                    <span class="dot-pulso-azul"></span> EN RUTA AHORA
+                  </span>
+                  <h3 class="id-pedido-card">Pedido #{{ p.id }}</h3>
+                </div>
+                <div class="precio-card-pedido">
+                  <span class="etiqueta-total-cobro">Total a cobrar:</span>
+                  <strong class="monto-total">${{ p.total | number:'1.0-0' }}</strong>
+                </div>
+              </header>
+
+              <div class="cuerpo-card-pedido">
+                <!-- Información del Cliente y Destino -->
+                <div class="bloque-cliente-domi">
+                  <div class="dato-destinatario">
+                    <i class="bi bi-person-fill icono-dato"></i>
+                    <div>
+                      <strong class="nombre-destinatario">{{ p.clienteNombre }}</strong>
+                      <span class="correo-destinatario">{{ p.clienteCorreo || 'Sin correo registrado' }}</span>
+                    </div>
+                  </div>
+
+                  <div class="dato-destinatario">
+                    <i class="bi bi-geo-alt-fill icono-dato"></i>
+                    <div>
+                      <strong class="direccion-destinatario">{{ p.clienteDireccion || 'Entrega en domicilio del cliente' }}</strong>
+                      <span class="telefono-destinatario">Tel: {{ p.clienteTelefono || 'No suministrado' }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Desglose de Platos en la Maleta -->
+                <div class="bloque-items-domi">
+                  <h4 class="titulo-items-domi">Contenido del Pedido:</h4>
+                  <ul class="lista-items-domi">
+                    @for (item of p.items; track $index) {
+                      <li class="item-linea-domi">
+                        <span><strong>{{ item.cantidad }}x</strong> {{ item.comidaNombre }}</span>
+                        @if (item.cantidadAdicionales && item.cantidadAdicionales > 0) {
+                          <span class="badge-adicionales-domi">+{{ item.cantidadAdicionales }} adic.</span>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+
+              <footer class="pie-card-pedido">
+                <button
+                  type="button"
+                  class="btn-accion-entregar"
+                  (click)="marcarComoEntregado(p.id)"
+                >
+                  <i class="bi bi-check2-circle me-2"></i> Confirmar Entrega Realizada
+                </button>
+              </footer>
+            </article>
+          } @empty {
+            <div class="card-vacia-domi">
+              <span class="icono-vacio">🛵</span>
+              <h3 class="titulo-vacio">No tienes pedidos en ruta activa</h3>
+              <p class="desc-vacio">
+                En este momento no estás transportando pedidos. Revisa la pestaña de <strong>"En Cola / Próximos"</strong> o espera asignación de cocina.
+              </p>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- SECCIÓN 2: PEDIDOS EN COLA / COCINA (PESTAÑA EN_COLA) -->
+    @if (pestanaActiva === 'EN_COLA') {
+      <section class="seccion-bloque-pedidos">
+        <h2 class="subtitulo-seccion">
+          <i class="bi bi-clock-history text-warning me-2"></i> Cola de Pedidos en Preparación (Tus Próximas Salidas)
+        </h2>
+
+        <div class="grid-pedidos-domi">
+          @for (p of pedidosEnCola; track p.id) {
+            <article class="card-pedido-entrega borde-cola">
+              <header class="cabecera-card-pedido">
+                <div>
+                  @if (p.estado === 'Listo') {
+                    <span class="badge-estado-domi badge-listo-barra">
+                      <span class="dot-listo"></span> LISTO EN BARRA (Por Despachar)
+                    </span>
+                  } @else {
+                    <span class="badge-estado-domi badge-cocinando-cola">
+                      <span class="dot-ambar"></span> COCINANDO EN FOGÓN
+                    </span>
+                  }
+                  <h3 class="id-pedido-card">Pedido #{{ p.id }}</h3>
+                </div>
+                <div class="precio-card-pedido">
+                  <span class="etiqueta-total-cobro">Valor orden:</span>
+                  <strong class="monto-total">${{ p.total | number:'1.0-0' }}</strong>
+                </div>
+              </header>
+
+              <div class="cuerpo-card-pedido">
+                <div class="bloque-cliente-domi">
+                  <div class="dato-destinatario">
+                    <i class="bi bi-person-fill icono-dato"></i>
+                    <div>
+                      <strong class="nombre-destinatario">{{ p.clienteNombre }}</strong>
+                      <span class="correo-destinatario">{{ p.clienteCorreo || 'Cliente registrado' }}</span>
+                    </div>
+                  </div>
+
+                  <div class="dato-destinatario">
+                    <i class="bi bi-geo-alt-fill icono-dato"></i>
+                    <div>
+                      <strong class="direccion-destinatario">{{ p.clienteDireccion || 'Dirección de entrega' }}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bloque-items-domi">
+                  <h4 class="titulo-items-domi">Platos en preparación:</h4>
+                  <ul class="lista-items-domi">
+                    @for (item of p.items; track $index) {
+                      <li class="item-linea-domi">
+                        <span><strong>{{ item.cantidad }}x</strong> {{ item.comidaNombre }}</span>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+
+              <footer class="pie-card-pedido-info">
+                <i class="bi bi-info-circle-fill me-2 text-warning"></i>
+                <span>Cocina te entregará este pedido una vez finalizado el empaque.</span>
+              </footer>
+            </article>
+          } @empty {
+            <div class="card-vacia-domi">
+              <span class="icono-vacio">🍲</span>
+              <h3 class="titulo-vacio">No tienes pedidos en cola de cocina</h3>
+              <p class="desc-vacio">No hay pedidos asignados en preparación pendientes para tu turno.</p>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- SECCIÓN 3: PEDIDOS ENTREGADOS (PESTAÑA ENTREGADOS) -->
+    @if (pestanaActiva === 'ENTREGADOS') {
+      <section class="seccion-bloque-pedidos">
+        <h2 class="subtitulo-seccion">
+          <i class="bi bi-check-circle-fill text-success me-2"></i> Historial de Entregas Finalizadas
+        </h2>
+
+        <div class="grid-pedidos-domi">
+          @for (p of pedidosEntregados; track p.id) {
+            <article class="card-pedido-entrega borde-entregado">
+              <header class="cabecera-card-pedido">
+                <div>
+                  <span class="badge-estado-domi badge-entregado-verde">
+                    <span class="dot-verde"></span> ENTREGADO
+                  </span>
+                  <h3 class="id-pedido-card">Pedido #{{ p.id }}</h3>
+                </div>
+                <div class="precio-card-pedido">
+                  <span class="etiqueta-total-cobro">Total pagado:</span>
+                  <strong class="monto-total">${{ p.total | number:'1.0-0' }}</strong>
+                </div>
+              </header>
+
+              <div class="cuerpo-card-pedido">
+                <div class="bloque-cliente-domi">
+                  <div class="dato-destinatario">
+                    <i class="bi bi-person-fill icono-dato"></i>
+                    <div>
+                      <strong class="nombre-destinatario">{{ p.clienteNombre }}</strong>
+                      <span class="correo-destinatario">Entregado a cliente</span>
+                    </div>
+                  </div>
+
+                  <div class="dato-destinatario">
+                    <i class="bi bi-clock-fill icono-dato text-muted"></i>
+                    <div>
+                      <span class="correo-destinatario">Fecha: {{ p.fechaEntrega || p.fechaCreacion }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          } @empty {
+            <div class="card-vacia-domi">
+              <span class="icono-vacio">✅</span>
+              <h3 class="titulo-vacio">Aún no has completado entregas hoy</h3>
+              <p class="desc-vacio">Los pedidos que marques como entregados aparecerán listados aquí.</p>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- SECCIÓN 4: TODOS LOS PEDIDOS ASIGNADOS -->
+    @if (pestanaActiva === 'TODOS') {
+      <section class="seccion-bloque-pedidos">
+        <h2 class="subtitulo-seccion">
+          <i class="bi bi-list-ul me-2"></i> Lista Completa de Tus Pedidos Asignados ({{ pedidosArray.length }})
+        </h2>
+
+        <div class="grid-pedidos-domi">
+          @for (p of pedidosArray; track p.id) {
+            <article class="card-pedido-entrega" [class.borde-ruta]="p.estado === 'Enviado' || p.estado === 'En camino'" [class.borde-entregado]="p.estado === 'Entregado'">
+              <header class="cabecera-card-pedido">
+                <div>
+                  <span class="badge-estado-domi" [class.badge-en-camino]="p.estado === 'Enviado' || p.estado === 'En camino'" [class.badge-listo-barra]="p.estado === 'Listo'" [class.badge-entregado-verde]="p.estado === 'Entregado'" [class.badge-cocinando-cola]="p.estado === 'Cocinando'">
+                    {{ p.estado }}
+                  </span>
+                  <h3 class="id-pedido-card">Pedido #{{ p.id }}</h3>
+                </div>
+                <div class="precio-card-pedido">
+                  <strong class="monto-total">${{ p.total | number:'1.0-0' }}</strong>
+                </div>
+              </header>
+
+              <div class="cuerpo-card-pedido">
+                <div class="bloque-cliente-domi">
+                  <strong class="nombre-destinatario">{{ p.clienteNombre }}</strong>
+                  <span class="correo-destinatario">{{ p.clienteDireccion || 'Dirección registrada' }}</span>
+                </div>
+              </div>
+
+              @if (p.estado === 'Enviado' || p.estado === 'En camino') {
+                <footer class="pie-card-pedido">
+                  <button type="button" class="btn-accion-entregar" (click)="marcarComoEntregado(p.id)">
+                    <i class="bi bi-check2-circle me-2"></i> Confirmar Entrega
+                  </button>
+                </footer>
+              }
+            </article>
+          }
+        </div>
+      </section>
+    }
+
+  </div>
+</main>
+
+<app-calaveras></app-calaveras>
+<app-footer></app-footer>

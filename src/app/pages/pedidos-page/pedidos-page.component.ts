@@ -42,6 +42,44 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   pedidosArray: PedidoDTO[] = [];
   domiciliariosDisponibles: DomiciliarioDTO[] = [];
 
+  /**
+   * Calcula la carga de trabajo en tiempo real de cada domiciliario.
+   */
+  get flotaConCarga() {
+    return this.domiciliariosDisponibles.map((dom) => {
+      const asignados = this.pedidosArray.filter(
+        (p) => p.domiciliarioId === dom.id && p.estado !== 'Entregado'
+      );
+      const enRuta = asignados.filter(
+        (p) => p.estado === 'Enviado' || p.estado === 'En camino' || p.estado === 'Enviando'
+      ).length;
+      const enCola = asignados.filter(
+        (p) => p.estado === 'Cocinando' || p.estado === 'Listo' || p.estado === 'En preparación'
+      ).length;
+      const totalActivos = asignados.length;
+
+      let estadoCarga: 'LIBRE' | 'MODERADA' | 'SATURADO' = 'LIBRE';
+      if (totalActivos >= 3) {
+        estadoCarga = 'SATURADO';
+      } else if (totalActivos >= 1) {
+        estadoCarga = 'MODERADA';
+      }
+
+      return {
+        domiciliario: dom,
+        pedidosActivos: totalActivos,
+        pedidosEnRuta: enRuta,
+        pedidosEnCola: enCola,
+        estadoCarga,
+      };
+    });
+  }
+
+  get totalDomiciliariosLibres(): number {
+    return this.flotaConCarga.filter((f) => f.estadoCarga === 'LIBRE').length;
+  }
+
+
   // Pestaña de estado activa
   pestanaEstado: 'TODOS' | 'ACTIVOS' | 'ENTREGADOS' = 'TODOS';
 
@@ -73,7 +111,7 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
     // Solo Administrador y Operador de Cocina tienen permiso para ver el portal de pedidos
     if (!this.esAdmin && !this.esOperador) {
       if (this.esDomiciliario) {
-        this.router.navigate(['/comidas/tabla']);
+        this.router.navigate(['/domiciliario/pedidos']);
       } else {
         this.router.navigate(['/cliente/portal']);
       }

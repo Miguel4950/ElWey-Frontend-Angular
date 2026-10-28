@@ -50,16 +50,18 @@
             <span
               class="badge-estado"
               [class.badge-preparacion]="pedido.estado === 'Cocinando' || pedido.estado === 'En preparación'"
+              [class.badge-listo]="pedido.estado === 'Listo'"
               [class.badge-camino]="pedido.estado === 'Enviado' || pedido.estado === 'Enviando' || pedido.estado === 'En camino'"
               [class.badge-entregado]="pedido.estado === 'Entregado'"
             >
               <span
                 class="status-dot"
-                [class.dot-ambar]="pedido.estado === 'Cocinando' || pedido.estado === 'En preparación'"
+                [class.dot-rojo]="pedido.estado === 'Cocinando' || pedido.estado === 'En preparación'"
+                [class.dot-ambar]="pedido.estado === 'Listo'"
                 [class.dot-azul]="pedido.estado === 'Enviado' || pedido.estado === 'Enviando' || pedido.estado === 'En camino'"
                 [class.dot-verde]="pedido.estado === 'Entregado'"
               ></span>
-              {{ pedido.estado }}
+              {{ pedido.estado === 'Listo' ? 'Listo en Barra' : pedido.estado }}
             </span>
             @if (pedido.domiciliarioNombre) {
               <div class="info-domiciliario-tabla">
@@ -75,40 +77,67 @@
           <td class="celda-acciones">
             <div class="grupo-acciones-completo">
               @if (puedeGestionar) {
-                <!-- Estado 1: Cocinando -> Asignar Domiciliario y Enviar -->
+                <!-- Estado 1: Cocinando -> Marcar como Listo o Despachar directamente -->
                 @if (pedido.estado === 'Cocinando' || pedido.estado === 'En preparación') {
                   <div class="caja-despacho">
                     <select
-                      [ngModel]="domiciliarioSeleccionadoPorPedido[pedido.id]"
+                      [ngModel]="domiciliarioSeleccionadoPorPedido[pedido.id] || pedido.domiciliarioId"
                       (ngModelChange)="onSelectDomiciliario(pedido.id, $event)"
                       class="select-domiciliario-tabla"
                     >
-                      <option [ngValue]="undefined" disabled selected>-- Domiciliario --</option>
+                      <option [ngValue]="undefined" disabled selected>-- Repartidor --</option>
                       @for (dom of domiciliariosDisponibles(); track dom.id) {
-                        <option [ngValue]="dom.id">{{ dom.nombre }}</option>
+                        <option [ngValue]="dom.id">{{ dom.nombre }} {{ getCargaTexto(dom.id) }}</option>
                       }
                     </select>
                     <button
                       type="button"
-                      (click)="enviarPedido(pedido.id)"
-                      class="btn-accion btn-camino"
-                      title="Asignar y enviar pedido"
+                      (click)="marcarListo(pedido.id)"
+                      class="btn-accion btn-listo-cocina"
+                      title="Marcar plato terminado en cocina"
                     >
-                      Despachar Pedido
+                      🍲 Listo
+                    </button>
+                    <button
+                      type="button"
+                      (click)="despacharPedido(pedido.id, pedido.domiciliarioId)"
+                      class="btn-accion btn-camino"
+                      title="Despachar inmediatamente"
+                    >
+                      Despachar
                     </button>
                   </div>
                 }
 
-                <!-- Estado 2: Enviado -> Marcar como Entregado -->
+                <!-- Estado 2: Listo en Barra -> Despachar Pedido -->
+                @if (pedido.estado === 'Listo') {
+                  <div class="caja-despacho">
+                    <select
+                      [ngModel]="domiciliarioSeleccionadoPorPedido[pedido.id] || pedido.domiciliarioId"
+                      (ngModelChange)="onSelectDomiciliario(pedido.id, $event)"
+                      class="select-domiciliario-tabla"
+                    >
+                      <option [ngValue]="undefined" disabled selected>-- Repartidor --</option>
+                      @for (dom of domiciliariosDisponibles(); track dom.id) {
+                        <option [ngValue]="dom.id">{{ dom.nombre }} {{ getCargaTexto(dom.id) }}</option>
+                      }
+                    </select>
+                    <button
+                      type="button"
+                      (click)="despacharPedido(pedido.id, pedido.domiciliarioId)"
+                      class="btn-accion btn-camino"
+                      title="Despachar pedido listo"
+                    >
+                      🚀 Despachar
+                    </button>
+                  </div>
+                }
+
+                <!-- Estado 3: Enviado / En camino -> En ruta -->
                 @if (pedido.estado === 'Enviado' || pedido.estado === 'Enviando' || pedido.estado === 'En camino') {
-                  <button
-                    type="button"
-                    (click)="marcarEntregado(pedido.id)"
-                    class="btn-accion btn-entregado"
-                    title="Confirmar entrega al cliente"
-                  >
-                    Marcar Entregado
-                  </button>
+                  <span class="badge-en-ruta-operador">
+                    🛵 En ruta con <strong>{{ pedido.domiciliarioNombre || 'Repartidor' }}</strong>
+                  </span>
                 }
               }
 
