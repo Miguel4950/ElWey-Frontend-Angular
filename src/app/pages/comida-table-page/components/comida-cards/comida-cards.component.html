@@ -5,16 +5,18 @@
         <img [src]="item.imagen_url" [alt]="item.nombre" class="img-plato" />
         <span
           class="badge-etiqueta-flotante"
-          [class.etiqueta-verde]="item.etiqueta.includes('Vegano') || item.etiqueta.includes('Vegetariano') || item.etiqueta.includes('Saludable')"
-          [class.etiqueta-dorada]="item.etiqueta.includes('Estrella') || item.etiqueta.includes('Top') || item.etiqueta.includes('Favorito')"
-          [class.etiqueta-roja]="!item.etiqueta.includes('Vegano') && !item.etiqueta.includes('Vegetariano') && !item.etiqueta.includes('Saludable') && !item.etiqueta.includes('Estrella') && !item.etiqueta.includes('Top') && !item.etiqueta.includes('Favorito')"
+          [class.etiqueta-dorada]="item.etiqueta === 'Estrella'"
+          [class.etiqueta-verde]="item.etiqueta === 'Vegetariano'"
+          [class.etiqueta-picante]="item.etiqueta === 'Picante'"
+          [class.etiqueta-compartir]="item.etiqueta === 'Para Compartir'"
+          [class.etiqueta-tradicional]="item.etiqueta === 'Tradicional'"
         >
-          @if (item.etiqueta.includes('Estrella')) {
-            ⭐ {{ item.etiqueta }}
-          } @else if (item.etiqueta.includes('Vegetariano') || item.etiqueta.includes('Vegano')) {
-            🌱 {{ item.etiqueta }}
-          } @else {
-            {{ item.etiqueta }}
+          @switch (item.etiqueta) {
+            @case ('Estrella') { ⭐ Estrella }
+            @case ('Vegetariano') { 🌱 Vegetariano }
+            @case ('Picante') { 🔥 Picante }
+            @case ('Para Compartir') { 👥 Para Compartir }
+            @default { 🌮 Tradicional }
           }
         </span>
       </div>
@@ -24,9 +26,6 @@
         <p>{{ item.descripcion }}</p>
         <div class="fila-precio">
           <span class="texto-precio">${{ item.precio | number:'1.0-0' }}</span>
-          <span class="enlace-pedir">
-            VER DETALLE &rarr;
-          </span>
         </div>
       </div>
     </article>

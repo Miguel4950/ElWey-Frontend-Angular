@@ -31,20 +31,32 @@
         }
       </div>
 
-      <!-- Barra de filtros por categoría, especialidades y buscador -->
+      <!-- Barra de filtros por característica, categoría y buscador -->
       <div class="barra-filtros-tarjetas">
         <div class="pills-categorias">
           <button type="button" (click)="seleccionarCategoria('')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === ''">
             Todos ({{ comidaArray.length }})
           </button>
-          <button type="button" (click)="seleccionarCategoria('estrella')" class="pill-btn pill-estrella"
-            [class.pill-activa]="filtroCategoria === 'estrella'">
-            ⭐ Platos Estrella ({{ contarEstrellas }})
+          <button type="button" (click)="seleccionarCategoria('Estrella')" class="pill-btn pill-estrella"
+            [class.pill-activa]="filtroCategoria === 'Estrella'">
+            ⭐ Platos Estrella ({{ contarPorEtiqueta('Estrella') }})
           </button>
-          <button type="button" (click)="seleccionarCategoria('vegetariano')" class="pill-btn pill-vegetariano"
-            [class.pill-activa]="filtroCategoria === 'vegetariano'">
-            🌱 Vegetarianos ({{ contarVegetarianos }})
+          <button type="button" (click)="seleccionarCategoria('Vegetariano')" class="pill-btn pill-vegetariano"
+            [class.pill-activa]="filtroCategoria === 'Vegetariano'">
+            🌱 Vegetarianos ({{ contarPorEtiqueta('Vegetariano') }})
+          </button>
+          <button type="button" (click)="seleccionarCategoria('Picante')" class="pill-btn pill-picante"
+            [class.pill-activa]="filtroCategoria === 'Picante'">
+            🔥 Picantes ({{ contarPorEtiqueta('Picante') }})
+          </button>
+          <button type="button" (click)="seleccionarCategoria('Para Compartir')" class="pill-btn pill-compartir"
+            [class.pill-activa]="filtroCategoria === 'Para Compartir'">
+            👥 Para Compartir ({{ contarPorEtiqueta('Para Compartir') }})
+          </button>
+          <button type="button" (click)="seleccionarCategoria('Tradicional')" class="pill-btn pill-tradicional"
+            [class.pill-activa]="filtroCategoria === 'Tradicional'">
+            🌮 Tradicionales ({{ contarPorEtiqueta('Tradicional') }})
           </button>
           <button type="button" (click)="seleccionarCategoria('Tacos')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === 'Tacos'">
@@ -69,7 +81,7 @@
         </div>
 
         <div class="caja-buscador">
-          <input type="text" [value]="busqueda" (input)="onBuscar($event)" placeholder="Buscar plato..."
+          <input type="text" [value]="busqueda" (input)="onBuscar($event)" placeholder="Buscar por plato o ingrediente..."
             class="input-buscador" />
         </div>
       </div>

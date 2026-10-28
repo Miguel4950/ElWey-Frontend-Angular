@@ -98,16 +98,28 @@
   margin-bottom: 8px;
 }
 
-.etiqueta-roja {
-  background-color: #ab1d19;
+.etiqueta-dorada {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #ffffff;
 }
 
 .etiqueta-verde {
-  background-color: #388e3c;
+  background: linear-gradient(135deg, #059669, #047857);
+  color: #ffffff;
 }
 
-.etiqueta-dorada {
-  background: linear-gradient(135deg, #d97706, #b45309);
+.etiqueta-picante {
+  background: linear-gradient(135deg, #ea580c, #c2410c);
+  color: #ffffff;
+}
+
+.etiqueta-compartir {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  color: #ffffff;
+}
+
+.etiqueta-tradicional {
+  background: linear-gradient(135deg, #ab1d19, #881310);
   color: #ffffff;
 }
 

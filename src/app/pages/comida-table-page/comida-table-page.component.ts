@@ -109,56 +109,26 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
     this.busqueda = input.value;
   }
 
-  get contarEstrellas(): number {
-    return this.comidaArray.filter((c) => this.esPlatoEstrella(c)).length;
-  }
-
-  get contarVegetarianos(): number {
-    return this.comidaArray.filter((c) => this.esPlatoVegetariano(c)).length;
+  contarPorEtiqueta(etiqueta: string): number {
+    return this.comidaArray.filter(
+      (c) => (c.etiqueta || '').toLowerCase() === etiqueta.toLowerCase()
+    ).length;
   }
 
   contarPorCategoria(cat: string): number {
     return this.comidaArray.filter(
-      (c) => c.categoriaNombre?.toLowerCase() === cat.toLowerCase()
+      (c) => (c.categoriaNombre || '').toLowerCase() === cat.toLowerCase()
     ).length;
-  }
-
-  esPlatoEstrella(c: ComidaDTO): boolean {
-    const et = (c.etiqueta || '').toLowerCase();
-    return (
-      et.includes('estrella') ||
-      et.includes('top') ||
-      et.includes('favorito') ||
-      et.includes('recomendado')
-    );
-  }
-
-  esPlatoVegetariano(c: ComidaDTO): boolean {
-    const et = (c.etiqueta || '').toLowerCase();
-    const nom = (c.nombre || '').toLowerCase();
-    return (
-      et.includes('vegano') ||
-      et.includes('vegetariano') ||
-      et.includes('saludable') ||
-      nom.includes('vegetariano') ||
-      nom.includes('guacamole') ||
-      nom.includes('calabaza') ||
-      nom.includes('champiñon')
-    );
   }
 
   get comidasFiltradas(): ComidaDTO[] {
     return this.comidaArray.filter((c) => {
       let matchCat = true;
-      if (this.filtroCategoria === 'estrella') {
-        matchCat = this.esPlatoEstrella(c);
-      } else if (this.filtroCategoria === 'vegetariano') {
-        matchCat = this.esPlatoVegetariano(c);
-      } else if (this.filtroCategoria) {
-        matchCat = Boolean(
-          c.categoriaNombre &&
-            c.categoriaNombre.toLowerCase() === this.filtroCategoria.toLowerCase()
-        );
+      if (this.filtroCategoria) {
+        const filtro = this.filtroCategoria.toLowerCase();
+        const etiqueta = (c.etiqueta || '').toLowerCase();
+        const categoria = (c.categoriaNombre || '').toLowerCase();
+        matchCat = etiqueta === filtro || categoria === filtro;
       }
 
       const matchBusqueda =

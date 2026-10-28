@@ -58,17 +58,29 @@
   color: #ffffff;
 }
 
-.etiqueta-roja {
-  background-color: #ab1d19;
-}
-
-.etiqueta-verde {
-  background-color: #059669;
-}
-
 .etiqueta-dorada {
   background: linear-gradient(135deg, #d97706, #b45309);
   box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
+}
+
+.etiqueta-verde {
+  background: linear-gradient(135deg, #059669, #047857);
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.35);
+}
+
+.etiqueta-picante {
+  background: linear-gradient(135deg, #ea580c, #c2410c);
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4);
+}
+
+.etiqueta-compartir {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+}
+
+.etiqueta-tradicional {
+  background: linear-gradient(135deg, #ab1d19, #881310);
+  box-shadow: 0 2px 6px rgba(171, 29, 25, 0.35);
 }
 
 .contenido-plato {
@@ -104,32 +116,23 @@
 
 .fila-precio {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: 12px;
 }
 
 .texto-precio {
+  font-family: 'Abril Fatface', Georgia, serif;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 20px;
   color: #fcf2e9;
-}
-
-.enlace-pedir {
-  color: #ee1a0e;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  letter-spacing: 0.5px;
   transition: color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
 }
 
-.tarjeta-plato:hover .enlace-pedir {
-  color: #ffffff;
+.tarjeta-plato:hover .texto-precio {
+  color: #ee1a0e;
 }
 
 .vacio-tarjetas {
