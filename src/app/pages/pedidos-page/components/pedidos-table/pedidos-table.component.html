@@ -10,7 +10,8 @@
         <th class="col-centrada">Cant. Adicionales</th>
         <th class="col-estado">Estado</th>
         <th>Total</th>
-        <th class="col-acciones">Gestión & Acciones</th>
+        <th class="col-gestion">Gestión</th>
+        <th class="col-acciones">Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -74,9 +75,8 @@
             ${{ pedido.total | number:'1.0-0' }}
           </td>
 
-          <td class="celda-acciones">
-            <div class="grupo-acciones-completo">
-              @if (puedeGestionar) {
+          <td class="celda-gestion">
+            @if (puedeGestionar) {
                 <!-- Estado 1: Cocinando -> Marcar como Listo o Despachar directamente -->
                 @if (pedido.estado === 'Cocinando' || pedido.estado === 'En preparación') {
                   <div class="caja-despacho">
@@ -140,22 +140,21 @@
                   </span>
                 }
               }
-
-              <!-- Botón Ver Detalle -->
-              <button
-                type="button"
-                (click)="verDetallePedido(pedido)"
-                class="btn-accion btn-detalle"
-                title="Inspeccionar detalle de la comanda"
-              >
-                Ver Detalle
-              </button>
-            </div>
           </td>
+
+          <td class="celda-acciones">
+            <button
+              type="button"
+              (click)="verDetallePedido(pedido)"
+              class="btn-accion btn-detalle"
+              title="Inspeccionar detalle de la comanda"
+            >
+              Ver Detalle
+            </button></td>
         </tr>
       } @empty {
         <tr>
-          <td colspan="9" class="celda-vacia">
+          <td colspan="10" class="celda-vacia">
             No se encontraron pedidos registrados con los criterios seleccionados.
           </td>
         </tr>

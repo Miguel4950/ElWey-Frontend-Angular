@@ -113,7 +113,7 @@ export class DomiciliariosPageComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.domiciliarioService.cambiarDisponibilidad(domiciliario.id, nuevoEstado).subscribe({
         next: (actualizado) => {
-          const estadoTxt = actualizado.disponible ? 'Disponible' : 'Ocupado';
+          const estadoTxt = actualizado.disponible ? 'Trabajando (En Turno)' : 'en Descanso (Fuera de Turno)';
           this.mensajeExito = `Domiciliario "${actualizado.nombre}" ahora está marcado como ${estadoTxt}.`;
           this.cargarDomiciliarios();
         },

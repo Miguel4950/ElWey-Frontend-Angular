@@ -6,7 +6,7 @@
         <th>Cédula</th>
         <th>Nombre del Domiciliario</th>
         <th>Celular</th>
-        <th class="col-disponibilidad">Disponibilidad</th>
+        <th class="col-disponibilidad">Turno</th>
         <th class="col-acciones">Acciones</th>
       </tr>
     </thead>
@@ -33,12 +33,12 @@
             @if (d.disponible) {
               <span class="badge-estado badge-disponible">
                 <span class="status-dot dot-verde"></span>
-                Disponible
+                Trabajando
               </span>
             } @else {
               <span class="badge-estado badge-ocupado">
                 <span class="status-dot dot-rojo"></span>
-                Ocupado
+                Descanso
               </span>
             }
           </td>
@@ -49,9 +49,9 @@
                 type="button"
                 (click)="toggle(d)"
                 class="btn-accion btn-toggle"
-                [title]="d.disponible ? 'Marcar como Ocupado' : 'Marcar como Disponible'"
+                [title]="d.disponible ? 'Poner en Descanso' : 'Poner a Trabajar'"
               >
-                {{ d.disponible ? 'Poner Ocupado' : 'Poner Disponible' }}
+                {{ d.disponible ? 'Poner en Descanso' : 'Poner a Trabajar' }}
               </button>
               <button
                 type="button"

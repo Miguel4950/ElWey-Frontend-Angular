@@ -40,13 +40,18 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
 
   pedidosArray: PedidoDTO[] = [];
-  domiciliariosDisponibles: DomiciliarioDTO[] = [];
+  domiciliariosArray: DomiciliarioDTO[] = [];
+
+  get domiciliariosTrabajando(): DomiciliarioDTO[] {
+    return this.domiciliariosArray.filter((d) => d.disponible);
+  }
 
   /**
-   * Calcula la carga de trabajo en tiempo real de cada domiciliario.
+   * Calcula la carga de trabajo en tiempo real de toda la flota (en turno y en descanso).
    */
   get flotaConCarga() {
-    return this.domiciliariosDisponibles.map((dom) => {
+    return this.domiciliariosArray.map((dom) => {
+      const estaTrabajando = dom.disponible;
       const asignados = this.pedidosArray.filter(
         (p) => p.domiciliarioId === dom.id && p.estado !== 'Entregado'
       );
@@ -58,8 +63,10 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
       ).length;
       const totalActivos = asignados.length;
 
-      let estadoCarga: 'LIBRE' | 'MODERADA' | 'SATURADO' = 'LIBRE';
-      if (totalActivos >= 3) {
+      let estadoCarga: 'LIBRE' | 'MODERADA' | 'SATURADO' | 'DESCANSO' = 'LIBRE';
+      if (!estaTrabajando) {
+        estadoCarga = 'DESCANSO';
+      } else if (totalActivos >= 3) {
         estadoCarga = 'SATURADO';
       } else if (totalActivos >= 1) {
         estadoCarga = 'MODERADA';
@@ -67,12 +74,21 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
 
       return {
         domiciliario: dom,
+        estaTrabajando,
         pedidosActivos: totalActivos,
         pedidosEnRuta: enRuta,
         pedidosEnCola: enCola,
         estadoCarga,
       };
     });
+  }
+
+  get totalDomiciliariosTrabajando(): number {
+    return this.domiciliariosArray.filter((d) => d.disponible).length;
+  }
+
+  get totalDomiciliariosDescanso(): number {
+    return this.domiciliariosArray.filter((d) => !d.disponible).length;
   }
 
   get totalDomiciliariosLibres(): number {
@@ -150,11 +166,11 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
       })
     );
 
-    // Consulta domiciliarios disponibles
+    // Consulta todos los domiciliarios para evaluar turno y carga
     this.subscription.add(
-      this.domiciliarioService.getDomiciliariosDisponibles().subscribe({
+      this.domiciliarioService.getDomiciliarios().subscribe({
         next: (doms) => {
-          this.domiciliariosDisponibles = doms;
+          this.domiciliariosArray = doms;
         },
         error: (err) => {
           console.error('Error al cargar domiciliarios disponibles:', err);

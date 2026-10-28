@@ -39,7 +39,7 @@
           </span>
         }
         <span class="badge-total-pedidos">
-          Domiciliarios Disponibles: <strong>{{ domiciliariosDisponibles.length }}</strong>
+          Repartidores en Turno: <strong>{{ totalDomiciliariosTrabajando }}</strong> / {{ domiciliariosArray.length }}
         </span>
         <a [routerLink]="['/comidas/tarjetas']" class="btn-nuevo-pedido">
           + Nuevo Pedido
@@ -57,10 +57,10 @@
         </div>
         <div class="resumen-flota-chips">
           <span class="chip-flota chip-libre">
-            🟢 {{ totalDomiciliariosLibres }} Repartidor(es) Libre(s)
+            🟢 {{ totalDomiciliariosTrabajando }} Trabajando ({{ totalDomiciliariosLibres }} libres)
           </span>
           <span class="chip-flota chip-total">
-            Total Flota: {{ domiciliariosDisponibles.length }}
+            ⚪ {{ totalDomiciliariosDescanso }} en Descanso
           </span>
         </div>
       </div>
@@ -72,6 +72,7 @@
             [class.carga-libre]="item.estadoCarga === 'LIBRE'"
             [class.carga-moderada]="item.estadoCarga === 'MODERADA'"
             [class.carga-saturado]="item.estadoCarga === 'SATURADO'"
+            [class.carga-descanso]="item.estadoCarga === 'DESCANSO'"
           >
             <div class="repartidor-icono-nombre">
               <span class="avatar-domi">🛵</span>
@@ -87,7 +88,9 @@
                 <span class="item-carga-mini">En cola: <strong>{{ item.pedidosEnCola }}</strong></span>
               </div>
 
-              @if (item.estadoCarga === 'LIBRE') {
+              @if (item.estadoCarga === 'DESCANSO') {
+                <span class="badge-nivel-carga badge-nivel-descanso">⚪ Descanso</span>
+              } @else if (item.estadoCarga === 'LIBRE') {
                 <span class="badge-nivel-carga badge-nivel-libre">🟢 Libre</span>
               } @else if (item.estadoCarga === 'MODERADA') {
                 <span class="badge-nivel-carga badge-nivel-moderado">🟡 {{ item.pedidosActivos }} activo(s)</span>
@@ -190,7 +193,7 @@
     <!-- Tabla de Pedidos (Subcomponente Hijo) -->
     <app-pedidos-table
       [pedidosArray]="pedidosFiltrados"
-      [domiciliariosDisponibles]="domiciliariosDisponibles"
+      [domiciliariosDisponibles]="domiciliariosTrabajando"
       (onActualizarEstado)="actualizarEstadoPedido($event)"
     ></app-pedidos-table>
     }
