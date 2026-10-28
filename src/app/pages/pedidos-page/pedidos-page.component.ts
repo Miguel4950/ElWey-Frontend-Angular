@@ -52,15 +52,33 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   get flotaConCarga() {
     return this.domiciliariosArray.map((dom) => {
       const estaTrabajando = dom.disponible;
-      const asignados = this.pedidosArray.filter(
-        (p) => p.domiciliarioId === dom.id && p.estado !== 'Entregado'
-      );
-      const enRuta = asignados.filter(
-        (p) => p.estado === 'Enviado' || p.estado === 'En camino' || p.estado === 'Enviando'
-      ).length;
-      const enCola = asignados.filter(
-        (p) => p.estado === 'Cocinando' || p.estado === 'Listo' || p.estado === 'En preparación'
-      ).length;
+      const asignados = this.pedidosArray.filter((p) => {
+        const idCoincide = p.domiciliarioId != null && Number(p.domiciliarioId) === Number(dom.id);
+        const nombreCoincide = Boolean(
+          p.domiciliarioNombre &&
+          dom.nombre &&
+          p.domiciliarioNombre.toLowerCase().trim() === dom.nombre.toLowerCase().trim()
+        );
+        const estadoNorm = (p.estado || '').toLowerCase().trim();
+        const noEntregado = estadoNorm !== 'entregado';
+        return (idCoincide || nombreCoincide) && noEntregado;
+      });
+
+      const enRuta = asignados.filter((p) => {
+        const est = (p.estado || '').toLowerCase().trim();
+        return est === 'enviado' || est === 'en camino' || est === 'enviando';
+      }).length;
+
+      const enCola = asignados.filter((p) => {
+        const est = (p.estado || '').toLowerCase().trim();
+        return (
+          est === 'cocinando' ||
+          est === 'listo' ||
+          est === 'en preparación' ||
+          est === 'en preparacion'
+        );
+      }).length;
+
       const totalActivos = asignados.length;
 
       let estadoCarga: 'LIBRE' | 'MODERADA' | 'SATURADO' | 'DESCANSO' = 'LIBRE';

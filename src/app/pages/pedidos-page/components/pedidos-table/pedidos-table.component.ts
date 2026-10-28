@@ -53,8 +53,8 @@ export class PedidosTableComponent {
    * Asigna un domiciliario y despacha el pedido marcándolo como 'Enviado'.
    */
 
-  marcarListo(pedidoId: number): void {
-    const domId = this.domiciliarioSeleccionadoPorPedido[pedidoId];
+  marcarListo(pedidoId: number, domIdPreasignado?: number): void {
+    const domId = this.domiciliarioSeleccionadoPorPedido[pedidoId] || domIdPreasignado;
     this.onActualizarEstado.emit({
       pedidoId,
       nuevoEstado: 'Listo',
@@ -78,10 +78,36 @@ export class PedidosTableComponent {
   getCargaTexto(domId?: number): string {
     if (!domId) return '';
     const pedidos = this.pedidosArray() || [];
-    const asignados = pedidos.filter((p) => p.domiciliarioId === domId && p.estado !== 'Entregado').length;
+    const dom = this.domiciliariosDisponibles().find((d) => d.id === domId);
+    const asignados = pedidos.filter((p) => {
+      const idCoincide = p.domiciliarioId != null && Number(p.domiciliarioId) === Number(domId);
+      const nombreCoincide = Boolean(
+        dom &&
+        p.domiciliarioNombre &&
+        p.domiciliarioNombre.toLowerCase().trim() === dom.nombre.toLowerCase().trim()
+      );
+      const estadoNorm = (p.estado || '').toLowerCase().trim();
+      return (idCoincide || nombreCoincide) && estadoNorm !== 'entregado';
+    }).length;
     if (asignados === 0) return '(0 - Libre)';
-    if (asignados >= 3) return `(${asignados} - Saturado)`;
-    return `(${asignados} activo(s))`;
+    if (asignados >= 3) return '(' + asignados + ' - Saturado)';
+    return '(' + asignados + ' activo(s))';
+  }
+
+  getDomiciliarioIdPedido(pedido: PedidoDTO): number | undefined {
+    if (this.domiciliarioSeleccionadoPorPedido[pedido.id]) {
+      return this.domiciliarioSeleccionadoPorPedido[pedido.id];
+    }
+    if (pedido.domiciliarioId) {
+      return pedido.domiciliarioId;
+    }
+    if (pedido.domiciliarioNombre) {
+      const encontrado = this.domiciliariosDisponibles().find(
+        (d) => d.nombre.toLowerCase().trim() === pedido.domiciliarioNombre!.toLowerCase().trim()
+      );
+      if (encontrado) return encontrado.id;
+    }
+    return undefined;
   }
 
   enviarPedido(pedidoId: number): void {

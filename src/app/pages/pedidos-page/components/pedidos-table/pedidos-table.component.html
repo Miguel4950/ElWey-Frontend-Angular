@@ -81,7 +81,7 @@
                 @if (pedido.estado === 'Cocinando' || pedido.estado === 'En preparación') {
                   <div class="caja-despacho">
                     <select
-                      [ngModel]="domiciliarioSeleccionadoPorPedido[pedido.id] || pedido.domiciliarioId"
+                      [ngModel]="getDomiciliarioIdPedido(pedido)"
                       (ngModelChange)="onSelectDomiciliario(pedido.id, $event)"
                       class="select-domiciliario-tabla"
                     >
@@ -92,7 +92,7 @@
                     </select>
                     <button
                       type="button"
-                      (click)="marcarListo(pedido.id)"
+                      (click)="marcarListo(pedido.id, getDomiciliarioIdPedido(pedido))"
                       class="btn-accion btn-listo-cocina"
                       title="Marcar plato terminado en cocina"
                     >
@@ -100,7 +100,7 @@
                     </button>
                     <button
                       type="button"
-                      (click)="despacharPedido(pedido.id, pedido.domiciliarioId)"
+                      (click)="despacharPedido(pedido.id, getDomiciliarioIdPedido(pedido))"
                       class="btn-accion btn-camino"
                       title="Despachar inmediatamente"
                     >
@@ -113,7 +113,7 @@
                 @if (pedido.estado === 'Listo') {
                   <div class="caja-despacho">
                     <select
-                      [ngModel]="domiciliarioSeleccionadoPorPedido[pedido.id] || pedido.domiciliarioId"
+                      [ngModel]="getDomiciliarioIdPedido(pedido)"
                       (ngModelChange)="onSelectDomiciliario(pedido.id, $event)"
                       class="select-domiciliario-tabla"
                     >
@@ -124,7 +124,7 @@
                     </select>
                     <button
                       type="button"
-                      (click)="despacharPedido(pedido.id, pedido.domiciliarioId)"
+                      (click)="despacharPedido(pedido.id, getDomiciliarioIdPedido(pedido))"
                       class="btn-accion btn-camino"
                       title="Despachar pedido listo"
                     >
