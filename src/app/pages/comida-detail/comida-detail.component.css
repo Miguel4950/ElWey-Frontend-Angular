@@ -12,7 +12,7 @@
 }
 
 .container-detalle {
-  max-width: 1050px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -38,8 +38,18 @@
   color: #ee1a0e;
 }
 
+/* Opción 1: Disposición en dos tarjetas independientes y proporcionadas */
 .card-detalle-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Tarjeta de Imagen: Sticky en scroll y con proporción natural 4:3 */
+.col-imagen-detalle {
+  position: sticky;
+  top: 90px;
   border-radius: 8px;
   overflow: hidden;
   background-color: #1a1716;
@@ -47,17 +57,16 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-.col-imagen-detalle {
-  flex: 1;
-  min-height: 420px;
-  position: relative;
-}
-
 .img-plato-detalle {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.img-plato-detalle:hover {
+  transform: scale(1.02);
 }
 
 .badge-detalle-tag {
@@ -72,16 +81,22 @@
   letter-spacing: 1px;
   padding: 5px 12px;
   border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
 .badge-detalle-verde {
   background-color: #2e7d32;
 }
 
+/* Tarjeta Derecha: Información del Plato, Adicionales y Pedido */
 app-comida-info-detalle {
-  flex: 1.1;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  background-color: #1a1716;
+  border: 1px solid #282420;
+  border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
 }
 
 .btn-volver-tabla-detalle {
@@ -107,11 +122,12 @@ app-comida-info-detalle {
   padding: 80px 20px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .card-detalle-wrapper {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
   .col-imagen-detalle {
-    min-height: 250px;
+    position: static;
   }
 }
