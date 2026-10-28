@@ -22,7 +22,7 @@
             Recetas tradicionales elaboradas con ingredientes auténticos y maíz nixtamalizado.
           </p>
         </div>
-        @if (esAdmin) {
+        @if (esPersonal) {
           <div class="acciones-header-tarjetas">
             <a [routerLink]="['/comidas/tabla']" class="btn-ir-tabla">
               Gestionar en Tabla
@@ -84,13 +84,16 @@
     @else {
       <div class="barra-superior-gestion">
         <app-page-title></app-page-title>
-        @if (esAdmin) {
-          <div class="contenedor-btn-crear">
+        <div class="acciones-header-tabla">
+          <a [routerLink]="['/comidas/tarjetas']" class="btn-ir-tarjetas">
+            &larr; Ver Menú en Tarjetas
+          </a>
+          @if (esAdmin) {
             <a [routerLink]="['/comidas/new']" class="btn-crear-comida">
               + CREAR COMIDA
             </a>
-          </div>
-        }
+          }
+        </div>
       </div>
 
       <app-comida-table

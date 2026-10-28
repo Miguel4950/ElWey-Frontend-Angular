@@ -402,3 +402,29 @@
   color: #ffffff !important;
   box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
 }
+.acciones-header-tabla {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-ir-tarjetas {
+  background-color: transparent;
+  border: 1px solid #a89f91;
+  color: #fcf2e9;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-ir-tarjetas:hover {
+  background-color: #2a201e;
+  border-color: #ee1a0e;
+  color: #ee1a0e;
+}

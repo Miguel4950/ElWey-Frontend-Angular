@@ -14,8 +14,8 @@ import { filter, Subscription } from 'rxjs';
 /**
  * Página principal del catálogo de comidas.
  * Soporta dos modos visuales divididos en subcomponentes:
- * - ComidaTableComponent: Vista de inventario tabular (personal staff / admin).
- * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú para clientes.
+ * - ComidaTableComponent: Vista de inventario tabular (personal staff / admin / operadores / domiciliarios).
+ * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú gastronómico para clientes y público general.
  */
 @Component({
   selector: 'app-comida-table-page',
@@ -40,6 +40,14 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
 
   get esAdmin(): boolean {
     return this.clienteService.esAdmin();
+  }
+
+  get esPersonal(): boolean {
+    return (
+      this.clienteService.esAdmin() ||
+      this.clienteService.esOperador() ||
+      this.clienteService.esDomiciliario()
+    );
   }
 
   ngOnDestroy(): void {
@@ -70,6 +78,11 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
   evaluarRuta(): void {
     const url = this.router.url;
     this.esVistaTarjetas = url.includes('tarjetas');
+    const cliente = this.clienteService.getClienteActual();
+    // Si un cliente común autenticado intenta entrar a la tabla, redirigir a tarjetas
+    if (!this.esVistaTarjetas && cliente && !this.esPersonal) {
+      this.router.navigate(['/comidas/tarjetas']);
+    }
   }
 
   cargarComidas(): void {
