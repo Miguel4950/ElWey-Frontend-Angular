@@ -199,22 +199,47 @@
   color: #ffffff;
 }
 
-.btn-salir-nav {
+.btn-salir-nav,
+.btn-cerrar-sesion-nav {
   height: 38px;
-  background: transparent;
-  border: 1px solid #4a3f3a;
-  color: #a89f95;
+  background-color: #241f1c;
+  border: 1px solid #3d3430;
+  color: #a89f91;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  padding: 0 16px;
+  padding: 0 12px;
   border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   box-sizing: border-box;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.btn-salir-nav:hover {
-  background-color: #2b231f;
-  color: #ef4444;
-  border-color: #ef4444;
+.btn-salir-nav:hover,
+.btn-cerrar-sesion-nav:hover {
+  background-color: rgba(220, 38, 38, 0.15);
+  border-color: #dc2626;
+  color: #f87171;
+  transform: translateY(-1px);
+}
+
+.icono-salir-svg {
+  display: inline-block;
+  vertical-align: middle;
+  stroke: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.btn-salir-nav:hover .icono-salir-svg,
+.btn-cerrar-sesion-nav:hover .icono-salir-svg {
+  transform: translateX(2px);
 }
 
 @media (max-width: 900px) {
