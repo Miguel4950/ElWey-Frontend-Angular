@@ -15,11 +15,16 @@
         <a [routerLink]="['/admin/operadores']">Operadores</a>
         <a [routerLink]="['/admin/domiciliarios']">Domiciliarios</a>
         <a [routerLink]="['/pedidos']">Pedidos</a>
-      } @else if (esOperador || esDomiciliario) {
+      } @else if (esOperador) {
         <a [routerLink]="['/']">Inicio</a>
         <a [routerLink]="['/comidas/tarjetas']">Menú</a>
         <a [routerLink]="['/comidas/tabla']">Tabla Comidas</a>
         <a [routerLink]="['/admin/domiciliarios']">Domiciliarios</a>
+        <a [routerLink]="['/pedidos']">Portal Pedidos</a>
+      } @else if (esDomiciliario) {
+        <a [routerLink]="['/']">Inicio</a>
+        <a [routerLink]="['/comidas/tarjetas']">Menú</a>
+        <a [routerLink]="['/comidas/tabla']">Tabla Comidas</a>
         <a [routerLink]="['/pedidos']">Portal Pedidos</a>
       } @else {
         <a [routerLink]="['/']">Inicio</a>

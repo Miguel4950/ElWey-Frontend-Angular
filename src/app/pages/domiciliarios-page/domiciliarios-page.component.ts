@@ -8,6 +8,7 @@ import { DomiciliarioFormComponent } from './components/domiciliario-form/domici
 import { DomiciliarioDTO } from '../../dtos/domiciliario.dto';
 import { DomiciliarioService } from '../../service/domiciliario.service';
 import { ClienteService } from '../../service/cliente.service';
+import { Router } from '@angular/router';
 
 /**
  * Página principal para la gestión y monitoreo del personal de reparto (domiciliarios).
@@ -28,6 +29,7 @@ import { ClienteService } from '../../service/cliente.service';
 export class DomiciliariosPageComponent implements OnInit, OnDestroy {
   private domiciliarioService = inject(DomiciliarioService);
   private clienteService = inject(ClienteService);
+  private router = inject(Router);
   private subscription: Subscription = new Subscription();
 
   domiciliariosArray: DomiciliarioDTO[] = [];
@@ -41,6 +43,14 @@ export class DomiciliariosPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (!this.clienteService.esAdmin() && !this.clienteService.esOperador()) {
+      if (this.clienteService.esDomiciliario()) {
+        this.router.navigate(['/pedidos']);
+      } else {
+        this.router.navigate(['/']);
+      }
+      return;
+    }
     this.cargarDomiciliarios();
   }
 
