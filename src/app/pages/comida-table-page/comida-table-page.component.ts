@@ -14,8 +14,8 @@ import { filter, Subscription } from 'rxjs';
 /**
  * Página principal del catálogo de comidas.
  * Soporta dos modos visuales divididos en subcomponentes:
- * - ComidaTableComponent: Vista de inventario tabular.
- * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú.
+ * - ComidaTableComponent: Vista de inventario tabular (personal staff / admin).
+ * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú para clientes.
  */
 @Component({
   selector: 'app-comida-table-page',
@@ -96,16 +96,64 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
     this.busqueda = input.value;
   }
 
+  get contarEstrellas(): number {
+    return this.comidaArray.filter((c) => this.esPlatoEstrella(c)).length;
+  }
+
+  get contarVegetarianos(): number {
+    return this.comidaArray.filter((c) => this.esPlatoVegetariano(c)).length;
+  }
+
+  contarPorCategoria(cat: string): number {
+    return this.comidaArray.filter(
+      (c) => c.categoriaNombre?.toLowerCase() === cat.toLowerCase()
+    ).length;
+  }
+
+  esPlatoEstrella(c: ComidaDTO): boolean {
+    const et = (c.etiqueta || '').toLowerCase();
+    return (
+      et.includes('estrella') ||
+      et.includes('top') ||
+      et.includes('favorito') ||
+      et.includes('recomendado')
+    );
+  }
+
+  esPlatoVegetariano(c: ComidaDTO): boolean {
+    const et = (c.etiqueta || '').toLowerCase();
+    const nom = (c.nombre || '').toLowerCase();
+    return (
+      et.includes('vegano') ||
+      et.includes('vegetariano') ||
+      et.includes('saludable') ||
+      nom.includes('vegetariano') ||
+      nom.includes('guacamole') ||
+      nom.includes('calabaza') ||
+      nom.includes('champiñon')
+    );
+  }
+
   get comidasFiltradas(): ComidaDTO[] {
     return this.comidaArray.filter((c) => {
-      const matchCat =
-        !this.filtroCategoria ||
-        (c.categoriaNombre &&
-          c.categoriaNombre.toLowerCase() === this.filtroCategoria.toLowerCase());
+      let matchCat = true;
+      if (this.filtroCategoria === 'estrella') {
+        matchCat = this.esPlatoEstrella(c);
+      } else if (this.filtroCategoria === 'vegetariano') {
+        matchCat = this.esPlatoVegetariano(c);
+      } else if (this.filtroCategoria) {
+        matchCat = Boolean(
+          c.categoriaNombre &&
+            c.categoriaNombre.toLowerCase() === this.filtroCategoria.toLowerCase()
+        );
+      }
+
       const matchBusqueda =
         !this.busqueda ||
         c.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
-        c.descripcion.toLowerCase().includes(this.busqueda.toLowerCase());
+        c.descripcion.toLowerCase().includes(this.busqueda.toLowerCase()) ||
+        (c.etiqueta && c.etiqueta.toLowerCase().includes(this.busqueda.toLowerCase()));
+
       return matchCat && matchBusqueda;
     });
   }

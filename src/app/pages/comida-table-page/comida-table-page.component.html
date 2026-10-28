@@ -22,39 +22,49 @@
             Recetas tradicionales elaboradas con ingredientes auténticos y maíz nixtamalizado.
           </p>
         </div>
-        <div class="acciones-header-tarjetas">
-          <a [routerLink]="['/comidas/tabla']" class="btn-ir-tabla">
-            Gestionar en Tabla
-          </a>
-        </div>
+        @if (esAdmin) {
+          <div class="acciones-header-tarjetas">
+            <a [routerLink]="['/comidas/tabla']" class="btn-ir-tabla">
+              Gestionar en Tabla
+            </a>
+          </div>
+        }
       </div>
 
-      <!-- Barra de filtros por categoría y buscador -->
+      <!-- Barra de filtros por categoría, especialidades y buscador -->
       <div class="barra-filtros-tarjetas">
         <div class="pills-categorias">
           <button type="button" (click)="seleccionarCategoria('')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === ''">
             Todos ({{ comidaArray.length }})
           </button>
+          <button type="button" (click)="seleccionarCategoria('estrella')" class="pill-btn pill-estrella"
+            [class.pill-activa]="filtroCategoria === 'estrella'">
+            ⭐ Platos Estrella ({{ contarEstrellas }})
+          </button>
+          <button type="button" (click)="seleccionarCategoria('vegetariano')" class="pill-btn pill-vegetariano"
+            [class.pill-activa]="filtroCategoria === 'vegetariano'">
+            🌱 Vegetarianos ({{ contarVegetarianos }})
+          </button>
           <button type="button" (click)="seleccionarCategoria('Tacos')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === 'Tacos'">
-            Tacos
+            Tacos ({{ contarPorCategoria('Tacos') }})
           </button>
           <button type="button" (click)="seleccionarCategoria('Quesadillas')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === 'Quesadillas'">
-            Quesadillas
+            Quesadillas ({{ contarPorCategoria('Quesadillas') }})
           </button>
           <button type="button" (click)="seleccionarCategoria('Entradas')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === 'Entradas'">
-            Entradas
+            Entradas ({{ contarPorCategoria('Entradas') }})
           </button>
           <button type="button" (click)="seleccionarCategoria('Especialidades')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === 'Especialidades'">
-            Especialidades
+            Especialidades ({{ contarPorCategoria('Especialidades') }})
           </button>
           <button type="button" (click)="seleccionarCategoria('Burritos')" class="pill-btn"
             [class.pill-activa]="filtroCategoria === 'Burritos'">
-            Burritos
+            Burritos ({{ contarPorCategoria('Burritos') }})
           </button>
         </div>
 

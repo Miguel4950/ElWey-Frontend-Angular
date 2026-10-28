@@ -17,9 +17,16 @@
           </div>
           <div class="contenido-plato">
             <span class="etiqueta-plato"
-              [class.etiqueta-verde]="item.etiqueta === 'Vegano' || item.etiqueta === 'Favorito' || item.etiqueta === 'Top Ventas' || item.etiqueta === 'Clásico'"
-              [class.etiqueta-roja]="item.etiqueta !== 'Vegano' && item.etiqueta !== 'Favorito' && item.etiqueta !== 'Top Ventas' && item.etiqueta !== 'Clásico'">
-              {{ item.etiqueta }}
+              [class.etiqueta-verde]="item.etiqueta.includes('Vegano') || item.etiqueta.includes('Vegetariano') || item.etiqueta.includes('Saludable')"
+              [class.etiqueta-dorada]="item.etiqueta.includes('Estrella') || item.etiqueta.includes('Top') || item.etiqueta.includes('Favorito')"
+              [class.etiqueta-roja]="!item.etiqueta.includes('Vegano') && !item.etiqueta.includes('Vegetariano') && !item.etiqueta.includes('Saludable') && !item.etiqueta.includes('Estrella') && !item.etiqueta.includes('Top') && !item.etiqueta.includes('Favorito')">
+              @if (item.etiqueta.includes('Estrella')) {
+                ⭐ {{ item.etiqueta }}
+              } @else if (item.etiqueta.includes('Vegetariano') || item.etiqueta.includes('Vegano')) {
+                🌱 {{ item.etiqueta }}
+              } @else {
+                {{ item.etiqueta }}
+              }
             </span>
             <h3>{{ item.nombre }}</h3>
             <p>{{ item.descripcion }}</p>
@@ -32,10 +39,9 @@
       }
     </div>
 
-    <!-- Botones de Acción al Menú Completo -->
+    <!-- Botón de Acción al Menú Completo -->
     <div class="contenedor-btn-menu">
-      <a [routerLink]="['/comidas/tarjetas']" class="btn-ver-menu-completo">Ver Todas en Tarjetas</a>
-      <a [routerLink]="['/comidas/tabla']" class="btn-ver-menu-completo btn-ver-menu-tabla">Ver Todas en Tabla</a>
+      <a [routerLink]="['/comidas/tarjetas']" class="btn-ver-menu-completo">Explorar Menú Completo &rarr;</a>
     </div>
   </div>
 </section>

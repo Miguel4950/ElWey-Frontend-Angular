@@ -93,6 +93,7 @@
   display: inline-block;
   vertical-align: middle;
   color: currentColor;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-carrito-nav:hover {
@@ -102,6 +103,7 @@
 
 .btn-carrito-nav:hover .icono-carrito-svg {
   color: #171614;
+  transform: scale(1.15) rotate(-4deg);
 }
 
 .badge-carrito {

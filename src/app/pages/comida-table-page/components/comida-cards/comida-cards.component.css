@@ -66,6 +66,11 @@
   background-color: #059669;
 }
 
+.etiqueta-dorada {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
+}
+
 .contenido-plato {
   padding: 16px;
   display: flex;

@@ -64,7 +64,7 @@ export class RegistroComponent implements OnDestroy {
     this.subscription = this.clienteService.addCliente(nuevoCliente).subscribe({
       next: (clienteRegistrado) => {
         this.clienteService.setClienteActual({ ...clienteRegistrado, rol: 'CLIENTE' });
-        this.router.navigate(['/cliente/portal'], { queryParams: { bienvenido: 'true' } });
+        this.router.navigate(['/comidas/tarjetas'], { queryParams: { bienvenido: 'true' } });
       },
       error: (err) => {
         this.errorMessage = err?.error?.mensaje || 'No fue posible registrar la cuenta. Es posible que el correo ya esté registrado o haya un error en el servidor.';
