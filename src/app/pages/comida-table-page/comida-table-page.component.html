@@ -3,21 +3,6 @@
 <main class="main-tabla-page">
   <div class="contenedor-gestion">
 
-    <!-- Aviso informativo y selector de vista -->
-    <div class="barra-navegacion-modos">
-      <div class="selector-vistas">
-        <a [routerLink]="['/comidas/tarjetas']" [class.modo-activo]="esVistaTarjetas" class="btn-modo-vista">
-          Menú en Tarjetas
-        </a>
-        <a [routerLink]="['/comidas/tabla']" [class.modo-activo]="!esVistaTarjetas" class="btn-modo-vista">
-          Inventario en Tabla
-        </a>
-      </div>
-      <a [routerLink]="['/']" class="notice-sesion-btn">
-        &larr; Volver al Inicio
-      </a>
-    </div>
-
     <!-- Alerta de Error al eliminar o interactuar -->
     @if (errorMessage) {
       <div class="alerta-error-comida">

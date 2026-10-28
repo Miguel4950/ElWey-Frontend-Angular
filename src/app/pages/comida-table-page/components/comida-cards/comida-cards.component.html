@@ -1,6 +1,6 @@
 <div class="grid-tarjetas-menu">
   @for (item of comidas(); track item.id) {
-    <article class="tarjeta-plato">
+    <article class="tarjeta-plato" [routerLink]="['/comidas', item.id]" tabindex="0" role="link">
       <div class="caja-foto-plato">
         <img [src]="item.imagen_url" [alt]="item.nombre" class="img-plato" />
         <span
@@ -17,9 +17,9 @@
         <p>{{ item.descripcion }}</p>
         <div class="fila-precio">
           <span class="texto-precio">${{ item.precio | number:'1.0-0' }}</span>
-          <a [routerLink]="['/comidas', item.id]" class="enlace-pedir">
+          <span class="enlace-pedir">
             VER DETALLE &rarr;
-          </a>
+          </span>
         </div>
       </div>
     </article>

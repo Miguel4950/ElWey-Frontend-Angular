@@ -50,11 +50,27 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  user-select: none;
 }
 
 .tarjeta-plato:hover {
-  border-color: #ab1d19;
+  transform: translateY(-5px);
+  border-color: #ee1a0e;
+  box-shadow: 0 10px 25px rgba(238, 26, 14, 0.2);
+}
+
+.tarjeta-plato:focus-visible {
+  outline: 2px solid #ee1a0e;
+  outline-offset: 2px;
+}
+
+.caja-foto-plato {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
 }
 
 .img-plato {
@@ -62,6 +78,11 @@
   height: 180px;
   display: block;
   object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.tarjeta-plato:hover .img-plato {
+  transform: scale(1.05);
 }
 
 .etiqueta-plato {
@@ -124,15 +145,17 @@
 
 .enlace-pedir {
   color: #8c8278;
-  text-decoration: none;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.enlace-pedir:hover {
+.tarjeta-plato:hover .enlace-pedir {
   color: #ee1a0e;
 }
 
