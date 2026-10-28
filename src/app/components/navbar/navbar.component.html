@@ -46,7 +46,6 @@
             <span class="badge-carrito">{{ cantidadCarrito }}</span>
           }
         </a>
-        <a [routerLink]="['/comidas/tarjetas']" class="btn-pedido-nav">Haz Tu Pedido</a>
       }
       @if (clienteActual) {
         <a [routerLink]="[(esOperador || esDomiciliario) ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav enlace-usuario-logueado" title="Ir al Portal">
