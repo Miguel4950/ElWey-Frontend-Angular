@@ -66,6 +66,18 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
     return (this.comida()?.categoriaNombre || '').toLowerCase() === 'bebidas';
   }
 
+  get esOperador(): boolean {
+    return this.clienteService.esOperador();
+  }
+
+  get esDomiciliario(): boolean {
+    return this.clienteService.esDomiciliario();
+  }
+
+  get esPersonal(): boolean {
+    return this.esAdmin || this.esOperador || this.esDomiciliario;
+  }
+
   get esAdmin(): boolean {
     return this.clienteService.esAdmin();
   }

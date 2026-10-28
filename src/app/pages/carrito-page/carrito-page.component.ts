@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -35,7 +35,24 @@ import { CarritoResumenComponent } from './components/carrito-resumen/carrito-re
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css',
 })
-export class CarritoPageComponent implements OnDestroy {
+export class CarritoPageComponent implements OnInit, OnDestroy {
+  get esAdmin(): boolean {
+    return this.clienteService.esAdmin();
+  }
+
+  get esPersonal(): boolean {
+    return this.clienteService.esAdmin() || this.clienteService.esOperador() || this.clienteService.esDomiciliario();
+  }
+
+  ngOnInit(): void {
+    if (this.esPersonal) {
+      if (this.clienteService.esAdmin()) {
+        this.router.navigate(['/comidas']);
+      } else {
+        this.router.navigate(['/pedidos']);
+      }
+    }
+  }
   private carritoService = inject(CarritoService);
   private pedidoService = inject(PedidoService);
   private clienteService = inject(ClienteService);

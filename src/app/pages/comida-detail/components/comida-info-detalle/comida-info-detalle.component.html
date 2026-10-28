@@ -41,7 +41,7 @@
         (adicionalesChange)="onAdicionalesChange($event)"
             ></app-comida-adicionales>
 
-      @if (!esBebida && bebidasDisponibles.length > 0) {
+      @if (!esBebida && !esPersonal && bebidasDisponibles.length > 0) {
         <div class="caja-maridaje-bebidas">
           <div class="cabecera-maridaje">
             <span class="icono-maridaje">🥤</span>
@@ -87,7 +87,8 @@
         </div>
       }
 
-      <!-- Resumen acumulado estimado en tiempo real -->
+      @if (!esPersonal) {
+        <!-- Resumen acumulado estimado en tiempo real -->
       <div class="caja-subtotal-estimado">
         <div class="fila-resumen-subtotal">
           <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}@if (bebidaSeleccionada) { + 1x {{ bebidaSeleccionada.nombre }}}):</span>
@@ -104,7 +105,15 @@
           Pedir Ahora
         </button>
       </div>
-
+      } @else {
+        <div class="alerta-personal-vista-plato">
+          <i class="bi bi-shield-lock-fill"></i>
+          <div>
+            <strong>Modo Consulta (Personal del Restaurante)</strong>
+            <p>Has iniciado sesión como {{ esAdmin ? 'Administrador' : (esOperador ? 'Operador de Cocina' : 'Domiciliario') }}. El carrito de compras y la creación de pedidos están deshabilitados para tu perfil.</p>
+          </div>
+        </div>
+      }
 
       @if (isModalOpen) {
 

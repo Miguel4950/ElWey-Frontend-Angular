@@ -32,6 +32,10 @@ export class NavbarComponent {
     return this.clienteService.esAdmin();
   }
 
+  get esPersonal(): boolean {
+    return this.esAdmin || this.esOperador || this.esDomiciliario;
+  }
+
   get cantidadCarrito(): number {
     return this.carritoService.getCantidadTotal();
   }
