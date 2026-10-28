@@ -70,19 +70,21 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Los clientes no tienen permiso para ver el portal general de pedidos
-    if (!this.esAdmin && !this.esOperador && !this.esDomiciliario) {
-      this.router.navigate(['/cliente/portal']);
+    // Solo Administrador y Operador de Cocina tienen permiso para ver el portal de pedidos
+    if (!this.esAdmin && !this.esOperador) {
+      if (this.esDomiciliario) {
+        this.router.navigate(['/comidas/tabla']);
+      } else {
+        this.router.navigate(['/cliente/portal']);
+      }
       return;
     }
 
     // Configurar pestaña por defecto según rol
     if (this.esAdmin) {
       this.pestanaEstado = 'TODOS';
-    } else if (this.esOperador || this.esDomiciliario) {
-      this.pestanaEstado = 'ACTIVOS';
     } else {
-      this.pestanaEstado = 'TODOS';
+      this.pestanaEstado = 'ACTIVOS';
     }
 
     this.cargarDatos();
@@ -218,15 +220,13 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
     this.fechaHasta = '';
     if (this.esAdmin) {
       this.pestanaEstado = 'TODOS';
-    } else if (this.esOperador || this.esDomiciliario) {
-      this.pestanaEstado = 'ACTIVOS';
     } else {
-      this.pestanaEstado = 'TODOS';
+      this.pestanaEstado = 'ACTIVOS';
     }
   }
 
   get hayFiltrosActivos(): boolean {
-    const estadoPorDefecto = ((this.esOperador || this.esDomiciliario) && !this.esAdmin) ? 'ACTIVOS' : 'TODOS';
+    const estadoPorDefecto = this.esAdmin ? 'TODOS' : 'ACTIVOS';
     return (
       this.filtroComida.trim() !== '' ||
       this.fechaDesde !== '' ||

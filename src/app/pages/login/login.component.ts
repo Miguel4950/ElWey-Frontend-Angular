@@ -117,11 +117,14 @@ export class LoginComponent implements OnInit, OnDestroy {
           // Redirección inteligente según el rol autenticado
           if (
             this.rolSeleccionado === 'operador' ||
-            usuario.rol === 'OPERADOR' ||
+            usuario.rol === 'OPERADOR'
+          ) {
+            this.router.navigate(['/pedidos']);
+          } else if (
             this.rolSeleccionado === 'domiciliario' ||
             usuario.rol === 'DOMICILIARIO'
           ) {
-            this.router.navigate(['/pedidos']);
+            this.router.navigate(['/comidas/tabla']);
           } else if (this.rolSeleccionado === 'admin' || usuario.rol === 'ADMIN') {
             this.router.navigate(['/comidas/tabla']);
           } else {

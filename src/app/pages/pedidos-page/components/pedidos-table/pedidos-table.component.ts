@@ -37,8 +37,7 @@ export class PedidosTableComponent {
   get puedeGestionar(): boolean {
     return (
       this.clienteService.esOperador() ||
-      this.clienteService.esAdmin() ||
-      this.clienteService.esDomiciliario()
+      this.clienteService.esAdmin()
     );
   }
 

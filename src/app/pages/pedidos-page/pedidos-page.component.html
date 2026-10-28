@@ -3,6 +3,18 @@
 <main class="main-pedidos-page">
   <div class="contenedor-pedidos">
 
+    @if (!esAdmin && !esOperador) {
+      <div class="card-acceso-denegado-pedidos">
+        <i class="bi bi-shield-slash-fill icono-denegado-pedidos"></i>
+        <h2 class="titulo-denegado-pedidos">Acceso Restringido</h2>
+        <p class="desc-denegado-pedidos">
+          El portal de monitoreo y despacho de pedidos es de uso exclusivo para el personal de cocina (operadores) y administración.
+        </p>
+        <a [routerLink]="['/comidas/tabla']" class="btn-volver-denegado-pedidos">
+          &larr; Volver a Tabla de Comidas
+        </a>
+      </div>
+    } @else {
     <!-- Barra superior del Portal de Operario y Administración -->
     <div class="barra-superior-operario">
       <div>
@@ -128,6 +140,8 @@
       [domiciliariosDisponibles]="domiciliariosDisponibles"
       (onActualizarEstado)="actualizarEstadoPedido($event)"
     ></app-pedidos-table>
+    }
+
 
   </div>
 </main>

@@ -25,7 +25,6 @@
         <a [routerLink]="['/']">Inicio</a>
         <a [routerLink]="['/comidas/tarjetas']">Menú</a>
         <a [routerLink]="['/comidas/tabla']">Tabla Comidas</a>
-        <a [routerLink]="['/pedidos']">Portal Pedidos</a>
       } @else {
         <a [routerLink]="['/']">Inicio</a>
         <a [routerLink]="['/comidas/tarjetas']">Menú</a>
@@ -53,7 +52,7 @@
         </a>
       }
       @if (clienteActual) {
-        <a [routerLink]="[(esOperador || esDomiciliario) ? '/pedidos' : '/cliente/portal']" class="enlace-acceder-nav enlace-usuario-logueado" title="Ir al Portal">
+        <a [routerLink]="[rutaPerfil]" class="enlace-acceder-nav enlace-usuario-logueado" [title]="esPersonal ? 'Panel de Gestión' : 'Ir a Mi Portal'">
           @if (esAdmin) {
             <span class="badge-rol-nav badge-admin">Admin</span>
           } @else if (esOperador) {

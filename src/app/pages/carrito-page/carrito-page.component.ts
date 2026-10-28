@@ -40,17 +40,23 @@ export class CarritoPageComponent implements OnInit, OnDestroy {
     return this.clienteService.esAdmin();
   }
 
+  get esOperador(): boolean {
+    return this.clienteService.esOperador();
+  }
+
   get esPersonal(): boolean {
     return this.clienteService.esAdmin() || this.clienteService.esOperador() || this.clienteService.esDomiciliario();
   }
 
+  get rutaRetornoPersonal(): string {
+    if (this.esAdmin) return '/comidas';
+    if (this.esOperador) return '/pedidos';
+    return '/comidas/tabla';
+  }
+
   ngOnInit(): void {
     if (this.esPersonal) {
-      if (this.clienteService.esAdmin()) {
-        this.router.navigate(['/comidas']);
-      } else {
-        this.router.navigate(['/pedidos']);
-      }
+      this.router.navigate([this.rutaRetornoPersonal]);
     }
   }
   private carritoService = inject(CarritoService);

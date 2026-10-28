@@ -32,6 +32,13 @@ export class NavbarComponent {
     return this.clienteService.esAdmin();
   }
 
+  get rutaPerfil(): string {
+    if (this.esOperador) return '/pedidos';
+    if (this.esAdmin) return '/comidas/tabla';
+    if (this.esDomiciliario) return '/comidas/tabla';
+    return '/cliente/portal';
+  }
+
   get esPersonal(): boolean {
     return this.esAdmin || this.esOperador || this.esDomiciliario;
   }

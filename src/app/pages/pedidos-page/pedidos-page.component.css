@@ -226,3 +226,53 @@
   color: #ef4444;
   border-color: #ef4444;
 }
+
+
+.card-acceso-denegado-pedidos {
+  max-width: 580px;
+  margin: 60px auto;
+  background-color: #1e1a19;
+  border: 1px solid rgba(238, 26, 14, 0.35);
+  border-radius: 8px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.icono-denegado-pedidos {
+  font-size: 48px;
+  color: #ee1a0e;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.titulo-denegado-pedidos {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 28px;
+  color: #fcf2e9;
+  margin: 0 0 12px 0;
+}
+
+.desc-denegado-pedidos {
+  color: #a89f91;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.btn-volver-denegado-pedidos {
+  display: inline-block;
+  background-color: #ee1a0e;
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-volver-denegado-pedidos:hover {
+  background-color: #c91409;
+  color: #ffffff;
+}

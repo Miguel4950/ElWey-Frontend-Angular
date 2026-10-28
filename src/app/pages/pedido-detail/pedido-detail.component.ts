@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -34,6 +34,7 @@ import { PedidoInfoComponent } from './components/pedido-info/pedido-info.compon
 })
 export class PedidoDetailComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private pedidoService = inject(PedidoService);
   private domiciliarioService = inject(DomiciliarioService);
   private clienteService = inject(ClienteService);
@@ -49,12 +50,15 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
   get puedeGestionar(): boolean {
     return (
       this.clienteService.esOperador() ||
-      this.clienteService.esAdmin() ||
-      this.clienteService.esDomiciliario()
+      this.clienteService.esAdmin()
     );
   }
 
   ngOnInit(): void {
+    if (this.clienteService.esDomiciliario()) {
+      this.router.navigate(['/comidas/tabla']);
+      return;
+    }
     this.pedidoId = Number(this.route.snapshot.params['id']);
     if (this.pedidoId) {
       this.cargarDetalleYRepartidores();
