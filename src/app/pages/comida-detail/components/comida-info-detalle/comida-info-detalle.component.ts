@@ -29,6 +29,9 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
   adicionales = input<AdicionalDTO[]>([]);
 
   cantidadProducto: number = 1;
+  // Control reactivo del pop-up modal (Angular Way con @if + Bootstrap 5)
+  isModalOpen: boolean = false;
+  elementoSeleccionado: ComidaDTO | null = null;
   adicionalesSeleccionados: AdicionalCantidadDTO[] = [];
 
   pedidoCreado: PedidoDTO | null = null;
@@ -67,6 +70,23 @@ export class ComidaInfoDetalleComponent implements OnDestroy {
     const input = event.target as HTMLInputElement;
     const valor = Number(input.value);
     this.cantidadProducto = valor > 0 ? valor : 1;
+  }
+
+  abrirModal(c: ComidaDTO): void {
+    this.elementoSeleccionado = c;
+    this.isModalOpen = true;
+  }
+
+  cerrarModal(): void {
+    this.isModalOpen = false;
+    this.elementoSeleccionado = null;
+  }
+
+  confirmarPedidoDirecto(): void {
+    if (!this.elementoSeleccionado) return;
+    const plato = this.elementoSeleccionado;
+    this.cerrarModal();
+    this.ordenarPedido(plato);
   }
 
   onAdicionalesChange(seleccionados: AdicionalCantidadDTO[]): void {
