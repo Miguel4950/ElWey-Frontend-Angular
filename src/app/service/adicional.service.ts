@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AdicionalAsignacionDTO } from '../dtos/adicional-asignacion.dto';
 import { AdicionalDTO } from '../dtos/adicional.dto';
 
 /**
@@ -20,6 +21,10 @@ export class AdicionalService {
    */
   getAdicionales(): Observable<AdicionalDTO[]> {
     return this.http.get<AdicionalDTO[]>(this.apiUrl);
+  }
+
+  getAdicionalesParaAsignacion(): Observable<AdicionalAsignacionDTO[]> {
+    return this.http.get<AdicionalAsignacionDTO[]>(this.apiUrl);
   }
 
   /**
@@ -56,11 +61,11 @@ export class AdicionalService {
    */
   guardarAdicionalesPorCategoria(
     categoriaId: number,
-    adicionales: { id: number; seleccionado: boolean }[]
+    adicionalesIds: number[]
   ): Observable<void> {
     return this.http.post<void>(`${this.apiBaseUrl}/categoria/adicionales`, {
       categoriaId,
-      adicionales,
+      adicionalesIds,
     });
   }
 

@@ -5,7 +5,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
-import { AdicionalDTO } from '../../dtos/adicional.dto';
+import { AdicionalAsignacionDTO } from '../../dtos/adicional-asignacion.dto';
 import { CategoriaDTO } from '../../dtos/categoria.dto';
 import { AdicionalService } from '../../service/adicional.service';
 import { ClienteService } from '../../service/cliente.service';
@@ -25,7 +25,7 @@ export class CategoriasAdicionalesPageComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   categorias: CategoriaDTO[] = [];
-  adicionales: AdicionalDTO[] = [];
+  adicionales: AdicionalAsignacionDTO[] = [];
   adicionalesSeleccionados = new Set<number>();
   categoriaSeleccionadaId: number | null = null;
   cargando = false;
@@ -60,7 +60,7 @@ export class CategoriasAdicionalesPageComponent implements OnInit, OnDestroy {
     this.subscription.add(
       forkJoin({
         categorias: this.comidaService.getCategorias(),
-        adicionales: this.adicionalService.getAdicionales(),
+        adicionales: this.adicionalService.getAdicionalesParaAsignacion(),
       }).subscribe({
         next: ({ categorias, adicionales }) => {
           this.categorias = categorias;
@@ -110,19 +110,14 @@ export class CategoriasAdicionalesPageComponent implements OnInit, OnDestroy {
   guardarAsignaciones(): void {
     if (this.categoriaSeleccionadaId === null || this.guardando) return;
 
-    const asignaciones = this.adicionales
-      .filter((adicional): adicional is AdicionalDTO & { id: number } => adicional.id !== undefined)
-      .map((adicional) => ({
-        id: adicional.id,
-        seleccionado: this.adicionalesSeleccionados.has(adicional.id),
-      }));
+    const adicionalesIds = Array.from(this.adicionalesSeleccionados);
 
     this.guardando = true;
     this.mensajeExito = '';
     this.errorMessage = '';
     const categoriaId = this.categoriaSeleccionadaId;
     this.subscription.add(
-      this.adicionalService.guardarAdicionalesPorCategoria(categoriaId, asignaciones).subscribe({
+      this.adicionalService.guardarAdicionalesPorCategoria(categoriaId, adicionalesIds).subscribe({
         next: () => {
           this.mensajeExito = `Se guardaron las asignaciones de ${this.adicionalesSeleccionados.size} adicionales para la categoría "${this.categoriaSeleccionada?.nombre}".`;
           this.cargarDatos();
@@ -139,11 +134,13 @@ export class CategoriasAdicionalesPageComponent implements OnInit, OnDestroy {
   }
 
   private sincronizarSeleccion(): void {
+    const categoriaId = this.categoriaSeleccionadaId;
     this.adicionalesSeleccionados = new Set(
-      this.adicionales
-        .filter((adicional) => adicional.categoriaId === this.categoriaSeleccionadaId)
-        .map((adicional) => adicional.id)
-        .filter((id): id is number => id !== undefined)
+      categoriaId === null
+        ? []
+        : this.adicionales
+          .filter((adicional) => adicional.categoriasId.includes(categoriaId))
+          .map((adicional) => adicional.id)
     );
   }
 }
