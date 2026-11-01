@@ -76,19 +76,28 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
   }
 
   evaluarRuta(): void {
+    const vistaPrevia = this.esVistaTarjetas;
     const url = this.router.url;
     this.esVistaTarjetas = url.includes('tarjetas');
     const cliente = this.clienteService.getClienteActual();
     // Si un cliente común autenticado intenta entrar a la tabla, redirigir a tarjetas
     if (!this.esVistaTarjetas && cliente && !this.esPersonal) {
       this.router.navigate(['/comidas/tarjetas']);
+      return;
+    }
+    if (vistaPrevia !== this.esVistaTarjetas && this.comidaArray.length > 0) {
+      this.cargarComidas();
     }
   }
 
   cargarComidas(): void {
     this.errorMessage = '';
+    const peticion$ = this.esVistaTarjetas
+      ? this.comidaService.getComidasActivas()
+      : this.comidaService.getComidas();
+
     this.subscription.add(
-      this.comidaService.getComidasActivas().subscribe({
+      peticion$.subscribe({
         next: (comidas: ComidaDTO[]) => {
           this.comidaArray = comidas;
         },
