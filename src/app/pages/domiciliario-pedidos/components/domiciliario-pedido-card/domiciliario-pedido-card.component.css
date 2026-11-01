@@ -1,0 +1,260 @@
+/* Tarjeta de entrega */
+.card-pedido-entrega {
+  background-color: #1e1a19;
+  border: 1px solid rgba(252, 242, 233, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card-pedido-entrega:hover {
+  transform: translateY(-2px);
+}
+
+.borde-ruta {
+  border-left: 4px solid #3b82f6;
+}
+
+.borde-cola {
+  border-left: 4px solid #f59e0b;
+}
+
+.borde-entregado {
+  border-left: 4px solid #10b981;
+  opacity: 0.85;
+}
+
+/* Cabecera de la tarjeta */
+.cabecera-card-pedido {
+  background-color: #26211f;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(252, 242, 233, 0.06);
+}
+
+.id-pedido-card {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fcf2e9;
+  margin: 6px 0 0 0;
+}
+
+.precio-card-pedido {
+  text-align: right;
+}
+
+.etiqueta-total-cobro {
+  display: block;
+  font-size: 11px;
+  color: #8c827a;
+  text-transform: uppercase;
+}
+
+.monto-total {
+  font-size: 18px;
+  color: #fbbf24;
+}
+
+/* Insignias de estado */
+.badge-estado-domi {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.badge-en-camino {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.dot-pulso-azul {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
+}
+
+.badge-listo-barra {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.dot-listo {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+.badge-cocinando-cola {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.dot-ambar {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+}
+
+.badge-entregado-verde {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.dot-verde {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+/* Cuerpo de la tarjeta */
+.cuerpo-card-pedido {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.bloque-cliente-domi {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(252, 242, 233, 0.08);
+}
+
+.dato-destinatario {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.icono-dato {
+  font-size: 16px;
+  color: #ee1a0e;
+  margin-top: 1px;
+}
+
+.nombre-destinatario {
+  display: block;
+  font-size: 14px;
+  color: #fcf2e9;
+}
+
+.correo-destinatario {
+  display: block;
+  font-size: 11px;
+  color: #8c827a;
+}
+
+.direccion-destinatario {
+  display: block;
+  font-size: 13px;
+  color: #fcf2e9;
+}
+
+.telefono-destinatario {
+  display: block;
+  font-size: 11px;
+  color: #fbbf24;
+  margin-top: 2px;
+}
+
+/* Desglose de ítems */
+.bloque-items-domi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.titulo-items-domi {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #8c827a;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.lista-items-domi {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-linea-domi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #ded7ce;
+  background-color: rgba(252, 242, 233, 0.02);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.badge-adicionales-domi {
+  font-size: 10px;
+  background-color: rgba(238, 26, 14, 0.15);
+  color: #ff6b6b;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Pie de la tarjeta */
+.pie-card-pedido {
+  padding: 12px 18px;
+  background-color: #171614;
+  border-top: 1px solid rgba(252, 242, 233, 0.06);
+}
+
+.btn-accion-entregar {
+  width: 100%;
+  background-color: #10b981;
+  color: #ffffff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.btn-accion-entregar:hover {
+  background-color: #059669;
+}
+
+.pie-card-pedido-info {
+  padding: 10px 18px;
+  background-color: rgba(245, 158, 11, 0.05);
+  border-top: 1px solid rgba(245, 158, 11, 0.1);
+  font-size: 11px;
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+}

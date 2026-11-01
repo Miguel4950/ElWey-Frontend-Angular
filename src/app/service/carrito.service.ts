@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
 import { ItemCarritoDTO } from '../dtos/carrito.dto';
 
 @Injectable({
@@ -6,6 +7,16 @@ import { ItemCarritoDTO } from '../dtos/carrito.dto';
 })
 export class CarritoService {
   private items: ItemCarritoDTO[] = [];
+  private itemsSubject = new BehaviorSubject<ItemCarritoDTO[]>([]);
+
+  // Flujos reactivos para componentes
+  public items$ = this.itemsSubject.asObservable();
+  public cantidadTotal$ = this.items$.pipe(
+    map((items) => items.reduce((acc, it) => acc + it.cantidad, 0))
+  );
+  public total$ = this.items$.pipe(
+    map((items) => items.reduce((acc, it) => acc + it.subtotal, 0))
+  );
 
   constructor() {
     this.cargarDesdeStorage();
@@ -16,7 +27,7 @@ export class CarritoService {
   }
 
   agregarItem(item: ItemCarritoDTO): void {
-    // Si ya existe el mismo plato con exactamente los mismos adicionales, sumamos la cantidad
+    // Si ya existe el mismo plato con los mismos adicionales, sumamos la cantidad
     const index = this.items.findIndex((it) => this.sonIguales(it, item));
     if (index !== -1) {
       this.items[index].cantidad += item.cantidad;
@@ -86,7 +97,6 @@ export class CarritoService {
     if (a.comidaId !== b.comidaId) return false;
     if (a.adicionales.length !== b.adicionales.length) return false;
 
-    // Verificar si todos los adicionales y cantidades coinciden
     for (const adicA of a.adicionales) {
       const adicB = b.adicionales.find((ad) => ad.adicionalId === adicA.adicionalId);
       if (!adicB || adicB.cantidad !== adicA.cantidad) {
@@ -104,6 +114,7 @@ export class CarritoService {
     } catch {
       // Ignorar si localStorage no está disponible
     }
+    this.itemsSubject.next([...this.items]);
   }
 
   private cargarDesdeStorage(): void {
@@ -117,6 +128,6 @@ export class CarritoService {
     } catch {
       this.items = [];
     }
+    this.itemsSubject.next([...this.items]);
   }
 }
-

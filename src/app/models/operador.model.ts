@@ -1,8 +1,9 @@
-export class Operador {
-  constructor(
-    public id: number,
-    public nombre: string,
-    public usuario: string,
-    public contrasena: string,
-  ) {}
+// Datos del operador de cocina
+export interface Operador {
+  id?: number;
+  nombre: string;
+  usuario: string;
+  contrasena?: string;
 }
+
+export type OperadorDTO = Operador;

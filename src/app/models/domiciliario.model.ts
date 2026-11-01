@@ -1,12 +1,11 @@
-import { Pedido } from './pedido.model';
-
-export class Domiciliario {
-  constructor(
-    public id: number,
-    public cedula: string,
-    public nombre: string,
-    public celular: string,
-    public disponible: boolean = true,
-    public pedidos: Pedido[] = [],
-  ) {}
+// Datos del domiciliario
+export interface Domiciliario {
+  id?: number;
+  cedula: string;
+  nombre: string;
+  celular: string;
+  contrasena?: string;
+  disponible: boolean;
 }
+
+export type DomiciliarioDTO = Domiciliario;

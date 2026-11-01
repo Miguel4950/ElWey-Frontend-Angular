@@ -1,15 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { ClienteDTO } from '../dtos/cliente.dto';
 import { UsuarioDTO } from '../dtos/usuario.dto';
 import { LoginDTO } from '../dtos/login.dto';
 
-/**
- * Servicio para la gestión de Clientes y control de Sesión Multi-Rol.
- * Conecta con ClienteController, OperadorController, DomiciliarioController y AdministradorController en Spring Boot en el puerto 8080 (sin /api).
- * Persiste la sesión en localStorage para mantenerla activa al recargar la página (F5).
- */
 @Injectable({
   providedIn: 'root',
 })
@@ -20,34 +15,34 @@ export class ClienteService {
 
   private readonly STORAGE_KEY = 'clienteActual';
 
-  // Usuario autenticado activo en memoria (puede ser Cliente, Operador, Domiciliario o Admin)
+  // Usuario en memoria y observable reactivo
   private clienteActual: UsuarioDTO | null = null;
+  private usuarioSubject = new BehaviorSubject<UsuarioDTO | null>(null);
+  public usuarioActual$ = this.usuarioSubject.asObservable();
 
   constructor() {
     this.cargarSesionDesdeStorage();
   }
 
-  /**
-   * Carga la sesión guardada en localStorage al inicializar la aplicación.
-   */
+  // Carga sesión guardada en localStorage
   private cargarSesionDesdeStorage(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       const guardado = localStorage.getItem(this.STORAGE_KEY);
       if (guardado) {
         try {
           this.clienteActual = JSON.parse(guardado);
+          this.usuarioSubject.next(this.clienteActual);
         } catch (e) {
           console.error('Error al parsear clienteActual desde localStorage:', e);
           this.clienteActual = null;
+          this.usuarioSubject.next(null);
           localStorage.removeItem(this.STORAGE_KEY);
         }
       }
     }
   }
 
-  /**
-   * Retorna el usuario autenticado actualmente en memoria o desde localStorage.
-   */
+  // Retorna el usuario autenticado actual
   getClienteActual(): UsuarioDTO | null {
     if (!this.clienteActual && typeof window !== 'undefined' && window.localStorage) {
       this.cargarSesionDesdeStorage();
@@ -55,11 +50,10 @@ export class ClienteService {
     return this.clienteActual;
   }
 
-  /**
-   * Almacena el usuario autenticado en memoria y en localStorage.
-   */
+  // Guarda usuario en memoria, emite el cambio y persiste en storage
   setClienteActual(usuario: UsuarioDTO | null): void {
     this.clienteActual = usuario;
+    this.usuarioSubject.next(usuario);
     if (typeof window !== 'undefined' && window.localStorage) {
       if (usuario) {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(usuario));
@@ -69,11 +63,10 @@ export class ClienteService {
     }
   }
 
-  /**
-   * Limpia la sesión en memoria y elimina los datos de localStorage al salir.
-   */
+  // Cierra sesión y notifica a los suscriptores
   cerrarSesion(): void {
     this.clienteActual = null;
+    this.usuarioSubject.next(null);
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.removeItem(this.STORAGE_KEY);
     }

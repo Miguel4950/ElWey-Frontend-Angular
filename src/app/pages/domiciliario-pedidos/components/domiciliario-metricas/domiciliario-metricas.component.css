@@ -1,0 +1,49 @@
+.metricas-domiciliario {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tarjeta-metrica-domi {
+  background-color: #1e1a19;
+  border: 1px solid rgba(252, 242, 233, 0.08);
+  border-radius: 8px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 140px;
+}
+
+.icono-metrica {
+  font-size: 26px;
+}
+
+.valor-metrica {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fcf2e9;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.etiqueta-metrica {
+  display: block;
+  font-size: 11px;
+  color: #8c827a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metrica-ruta {
+  border-left: 3px solid #3b82f6;
+}
+
+.metrica-cola {
+  border-left: 3px solid #f59e0b;
+}
+
+.metrica-entregados {
+  border-left: 3px solid #10b981;
+}

@@ -1,19 +1,14 @@
-import { Categoria } from './categoria.model';
-import { Adicional } from './adicional.model';
-
-/**
- * Modelo de clase para la entidad Comida.
- */
-export class Comida {
-  constructor(
-    public id: number,
-    public nombre: string,
-    public precio: number,
-    public descripcion: string,
-    public imagen_url: string,
-    public etiqueta: string,
-    public activo: boolean = true,
-    public categoria: Categoria,
-    public adicionalesDisponibles: Adicional[] = [],
-  ) {}
+// Plato del menú
+export interface Comida {
+  id?: number;
+  nombre: string;
+  precio: number;
+  descripcion: string;
+  imagen_url: string;
+  etiqueta: string;
+  activo?: boolean;
+  categoriaId?: number;
+  categoriaNombre?: string;
 }
+
+export type ComidaDTO = Comida;

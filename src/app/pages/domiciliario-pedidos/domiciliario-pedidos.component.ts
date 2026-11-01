@@ -1,27 +1,24 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
-import { PedidoDTO } from '../../dtos/pedido.dto';
+import { DomiciliarioMetricasComponent } from './components/domiciliario-metricas/domiciliario-metricas.component';
+import { DomiciliarioPedidoCardComponent } from './components/domiciliario-pedido-card/domiciliario-pedido-card.component';
+import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../service/pedido.service';
 import { ClienteService } from '../../service/cliente.service';
 
-/**
- * Portal exclusivo para repartidores (Domiciliarios) de "El Wey".
- * Permite monitorear las entregas en curso en ruta, visualizar pedidos asignados en cola (cocina)
- * y confirmar las entregas exitosas a los clientes en tiempo real.
- */
 @Component({
   selector: 'app-domiciliario-pedidos',
   standalone: true,
   imports: [
-    DecimalPipe,
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
+    DomiciliarioMetricasComponent,
+    DomiciliarioPedidoCardComponent,
   ],
   templateUrl: './domiciliario-pedidos.component.html',
   styleUrl: './domiciliario-pedidos.component.css',
@@ -32,12 +29,11 @@ export class DomiciliarioPedidosComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private subscription: Subscription = new Subscription();
 
-  pedidosArray: PedidoDTO[] = [];
+  pedidosArray: Pedido[] = [];
   cargando: boolean = true;
   mensajeExito: string = '';
   errorMessage: string = '';
 
-  // Filtro de vista activo dentro del portal
   pestanaActiva: 'EN_RUTA' | 'EN_COLA' | 'ENTREGADOS' | 'TODOS' = 'EN_RUTA';
 
   get domiciliarioActual() {
@@ -53,12 +49,10 @@ export class DomiciliarioPedidosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Protección de ruta: Solo Domiciliario y Administrador pueden acceder
     if (!this.esDomiciliario && !this.esAdmin) {
       this.router.navigate(['/cliente/portal']);
       return;
     }
-
     this.cargarPedidos();
   }
 
@@ -81,7 +75,7 @@ export class DomiciliarioPedidosComponent implements OnInit, OnDestroy {
           this.pedidosArray = pedidos;
           this.cargando = false;
         },
-        error: (err) => {
+        error: (err: unknown) => {
           console.error('Error al cargar pedidos del domiciliario:', err);
           this.errorMessage = 'No se pudieron consultar tus pedidos asignados.';
           this.cargando = false;
@@ -90,45 +84,37 @@ export class DomiciliarioPedidosComponent implements OnInit, OnDestroy {
     );
   }
 
-  get pedidosEnRuta(): PedidoDTO[] {
+  get pedidosEnRuta(): Pedido[] {
     return this.pedidosArray.filter(
       (p) => p.estado === 'Enviado' || p.estado === 'En camino' || p.estado === 'Enviando'
     );
   }
 
-  get pedidosEnCola(): PedidoDTO[] {
+  get pedidosEnCola(): Pedido[] {
     return this.pedidosArray.filter(
       (p) => p.estado === 'Cocinando' || p.estado === 'Listo' || p.estado === 'En preparación'
     );
   }
 
-  get pedidosEntregados(): PedidoDTO[] {
+  get pedidosEntregados(): Pedido[] {
     return this.pedidosArray.filter((p) => p.estado === 'Entregado');
   }
 
-  /**
-   * Acción ejecutada directamente por el repartidor al entregar el pedido en mano del cliente.
-   */
   marcarComoEntregado(pedidoId: number): void {
-    if (!pedidoId) return;
-
-    this.errorMessage = '';
     this.mensajeExito = '';
+    this.errorMessage = '';
 
     this.subscription.add(
-      this.pedidoService
-        .actualizarEstadoPedido(pedidoId, { estado: 'Entregado' })
-        .subscribe({
-          next: () => {
-            this.mensajeExito = `¡Excelente trabajo! El pedido #${pedidoId} ha sido marcado como entregado con éxito.`;
-            this.cargarPedidos();
-          },
-          error: (err) => {
-            console.error('Error al confirmar entrega:', err);
-            this.errorMessage =
-              err?.error?.mensaje || 'Ocurrió un error al confirmar la entrega del pedido.';
-          },
-        })
+      this.pedidoService.actualizarEstadoPedido(pedidoId, { estado: 'Entregado' }).subscribe({
+        next: () => {
+          this.mensajeExito = `¡Pedido #${pedidoId} marcado como entregado con éxito!`;
+          this.cargarPedidos();
+        },
+        error: (err: unknown) => {
+          console.error('Error al entregar pedido:', err);
+          this.errorMessage = 'No se pudo actualizar el estado del pedido.';
+        },
+      })
     );
   }
 }

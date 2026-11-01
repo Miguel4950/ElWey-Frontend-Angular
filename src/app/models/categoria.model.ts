@@ -1,13 +1,8 @@
-import { Comida } from './comida.model';
-import { Adicional } from './adicional.model';
-
-export class Categoria {
-  constructor(
-    public id: number,
-    public nombre: string,
-    public descripcion: string,
-    public activo: boolean = true,
-    public comidas: Comida[] = [],
-    public adicionales: Adicional[] = [],
-  ) {}
+// Categoría de comida (Tacos, Bebidas, etc.)
+export interface Categoria {
+  id: number;
+  nombre: string;
+  descripcion?: string;
 }
+
+export type CategoriaDTO = Categoria;

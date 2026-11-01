@@ -15,114 +15,43 @@ import { OperadoresPageComponent } from './pages/operadores-page/operadores-page
 import { DomiciliariosPageComponent } from './pages/domiciliarios-page/domiciliarios-page.component';
 import { DomiciliarioPedidosComponent } from './pages/domiciliario-pedidos/domiciliario-pedidos.component';
 
-/**
- * Definición central de rutas de la aplicación Angular "El Wey".
- * Incluye rutas públicas de clientes, portal de pedidos y CRUDs administrativos.
- */
 export const routes: Routes = [
-  {
-    path: '',
-    component: LandingPageComponent,
-  },
-  {
-    path: 'comidas',
-    component: ComidaTablePageComponent,
-  },
-  {
-    path: 'comidas/tabla',
-    component: ComidaTablePageComponent,
-  },
-  {
-    path: 'comidas/tarjetas',
-    component: ComidaTablePageComponent,
-  },
-  {
-    path: 'comidas/new',
-    component: ComidaFormComponent,
-  },
-  {
-    path: 'comidas/crear',
-    component: ComidaFormComponent,
-  },
-  {
-    path: 'comidas/editar/:id',
-    component: ComidaFormComponent,
-  },
-  {
-    path: 'comidas/:id',
-    component: ComidaDetailComponent,
-  },
-  // Gestión de Adicionales (Admin)
-  {
-    path: 'admin/adicionales',
-    component: AdicionalesPageComponent,
-  },
-  {
-    path: 'admin/categorias-adicionales',
-    component: CategoriasAdicionalesPageComponent,
-  },
-  {
-    path: 'adicionales',
-    component: AdicionalesPageComponent,
-  },
-  // Gestión de Operadores de Cocina (Admin)
-  {
-    path: 'admin/operadores',
-    component: OperadoresPageComponent,
-  },
-  {
-    path: 'operadores',
-    component: OperadoresPageComponent,
-  },
-  // Gestión de Domiciliarios y Flota (Admin / Operador)
-  {
-    path: 'admin/domiciliarios',
-    component: DomiciliariosPageComponent,
-  },
-  {
-    path: 'domiciliarios',
-    component: DomiciliariosPageComponent,
-  },
-  // Autenticación y Registro
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'registro',
-    component: RegistroComponent,
-  },
-  // Portal del Cliente
-  {
-    path: 'cliente/portal',
-    component: MiPortalComponent,
-  },
-  {
-    path: 'cliente/portal/:id',
-    component: MiPortalComponent,
-  },
-  // Portal del Domiciliario (Despachos y Entregas)
-  {
-    path: 'domiciliario/pedidos',
-    component: DomiciliarioPedidosComponent,
-  },
-  // Gestión y Monitoreo de Pedidos
-  {
-    path: 'pedidos',
-    component: PedidosPageComponent,
-  },
-  {
-    path: 'pedidos/:id',
-    component: PedidoDetailComponent,
-  },
+  { path: '', component: LandingPageComponent },
+
+  // Catálogo de comidas
+  { path: 'comidas', component: ComidaTablePageComponent },
+  { path: 'comidas/tabla', component: ComidaTablePageComponent },
+  { path: 'comidas/tarjetas', component: ComidaTablePageComponent },
+  { path: 'comidas/new', redirectTo: 'comidas/crear', pathMatch: 'full' },
+  { path: 'comidas/crear', component: ComidaFormComponent },
+  { path: 'comidas/editar/:id', component: ComidaFormComponent },
+  { path: 'comidas/:id', component: ComidaDetailComponent },
+
+  // Administración
+  { path: 'admin/adicionales', component: AdicionalesPageComponent },
+  { path: 'admin/categorias-adicionales', component: CategoriasAdicionalesPageComponent },
+  { path: 'adicionales', redirectTo: 'admin/adicionales', pathMatch: 'full' },
+
+  { path: 'admin/operadores', component: OperadoresPageComponent },
+  { path: 'operadores', redirectTo: 'admin/operadores', pathMatch: 'full' },
+
+  { path: 'admin/domiciliarios', component: DomiciliariosPageComponent },
+  { path: 'domiciliarios', redirectTo: 'admin/domiciliarios', pathMatch: 'full' },
+
+  // Autenticación
+  { path: 'login', component: LoginComponent },
+  { path: 'registro', component: RegistroComponent },
+
+  // Portales según rol
+  { path: 'cliente/portal', component: MiPortalComponent },
+  { path: 'cliente/portal/:id', component: MiPortalComponent },
+  { path: 'domiciliario/pedidos', component: DomiciliarioPedidosComponent },
+  { path: 'pedidos', component: PedidosPageComponent },
+  { path: 'pedidos/:id', component: PedidoDetailComponent },
+
   // Carrito de compras
-  {
-    path: 'carrito',
-    component: CarritoPageComponent,
-  },
-  // Redirección por defecto ante rutas desconocidas
-  {
-    path: '**',
-    redirectTo: '',
-  },
+  { path: 'carrito', component: CarritoPageComponent },
+
+  // Ruta comodín para redirigir a inicio
+  { path: '**', redirectTo: '' },
 ];

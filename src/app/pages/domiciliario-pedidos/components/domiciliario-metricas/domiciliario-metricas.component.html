@@ -1,0 +1,25 @@
+<div class="metricas-domiciliario">
+  <div class="tarjeta-metrica-domi metrica-ruta">
+    <span class="icono-metrica">🛵</span>
+    <div>
+      <span class="valor-metrica">{{ enRutaCount() }}</span>
+      <span class="etiqueta-metrica">En Ruta Ahora</span>
+    </div>
+  </div>
+
+  <div class="tarjeta-metrica-domi metrica-cola">
+    <span class="icono-metrica">🍲</span>
+    <div>
+      <span class="valor-metrica">{{ enColaCount() }}</span>
+      <span class="etiqueta-metrica">En Cola Cocina</span>
+    </div>
+  </div>
+
+  <div class="tarjeta-metrica-domi metrica-entregados">
+    <span class="icono-metrica">✅</span>
+    <div>
+      <span class="valor-metrica">{{ entregadosCount() }}</span>
+      <span class="etiqueta-metrica">Entregados Hoy</span>
+    </div>
+  </div>
+</div>

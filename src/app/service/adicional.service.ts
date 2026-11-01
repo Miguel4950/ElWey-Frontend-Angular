@@ -1,12 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AdicionalDTO } from '../dtos/adicional.dto';
+import { Adicional } from '../models/adicional.model';
 
-/**
- * Servicio para la gestión integral de Adicionales (extras, salsas y guarniciones).
- * Conecta con el controlador REST AdicionalController de Spring Boot en el puerto 8080 (sin /api).
- */
+// Servicio para ingredientes adicionales, salsas y extras
 @Injectable({
   providedIn: 'root',
 })
@@ -15,45 +12,33 @@ export class AdicionalService {
   private apiBaseUrl = 'http://localhost:8080';
   private apiUrl = `${this.apiBaseUrl}/adicionales`;
 
-  /**
-   * Obtiene la lista completa de todos los adicionales registrados.
-   */
-  getAdicionales(): Observable<AdicionalDTO[]> {
-    return this.http.get<AdicionalDTO[]>(this.apiUrl);
+  // Lista completa de adicionales
+  getAdicionales(): Observable<Adicional[]> {
+    return this.http.get<Adicional[]>(this.apiUrl);
   }
 
-  /**
-   * Consulta un adicional específico a través de su identificador ID.
-   */
-  getAdicionalById(id: number): Observable<AdicionalDTO> {
-    return this.http.get<AdicionalDTO>(`${this.apiUrl}/${id}`);
+  // Consulta un adicional por ID
+  getAdicionalById(id: number): Observable<Adicional> {
+    return this.http.get<Adicional>(`${this.apiUrl}/${id}`);
   }
 
-  /**
-   * Consulta los adicionales disponibles para una comida específica.
-   */
-  getAdicionalesByComidaId(comidaId: number): Observable<AdicionalDTO[]> {
-    return this.http.get<AdicionalDTO[]>(`${this.apiUrl}/comida/${comidaId}`);
+  // Adicionales disponibles para un plato
+  getAdicionalesByComidaId(comidaId: number): Observable<Adicional[]> {
+    return this.http.get<Adicional[]>(`${this.apiUrl}/comida/${comidaId}`);
   }
 
-  /**
-   * Registra un nuevo adicional en el sistema, con categoría opcional.
-   */
-  createAdicional(adicional: AdicionalDTO, categoriaId?: number): Observable<AdicionalDTO> {
+  // Crea un nuevo adicional
+  createAdicional(adicional: Adicional, categoriaId?: number): Observable<Adicional> {
     const url = categoriaId ? `${this.apiUrl}?categoriaId=${categoriaId}` : this.apiUrl;
-    return this.http.post<AdicionalDTO>(url, adicional);
+    return this.http.post<Adicional>(url, adicional);
   }
 
-  /**
-   * Actualiza el nombre, precio o estado de un adicional existente.
-   */
-  updateAdicional(id: number, adicional: AdicionalDTO): Observable<AdicionalDTO> {
-    return this.http.put<AdicionalDTO>(`${this.apiUrl}/${id}`, adicional);
+  // Actualiza un adicional existente
+  updateAdicional(id: number, adicional: Adicional): Observable<Adicional> {
+    return this.http.put<Adicional>(`${this.apiUrl}/${id}`, adicional);
   }
 
-  /**
-   * Guarda en una sola operación los adicionales seleccionados para una categoría.
-   */
+  // Guarda la lista de adicionales asociados a una categoría
   guardarAdicionalesPorCategoria(
     categoriaId: number,
     adicionales: { id: number; seleccionado: boolean }[]
@@ -64,9 +49,7 @@ export class AdicionalService {
     });
   }
 
-  /**
-   * Elimina un adicional del sistema de manera segura.
-   */
+  // Elimina un adicional por ID
   deleteAdicional(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
