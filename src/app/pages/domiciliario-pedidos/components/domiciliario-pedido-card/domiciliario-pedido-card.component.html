@@ -1,83 +1,41 @@
-<article
-  class="card-pedido-entrega"
-  [class.borde-ruta]="esEnRuta"
-  [class.borde-cola]="esListo || esCocinando"
-  [class.borde-entregado]="esEntregado"
->
-  <header class="cabecera-card-pedido">
-    <div>
-      @if (esEnRuta) {
+@if (modo() === 'EN_RUTA') {
+  <article class="card-pedido-entrega borde-ruta">
+    <header class="cabecera-card-pedido">
+      <div>
         <span class="badge-estado-domi badge-en-camino">
           <span class="dot-pulso-azul"></span> EN RUTA AHORA
         </span>
-      } @else if (esListo) {
-        <span class="badge-estado-domi badge-listo-barra">
-          <span class="dot-listo"></span> LISTO EN BARRA
-        </span>
-      } @else if (esCocinando) {
-        <span class="badge-estado-domi badge-cocinando-cola">
-          <span class="dot-ambar"></span> COCINANDO EN FOGÓN
-        </span>
-      } @else if (esEntregado) {
-        <span class="badge-estado-domi badge-entregado-verde">
-          <span class="dot-verde"></span> ENTREGADO
-        </span>
-      } @else {
-        <span class="badge-estado-domi">{{ pedido().estado }}</span>
-      }
-
-      <h3 class="id-pedido-card">Pedido #{{ pedido().id }}</h3>
-    </div>
-
-    <div class="precio-card-pedido">
-      <span class="etiqueta-total-cobro">
-        {{ esEntregado ? 'Total pagado:' : 'Total a cobrar:' }}
-      </span>
-      <strong class="monto-total">${{ pedido().total | number:'1.0-0' }}</strong>
-    </div>
-  </header>
-
-  <div class="cuerpo-card-pedido">
-    <div class="bloque-cliente-domi">
-      <div class="dato-destinatario">
-        <i class="bi bi-person-fill icono-dato"></i>
-        <div>
-          <strong class="nombre-destinatario">{{ pedido().clienteNombre }}</strong>
-          <span class="correo-destinatario">
-            {{ pedido().clienteCorreo || (esEntregado ? 'Entregado a cliente' : 'Sin correo registrado') }}
-          </span>
-        </div>
+        <h3 class="id-pedido-card">Pedido #{{ pedido().id }}</h3>
       </div>
-
-      <div class="dato-destinatario">
-        <i class="bi bi-geo-alt-fill icono-dato"></i>
-        <div>
-          <strong class="direccion-destinatario">
-            {{ pedido().clienteDireccion || 'Entrega en domicilio del cliente' }}
-          </strong>
-          @if (pedido().clienteTelefono && !esEntregado) {
-            <span class="telefono-destinatario">Tel: {{ pedido().clienteTelefono }}</span>
-          }
-        </div>
+      <div class="precio-card-pedido">
+        <span class="etiqueta-total-cobro">Total a cobrar:</span>
+        <strong class="monto-total">${{ pedido().total | number:'1.0-0' }}</strong>
       </div>
+    </header>
 
-      @if (esEntregado && (pedido().fechaEntrega || pedido().fechaCreacion)) {
+    <div class="cuerpo-card-pedido">
+      <!-- Información del Cliente y Destino -->
+      <div class="bloque-cliente-domi">
         <div class="dato-destinatario">
-          <i class="bi bi-clock-fill icono-dato text-muted"></i>
+          <i class="bi bi-person-fill icono-dato"></i>
           <div>
-            <span class="correo-destinatario">
-              Fecha: {{ pedido().fechaEntrega || pedido().fechaCreacion }}
-            </span>
+            <strong class="nombre-destinatario">{{ pedido().clienteNombre }}</strong>
+            <span class="correo-destinatario">{{ pedido().clienteCorreo || 'Sin correo registrado' }}</span>
           </div>
         </div>
-      }
-    </div>
 
-    @if (pedido().items && pedido().items!.length > 0) {
+        <div class="dato-destinatario">
+          <i class="bi bi-geo-alt-fill icono-dato"></i>
+          <div>
+            <strong class="direccion-destinatario">{{ pedido().clienteDireccion || 'Entrega en domicilio del cliente' }}</strong>
+            <span class="telefono-destinatario">Tel: {{ pedido().clienteTelefono || 'No suministrado' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desglose de Platos en la Maleta -->
       <div class="bloque-items-domi">
-        <h4 class="titulo-items-domi">
-          {{ esCocinando ? 'Platos en preparación:' : 'Contenido del Pedido:' }}
-        </h4>
+        <h4 class="titulo-items-domi">Contenido del Pedido:</h4>
         <ul class="lista-items-domi">
           @for (item of pedido().items; track $index) {
             <li class="item-linea-domi">
@@ -89,19 +47,151 @@
           }
         </ul>
       </div>
-    }
-  </div>
+    </div>
 
-  @if (esEnRuta) {
     <footer class="pie-card-pedido">
-      <button type="button" class="btn-accion-entregar" (click)="onEntregar()">
+      <button
+        type="button"
+        class="btn-accion-entregar"
+        (click)="onEntregar()"
+      >
         <i class="bi bi-check2-circle me-2"></i> Confirmar Entrega Realizada
       </button>
     </footer>
-  } @else if (esListo || esCocinando) {
+  </article>
+}
+
+@if (modo() === 'EN_COLA') {
+  <article class="card-pedido-entrega borde-cola">
+    <header class="cabecera-card-pedido">
+      <div>
+        @if (pedido().estado === 'Listo') {
+          <span class="badge-estado-domi badge-listo-barra">
+            <span class="dot-listo"></span> LISTO EN BARRA (Por Despachar)
+          </span>
+        } @else {
+          <span class="badge-estado-domi badge-cocinando-cola">
+            <span class="dot-ambar"></span> COCINANDO EN FOGÓN
+          </span>
+        }
+        <h3 class="id-pedido-card">Pedido #{{ pedido().id }}</h3>
+      </div>
+      <div class="precio-card-pedido">
+        <span class="etiqueta-total-cobro">Valor orden:</span>
+        <strong class="monto-total">${{ pedido().total | number:'1.0-0' }}</strong>
+      </div>
+    </header>
+
+    <div class="cuerpo-card-pedido">
+      <div class="bloque-cliente-domi">
+        <div class="dato-destinatario">
+          <i class="bi bi-person-fill icono-dato"></i>
+          <div>
+            <strong class="nombre-destinatario">{{ pedido().clienteNombre }}</strong>
+            <span class="correo-destinatario">{{ pedido().clienteCorreo || 'Cliente registrado' }}</span>
+          </div>
+        </div>
+
+        <div class="dato-destinatario">
+          <i class="bi bi-geo-alt-fill icono-dato"></i>
+          <div>
+            <strong class="direccion-destinatario">{{ pedido().clienteDireccion || 'Dirección de entrega' }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque-items-domi">
+        <h4 class="titulo-items-domi">Platos en preparación:</h4>
+        <ul class="lista-items-domi">
+          @for (item of pedido().items; track $index) {
+            <li class="item-linea-domi">
+              <span><strong>{{ item.cantidad }}x</strong> {{ item.comidaNombre }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
     <footer class="pie-card-pedido-info">
       <i class="bi bi-info-circle-fill me-2 text-warning"></i>
       <span>Cocina te entregará este pedido una vez finalizado el empaque.</span>
     </footer>
-  }
-</article>
+  </article>
+}
+
+@if (modo() === 'ENTREGADOS') {
+  <article class="card-pedido-entrega borde-entregado">
+    <header class="cabecera-card-pedido">
+      <div>
+        <span class="badge-estado-domi badge-entregado-verde">
+          <span class="dot-verde"></span> ENTREGADO
+        </span>
+        <h3 class="id-pedido-card">Pedido #{{ pedido().id }}</h3>
+      </div>
+      <div class="precio-card-pedido">
+        <span class="etiqueta-total-cobro">Total pagado:</span>
+        <strong class="monto-total">${{ pedido().total | number:'1.0-0' }}</strong>
+      </div>
+    </header>
+
+    <div class="cuerpo-card-pedido">
+      <div class="bloque-cliente-domi">
+        <div class="dato-destinatario">
+          <i class="bi bi-person-fill icono-dato"></i>
+          <div>
+            <strong class="nombre-destinatario">{{ pedido().clienteNombre }}</strong>
+            <span class="correo-destinatario">Entregado a cliente</span>
+          </div>
+        </div>
+
+        <div class="dato-destinatario">
+          <i class="bi bi-clock-fill icono-dato text-muted"></i>
+          <div>
+            <span class="correo-destinatario">Fecha: {{ pedido().fechaEntrega || pedido().fechaCreacion }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+}
+
+@if (modo() === 'TODOS') {
+  <article
+    class="card-pedido-entrega"
+    [class.borde-ruta]="pedido().estado === 'Enviado' || pedido().estado === 'En camino'"
+    [class.borde-entregado]="pedido().estado === 'Entregado'"
+  >
+    <header class="cabecera-card-pedido">
+      <div>
+        <span
+          class="badge-estado-domi"
+          [class.badge-en-camino]="pedido().estado === 'Enviado' || pedido().estado === 'En camino'"
+          [class.badge-listo-barra]="pedido().estado === 'Listo'"
+          [class.badge-entregado-verde]="pedido().estado === 'Entregado'"
+          [class.badge-cocinando-cola]="pedido().estado === 'Cocinando'"
+        >
+          {{ pedido().estado }}
+        </span>
+        <h3 class="id-pedido-card">Pedido #{{ pedido().id }}</h3>
+      </div>
+      <div class="precio-card-pedido">
+        <strong class="monto-total">${{ pedido().total | number:'1.0-0' }}</strong>
+      </div>
+    </header>
+
+    <div class="cuerpo-card-pedido">
+      <div class="bloque-cliente-domi">
+        <strong class="nombre-destinatario">{{ pedido().clienteNombre }}</strong>
+        <span class="correo-destinatario">{{ pedido().clienteDireccion || 'Dirección registrada' }}</span>
+      </div>
+    </div>
+
+    @if (pedido().estado === 'Enviado' || pedido().estado === 'En camino') {
+      <footer class="pie-card-pedido">
+        <button type="button" class="btn-accion-entregar" (click)="onEntregar()">
+          <i class="bi bi-check2-circle me-2"></i> Confirmar Entrega
+        </button>
+      </footer>
+    }
+  </article>
+}

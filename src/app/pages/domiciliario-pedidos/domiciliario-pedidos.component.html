@@ -3,7 +3,7 @@
 <main class="main-domiciliario-portal">
   <div class="contenedor-domiciliario">
 
-    <!-- Cabecera y métricas -->
+    <!-- Cabecera de Identificación del Domiciliario -->
     <div class="header-domiciliario">
       <div>
         <p class="subtitulo-domiciliario">Portal de Reparto y Logística</p>
@@ -13,7 +13,7 @@
         </p>
       </div>
 
-      <!-- Componente hijo: Tarjetas de Métricas -->
+      <!-- Tarjetas de métricas rápidas (Lego) -->
       <app-domiciliario-metricas
         [enRutaCount]="pedidosEnRuta.length"
         [enColaCount]="pedidosEnCola.length"
@@ -21,7 +21,7 @@
       ></app-domiciliario-metricas>
     </div>
 
-    <!-- Alertas -->
+    <!-- Alertas de Éxito y Error -->
     @if (mensajeExito) {
       <div class="alerta-domi alerta-exito">
         <i class="bi bi-check-circle-fill"></i>
@@ -36,7 +36,7 @@
       </div>
     }
 
-    <!-- Selector de Pestañas -->
+    <!-- Selector de Pestañas / Filtros -->
     <div class="card-pestanas-domi">
       <div class="grupo-pestanas">
         <button
@@ -78,7 +78,7 @@
       </button>
     </div>
 
-    <!-- Pestaña 1: En Ruta -->
+    <!-- SECCIÓN 1: PEDIDOS EN RUTA (PESTAÑA EN_RUTA) -->
     @if (pestanaActiva === 'EN_RUTA') {
       <section class="seccion-bloque-pedidos">
         <h2 class="subtitulo-seccion">
@@ -89,6 +89,7 @@
           @for (p of pedidosEnRuta; track p.id) {
             <app-domiciliario-pedido-card
               [pedido]="p"
+              [modo]="'EN_RUTA'"
               (confirmarEntrega)="marcarComoEntregado($event)"
             ></app-domiciliario-pedido-card>
           } @empty {
@@ -104,7 +105,7 @@
       </section>
     }
 
-    <!-- Pestaña 2: En Cola -->
+    <!-- SECCIÓN 2: PEDIDOS EN COLA / COCINA (PESTAÑA EN_COLA) -->
     @if (pestanaActiva === 'EN_COLA') {
       <section class="seccion-bloque-pedidos">
         <h2 class="subtitulo-seccion">
@@ -115,6 +116,7 @@
           @for (p of pedidosEnCola; track p.id) {
             <app-domiciliario-pedido-card
               [pedido]="p"
+              [modo]="'EN_COLA'"
               (confirmarEntrega)="marcarComoEntregado($event)"
             ></app-domiciliario-pedido-card>
           } @empty {
@@ -128,7 +130,7 @@
       </section>
     }
 
-    <!-- Pestaña 3: Entregados -->
+    <!-- SECCIÓN 3: PEDIDOS ENTREGADOS (PESTAÑA ENTREGADOS) -->
     @if (pestanaActiva === 'ENTREGADOS') {
       <section class="seccion-bloque-pedidos">
         <h2 class="subtitulo-seccion">
@@ -139,6 +141,7 @@
           @for (p of pedidosEntregados; track p.id) {
             <app-domiciliario-pedido-card
               [pedido]="p"
+              [modo]="'ENTREGADOS'"
               (confirmarEntrega)="marcarComoEntregado($event)"
             ></app-domiciliario-pedido-card>
           } @empty {
@@ -152,7 +155,7 @@
       </section>
     }
 
-    <!-- Pestaña 4: Todos -->
+    <!-- SECCIÓN 4: TODOS LOS PEDIDOS ASIGNADOS -->
     @if (pestanaActiva === 'TODOS') {
       <section class="seccion-bloque-pedidos">
         <h2 class="subtitulo-seccion">
@@ -163,6 +166,7 @@
           @for (p of pedidosArray; track p.id) {
             <app-domiciliario-pedido-card
               [pedido]="p"
+              [modo]="'TODOS'"
               (confirmarEntrega)="marcarComoEntregado($event)"
             ></app-domiciliario-pedido-card>
           }

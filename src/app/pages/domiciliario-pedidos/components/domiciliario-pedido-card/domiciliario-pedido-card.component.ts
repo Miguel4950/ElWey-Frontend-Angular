@@ -11,24 +11,8 @@ import { Pedido } from '../../../../models/pedido.model';
 })
 export class DomiciliarioPedidoCardComponent {
   pedido = input.required<Pedido>();
+  modo = input<'EN_RUTA' | 'EN_COLA' | 'ENTREGADOS' | 'TODOS'>('TODOS');
   confirmarEntrega = output<number>();
-
-  get esEnRuta(): boolean {
-    const estado = this.pedido().estado;
-    return estado === 'Enviado' || estado === 'En camino' || estado === 'Enviando';
-  }
-
-  get esListo(): boolean {
-    return this.pedido().estado === 'Listo';
-  }
-
-  get esCocinando(): boolean {
-    return this.pedido().estado === 'Cocinando';
-  }
-
-  get esEntregado(): boolean {
-    return this.pedido().estado === 'Entregado';
-  }
 
   onEntregar(): void {
     this.confirmarEntrega.emit(this.pedido().id);
