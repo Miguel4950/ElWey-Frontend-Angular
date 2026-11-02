@@ -6,7 +6,10 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { PedidosTableComponent } from './components/pedidos-table/pedidos-table.component';
-import { PedidosFlotaComponent } from './components/pedidos-flota/pedidos-flota.component';
+import {
+  PedidosFlotaComponent,
+  DomiciliarioCargaItem,
+} from './components/pedidos-flota/pedidos-flota.component';
 import { PedidosFiltrosComponent } from './components/pedidos-filtros/pedidos-filtros.component';
 import { PedidoDTO } from '../../dtos/pedido.dto';
 import { DomiciliarioDTO } from '../../dtos/domiciliario.dto';
@@ -53,7 +56,7 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   /**
    * Calcula la carga de trabajo en tiempo real de toda la flota (disponibles y ocupados).
    */
-  get flotaConCarga() {
+  get flotaConCarga(): DomiciliarioCargaItem[] {
     return this.domiciliariosArray.map((dom) => {
       const asignados = this.pedidosArray.filter((p) => {
         const idCoincide = p.domiciliarioId != null && Number(p.domiciliarioId) === Number(dom.id);
