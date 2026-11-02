@@ -90,7 +90,7 @@
       <!-- Resumen acumulado estimado en tiempo real -->
       <div class="caja-subtotal-estimado">
         <div class="fila-resumen-subtotal">
-          <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}@if (bebidaSeleccionada) { + 1x {{ bebidaSeleccionada.nombre }}}):</span>
+          <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}@if (bebidaSeleccionada) { + {{ cantidadBebida }}x {{ bebidaSeleccionada.nombre }}}):</span>
           <strong class="precio-subtotal-estimado">${{ subtotalAcumulado | number:'1.0-0' }}</strong>
         </div>
       </div>
@@ -147,7 +147,7 @@
                     @if (bebidaSeleccionada) {
                       <div class="modal-detalle-bebida">
                         <i class="bi bi-cup-straw text-warning"></i>
-                        <span>Incluye bebida: <strong>{{ bebidaSeleccionada.nombre }}</strong> (+${{ bebidaSeleccionada.precio | number:'1.0-0' }})</span>
+                        <span>Incluye bebida: <strong>{{ cantidadBebida }}x {{ bebidaSeleccionada.nombre }}</strong> (+${{ ((bebidaSeleccionada.precio || 0) * cantidadBebida) | number:'1.0-0' }})</span>
                       </div>
                     }
                   </div>
@@ -180,7 +180,7 @@
           <strong>¡Plato y acompañamiento agregados al carrito!</strong>
           <p class="detalle-exito-pedido">
             {{ cantidadProducto }}x <strong>{{ c.nombre }}</strong>
-            @if (bebidaSeleccionada) { + 1x <strong>{{ bebidaSeleccionada.nombre }}</strong> }
+            @if (bebidaSeleccionada) { + {{ cantidadBebida }}x <strong>{{ bebidaSeleccionada.nombre }}</strong> }
             agregado(s) con éxito a tu orden.
           </p>
           <div class="acciones-alerta-carrito">

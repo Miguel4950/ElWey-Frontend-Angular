@@ -27,6 +27,7 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
   private subsBebidas?: Subscription;
   bebidasDisponibles: ComidaDTO[] = [];
   bebidaSeleccionada: ComidaDTO | null = null;
+  cantidadBebida: number = 1;
   private subscription?: Subscription;
 
   // Signal Inputs independientes (ComidaDTO y AdicionalDTO[])
@@ -80,7 +81,7 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
       const precio = adicObj?.precio || 0;
       return sum + precio * item.cantidad;
     }, 0);
-    const subtotalBebida = this.bebidaSeleccionada ? (this.bebidaSeleccionada.precio || 0) : 0;
+    const subtotalBebida = this.bebidaSeleccionada ? ((this.bebidaSeleccionada.precio || 0) * this.cantidadBebida) : 0;
     return subtotalPlato + subtotalAdicsPorcion * this.cantidadProducto + subtotalBebida;
   }
 
