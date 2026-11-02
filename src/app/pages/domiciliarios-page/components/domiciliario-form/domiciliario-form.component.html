@@ -102,10 +102,10 @@
 
     <!-- Disponibilidad -->
     <div class="grupo-campo">
-      <label for="disponible" class="etiqueta-campo">TURNO DE TRABAJO (HOY)</label>
+      <label for="disponible" class="etiqueta-campo">ESTADO DE DISPONIBILIDAD</label>
       <select id="disponible" formControlName="disponible" class="input-texto input-select">
-        <option [ngValue]="true">Trabajando (En turno activo hoy)</option>
-        <option [ngValue]="false">Descanso (Fuera de turno hoy)</option>
+        <option [ngValue]="true">Disponible (En turno activo)</option>
+        <option [ngValue]="false">Ocupado (No disponible para entregas)</option>
       </select>
     </div>
 

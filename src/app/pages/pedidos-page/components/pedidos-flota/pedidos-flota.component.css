@@ -51,16 +51,16 @@
   border-radius: 20px;
 }
 
-.chip-libre {
+.chip-disponible {
   background-color: rgba(34, 197, 94, 0.15);
   color: #4ade80;
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
-.chip-total {
-  background-color: rgba(255, 255, 255, 0.06);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.chip-ocupado {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .grid-tarjetas-flota {
@@ -80,21 +80,12 @@
   transition: all 0.2s ease;
 }
 
-.tarjeta-repartidor-carga.carga-libre {
+.tarjeta-repartidor-carga.carga-disponible {
   border-left: 3px solid #22c55e;
 }
 
-.tarjeta-repartidor-carga.carga-moderada {
-  border-left: 3px solid #eab308;
-}
-
-.tarjeta-repartidor-carga.carga-saturado {
+.tarjeta-repartidor-carga.carga-ocupado {
   border-left: 3px solid #ef4444;
-}
-
-.tarjeta-repartidor-carga.carga-descanso {
-  border-left: 3px solid #6b7280;
-  opacity: 0.65;
 }
 
 .repartidor-icono-nombre {
@@ -140,30 +131,44 @@
   color: #ffffff;
 }
 
-.badge-nivel-carga {
-  font-size: 10px;
+/* Badges con punto de estado en CSS puro */
+.badge-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.badge-nivel-libre {
-  background-color: rgba(34, 197, 94, 0.2);
+.badge-disponible {
+  background-color: rgba(34, 197, 94, 0.12);
   color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.35);
 }
 
-.badge-nivel-moderado {
-  background-color: rgba(234, 179, 8, 0.2);
-  color: #facc15;
-}
-
-.badge-nivel-saturado {
-  background-color: rgba(239, 68, 68, 0.2);
+.badge-ocupado {
+  background-color: rgba(239, 68, 68, 0.12);
   color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
-.badge-nivel-descanso {
-  background-color: rgba(107, 114, 128, 0.2);
-  color: #9ca3af;
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-verde {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+.dot-rojo {
+  background-color: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
 }

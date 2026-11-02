@@ -1,4 +1,4 @@
-<!-- Panel de Monitoreo de Flota y Carga de Domiciliarios (Lego) -->
+<!-- Panel de Monitoreo de Flota de Despachos (Lego) -->
 <div class="card-flota-monitoreo">
   <div class="cabecera-flota-monitoreo">
     <div>
@@ -6,11 +6,11 @@
       <h3 class="titulo-flota">Carga de Trabajo de Repartidores</h3>
     </div>
     <div class="resumen-flota-chips">
-      <span class="chip-flota chip-libre">
-        🟢 {{ totalDomiciliariosTrabajando() }} Trabajando ({{ totalDomiciliariosLibres() }} libres)
+      <span class="chip-flota chip-disponible">
+        🟢 {{ totalDomiciliariosDisponibles() }} Disponibles
       </span>
-      <span class="chip-flota chip-total">
-        ☕ {{ totalDomiciliariosDescanso() }} en Descanso
+      <span class="chip-flota chip-ocupado">
+        🔴 {{ totalDomiciliariosOcupados() }} Ocupados
       </span>
     </div>
   </div>
@@ -19,10 +19,8 @@
     @for (item of flotaConCarga(); track item.domiciliario.id) {
       <div
         class="tarjeta-repartidor-carga"
-        [class.carga-libre]="item.estadoCarga === 'LIBRE'"
-        [class.carga-moderada]="item.estadoCarga === 'MODERADA'"
-        [class.carga-saturado]="item.estadoCarga === 'SATURADO'"
-        [class.carga-descanso]="item.estadoCarga === 'DESCANSO'"
+        [class.carga-disponible]="item.domiciliario.disponible"
+        [class.carga-ocupado]="!item.domiciliario.disponible"
       >
         <div class="repartidor-icono-nombre">
           <span class="avatar-domi">🛵</span>
@@ -38,14 +36,16 @@
             <span class="item-carga-mini">En cola: <strong>{{ item.pedidosEnCola }}</strong></span>
           </div>
 
-          @if (item.estadoCarga === 'DESCANSO') {
-            <span class="badge-nivel-carga badge-nivel-descanso">☕ Descanso</span>
-          } @else if (item.estadoCarga === 'LIBRE') {
-            <span class="badge-nivel-carga badge-nivel-libre">🟢 Libre</span>
-          } @else if (item.estadoCarga === 'MODERADA') {
-            <span class="badge-nivel-carga badge-nivel-moderado">🟡 {{ item.pedidosActivos }} activo(s)</span>
+          @if (item.domiciliario.disponible) {
+            <span class="badge-estado badge-disponible">
+              <span class="status-dot dot-verde"></span>
+              Disponible
+            </span>
           } @else {
-            <span class="badge-nivel-carga badge-nivel-saturado">🔴 {{ item.pedidosActivos }} (Saturado)</span>
+            <span class="badge-estado badge-ocupado">
+              <span class="status-dot dot-rojo"></span>
+              Ocupado
+            </span>
           }
         </div>
       </div>

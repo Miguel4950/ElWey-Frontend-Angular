@@ -8,7 +8,6 @@ import { Component, input } from '@angular/core';
 })
 export class PedidosFlotaComponent {
   flotaConCarga = input.required<any[]>();
-  totalDomiciliariosTrabajando = input<number>(0);
-  totalDomiciliariosLibres = input<number>(0);
-  totalDomiciliariosDescanso = input<number>(0);
+  totalDomiciliariosDisponibles = input<number>(0);
+  totalDomiciliariosOcupados = input<number>(0);
 }

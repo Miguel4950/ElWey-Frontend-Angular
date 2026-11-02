@@ -39,7 +39,7 @@
             </span>
           }
           <span class="badge-total-pedidos">
-            Repartidores en Turno: <strong>{{ totalDomiciliariosTrabajando }}</strong> / {{ domiciliariosArray.length }}
+            Repartidores Disponibles: <strong>{{ totalDomiciliariosDisponibles }}</strong> / {{ domiciliariosArray.length }}
           </span>
         </div>
       </div>
@@ -47,9 +47,8 @@
       <!-- Subcomponente 1: Monitoreo de Flota (Lego) -->
       <app-pedidos-flota
         [flotaConCarga]="flotaConCarga"
-        [totalDomiciliariosTrabajando]="totalDomiciliariosTrabajando"
-        [totalDomiciliariosLibres]="totalDomiciliariosLibres"
-        [totalDomiciliariosDescanso]="totalDomiciliariosDescanso"
+        [totalDomiciliariosDisponibles]="totalDomiciliariosDisponibles"
+        [totalDomiciliariosOcupados]="totalDomiciliariosOcupados"
       ></app-pedidos-flota>
 
       <!-- Alertas de Éxito y Error -->

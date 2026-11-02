@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -51,11 +51,10 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calcula la carga de trabajo en tiempo real de toda la flota (en turno y en descanso).
+   * Calcula la carga de trabajo en tiempo real de toda la flota (disponibles y ocupados).
    */
   get flotaConCarga() {
     return this.domiciliariosArray.map((dom) => {
-      const estaTrabajando = dom.disponible;
       const asignados = this.pedidosArray.filter((p) => {
         const idCoincide = p.domiciliarioId != null && Number(p.domiciliarioId) === Number(dom.id);
         const nombreCoincide = Boolean(
@@ -84,19 +83,11 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
       }).length;
 
       const totalActivos = asignados.length;
-
-      let estadoCarga: 'LIBRE' | 'MODERADA' | 'SATURADO' | 'DESCANSO' = 'LIBRE';
-      if (!estaTrabajando) {
-        estadoCarga = 'DESCANSO';
-      } else if (totalActivos >= 3) {
-        estadoCarga = 'SATURADO';
-      } else if (totalActivos >= 1) {
-        estadoCarga = 'MODERADA';
-      }
+      const estadoCarga: 'DISPONIBLE' | 'OCUPADO' = dom.disponible ? 'DISPONIBLE' : 'OCUPADO';
 
       return {
         domiciliario: dom,
-        estaTrabajando,
+        estaDisponible: dom.disponible,
         pedidosActivos: totalActivos,
         pedidosEnRuta: enRuta,
         pedidosEnCola: enCola,
@@ -105,18 +96,13 @@ export class PedidosPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  get totalDomiciliariosTrabajando(): number {
+  get totalDomiciliariosDisponibles(): number {
     return this.domiciliariosArray.filter((d) => d.disponible).length;
   }
 
-  get totalDomiciliariosDescanso(): number {
+  get totalDomiciliariosOcupados(): number {
     return this.domiciliariosArray.filter((d) => !d.disponible).length;
   }
-
-  get totalDomiciliariosLibres(): number {
-    return this.flotaConCarga.filter((f) => f.estadoCarga === 'LIBRE').length;
-  }
-
 
   // Pestaña de estado activa
   pestanaEstado: 'TODOS' | 'ACTIVOS' | 'ENTREGADOS' = 'TODOS';
