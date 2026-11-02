@@ -33,12 +33,12 @@
             @if (d.disponible) {
               <span class="badge-estado badge-disponible">
                 <span class="status-dot dot-verde"></span>
-                Trabajando
+                Disponible
               </span>
             } @else {
               <span class="badge-estado badge-ocupado">
                 <span class="status-dot dot-rojo"></span>
-                Descanso
+                Ocupado
               </span>
             }
           </td>
@@ -49,9 +49,9 @@
                 type="button"
                 (click)="toggle(d)"
                 class="btn-accion btn-toggle"
-                [title]="d.disponible ? 'Poner en Descanso' : 'Poner a Trabajar'"
+                [title]="d.disponible ? 'Marcar como Ocupado' : 'Marcar como Disponible'"
               >
-                {{ d.disponible ? 'Poner en Descanso' : 'Poner a Trabajar' }}
+                {{ d.disponible ? 'Marcar como Ocupado' : 'Marcar como Disponible' }}
               </button>
               <button
                 type="button"
