@@ -107,7 +107,6 @@ export class DomiciliariosPageComponent implements OnInit, OnDestroy {
    */
   toggleDisponibilidad(domiciliario: DomiciliarioDTO): void {
     if (!domiciliario.id) return;
-    this.errorMessage = '';
     const nuevoEstado = !domiciliario.disponible;
 
     this.subscription.add(
@@ -119,6 +118,7 @@ export class DomiciliariosPageComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.error('Error al cambiar disponibilidad:', err);
+          this.mensajeExito = '';
           this.errorMessage =
             err?.error?.mensaje || 'Error al cambiar la disponibilidad del domiciliario.';
         },
