@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Adicional } from '../models/adicional.model';
+import { AdicionalAsignacionDTO } from '../dtos/adicional-asignacion.dto';
 
 // Servicio para ingredientes adicionales, salsas y extras
 @Injectable({
@@ -15,6 +16,11 @@ export class AdicionalService {
   // Lista completa de adicionales
   getAdicionales(): Observable<Adicional[]> {
     return this.http.get<Adicional[]>(this.apiUrl);
+  }
+
+  // Lista de adicionales con sus categorías asignadas para pantalla de configuración
+  getAdicionalesParaAsignacion(): Observable<AdicionalAsignacionDTO[]> {
+    return this.http.get<AdicionalAsignacionDTO[]>(this.apiUrl);
   }
 
   // Consulta un adicional por ID
@@ -38,14 +44,14 @@ export class AdicionalService {
     return this.http.put<Adicional>(`${this.apiUrl}/${id}`, adicional);
   }
 
-  // Guarda la lista de adicionales asociados a una categoría
+  // Guarda la lista de adicionales asociados a una categoría (IDs seleccionados)
   guardarAdicionalesPorCategoria(
     categoriaId: number,
-    adicionales: { id: number; seleccionado: boolean }[]
+    adicionalesIds: number[]
   ): Observable<void> {
     return this.http.post<void>(`${this.apiBaseUrl}/categoria/adicionales`, {
       categoriaId,
-      adicionales,
+      adicionalesIds,
     });
   }
 
