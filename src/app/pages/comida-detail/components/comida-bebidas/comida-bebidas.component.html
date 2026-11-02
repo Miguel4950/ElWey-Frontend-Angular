@@ -1,0 +1,102 @@
+<div class="caja-maridaje-bebidas">
+  <div class="cabecera-maridaje">
+    <span class="icono-maridaje">🥤</span>
+    <div>
+      <strong class="titulo-maridaje">¿Deseas acompañar tu plato con bebidas frías?</strong>
+      <p class="subtitulo-maridaje">
+        Puedes seleccionar varias bebidas distintas (ej. Sprite, Coca-Cola) y ajustar las unidades de cada una
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-bebidas-recomendadas">
+    @for (bebida of bebidas(); track bebida.id) {
+      <div
+        class="tarjeta-bebida-opcion"
+        [class.bebida-seleccionada]="isSeleccionada(bebida.id)"
+        (click)="seleccionarOIncrementar(bebida, $event)"
+      >
+        <img [src]="bebida.imagen_url" [alt]="bebida.nombre" class="img-bebida-opcion" />
+        
+        <div class="info-bebida-opcion">
+          <span class="nombre-bebida-opcion" [title]="bebida.nombre">{{ bebida.nombre }}</span>
+          <span class="precio-bebida-opcion">+${{ bebida.precio | number:'1.0-0' }}</span>
+        </div>
+
+        <div class="accion-bebida-opcion">
+          @if (!isSeleccionada(bebida.id)) {
+            <button
+              type="button"
+              class="btn-agregar-bebida-mini"
+              (click)="seleccionarOIncrementar(bebida, $event)"
+              title="Agregar esta bebida"
+            >
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          } @else {
+            <div class="stepper-bebida-mini" (click)="$event.stopPropagation()">
+              <button
+                type="button"
+                class="btn-stepper-mini"
+                (click)="decrementar(bebida.id, $event)"
+                title="Disminuir"
+              >
+                -
+              </button>
+              <span class="stepper-num-mini">{{ getCantidad(bebida.id) }}</span>
+              <button
+                type="button"
+                class="btn-stepper-mini"
+                (click)="seleccionarOIncrementar(bebida, $event)"
+                title="Aumentar"
+              >
+                +
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    } @empty {
+      <div class="sin-bebidas-disponibles">
+        No hay bebidas disponibles en este momento.
+      </div>
+    }
+  </div>
+
+  @if (seleccionadas.length > 0) {
+    <div class="resumen-bebidas-seleccionadas">
+      <div class="cabecera-resumen-bebidas">
+        <span class="titulo-resumen-bebidas">
+          <i class="bi bi-check2-circle me-1"></i> Bebidas elegidas ({{ cantidadTotal }} ud):
+        </span>
+        <button type="button" class="btn-limpiar-todas-bebidas" (click)="limpiar()">
+          Quitar todas
+        </button>
+      </div>
+
+      <div class="chips-bebidas-contenedor">
+        @for (item of seleccionadas; track item.bebida.id) {
+          <div class="chip-bebida">
+            <span class="chip-texto">
+              <strong>{{ item.cantidad }}x</strong> {{ item.bebida.nombre }}
+              <span class="chip-subtotal">(${{ ((item.bebida.precio || 0) * item.cantidad) | number:'1.0-0' }})</span>
+            </span>
+            <button
+              type="button"
+              class="btn-quitar-chip"
+              (click)="quitar(item.bebida.id, $event)"
+              title="Quitar esta bebida"
+            >
+              &times;
+            </button>
+          </div>
+        }
+      </div>
+
+      <div class="pie-resumen-bebidas">
+        <span class="texto-total-bebidas">Subtotal Bebidas:</span>
+        <strong class="precio-total-bebidas">+${{ totalBebidas | number:'1.0-0' }}</strong>
+      </div>
+    </div>
+  }
+</div>

@@ -34,85 +34,39 @@
         />
       </div>
 
-      <!-- Adicionales Disponibles (Subcomponente fraccionado) -->
+      <!-- Adicionales Disponibles (Subcomponente fraccionado Lego) -->
       <app-comida-adicionales
         [adicionales]="adicionales()"
         [categoriaNombre]="c.categoriaNombre"
         (adicionalesChange)="onAdicionalesChange($event)"
-            ></app-comida-adicionales>
+      ></app-comida-adicionales>
 
+      <!-- Bebidas Frías Disponibles (Subcomponente fraccionado Lego) -->
       @if (!esBebida && !esPersonal && bebidasDisponibles.length > 0) {
-        <div class="caja-maridaje-bebidas">
-          <div class="cabecera-maridaje">
-            <span class="icono-maridaje">🥤</span>
-            <div>
-              <strong class="titulo-maridaje">¿Deseas acompañar tu plato con una bebida fría?</strong>
-              <p class="subtitulo-maridaje">Selecciona tu bebida favorita para sumarla a tu pedido en 1 clic</p>
-            </div>
-          </div>
-
-          <div class="grid-bebidas-recomendadas">
-            @for (bebida of bebidasDisponibles; track bebida.id) {
-              <button
-                type="button"
-                class="tarjeta-bebida-opcion"
-                [class.bebida-seleccionada]="bebidaSeleccionada?.id === bebida.id"
-                (click)="toggleBebida(bebida)"
-              >
-                <img [src]="bebida.imagen_url" [alt]="bebida.nombre" class="img-bebida-opcion" />
-                <div class="info-bebida-opcion">
-                  <span class="nombre-bebida-opcion">{{ bebida.nombre }}</span>
-                  <span class="precio-bebida-opcion">+${{ bebida.precio | number:'1.0-0' }}</span>
-                </div>
-                <div class="check-bebida-opcion">
-                  @if (bebidaSeleccionada?.id === bebida.id) {
-                    <i class="bi bi-check-circle-fill"></i>
-                  } @else {
-                    <i class="bi bi-plus-circle"></i>
-                  }
-                </div>
-              </button>
-            }
-          </div>
-
-          @if (bebidaSeleccionada) {
-            <div class="alerta-bebida-seleccionada">
-              <div class="d-flex align-items-center gap-2 flex-wrap">
-                <i class="bi bi-check2-circle me-1"></i>
-                <span>Bebida: <strong>{{ bebidaSeleccionada.nombre }}</strong></span>
-                <span class="precio-unitario-bebida">(${{ bebidaSeleccionada.precio | number:'1.0-0' }} c/u)</span>
-                <div class="control-cantidad-bebida ms-2">
-                  <span class="label-cantidad-mini">Cant:</span>
-                  <button type="button" class="btn-qty-mini" [disabled]="cantidadBebida <= 1" (click)="decrementarBebida()">-</button>
-                  <span class="qty-num-mini">{{ cantidadBebida }}</span>
-                  <button type="button" class="btn-qty-mini" (click)="incrementarBebida()">+</button>
-                  <strong class="subtotal-bebida-mini">(${{ ((bebidaSeleccionada.precio || 0) * cantidadBebida) | number:'1.0-0' }})</strong>
-                </div>
-              </div>
-              <button type="button" class="btn-quitar-bebida" (click)="toggleBebida(bebidaSeleccionada)">Quitar</button>
-            </div>
-          }
-        </div>
+        <app-comida-bebidas
+          [bebidas]="bebidasDisponibles"
+          (bebidasChange)="onBebidasChange($event)"
+        ></app-comida-bebidas>
       }
 
       @if (!esPersonal) {
         <!-- Resumen acumulado estimado en tiempo real -->
-      <div class="caja-subtotal-estimado">
-        <div class="fila-resumen-subtotal">
-          <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}@if (bebidaSeleccionada) { + {{ cantidadBebida }}x {{ bebidaSeleccionada.nombre }}}):</span>
-          <strong class="precio-subtotal-estimado">${{ subtotalAcumulado | number:'1.0-0' }}</strong>
+        <div class="caja-subtotal-estimado">
+          <div class="fila-resumen-subtotal">
+            <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}@if (cantidadTotalBebidas > 0) { + {{ cantidadTotalBebidas }} bebida(s)}):</span>
+            <strong class="precio-subtotal-estimado">${{ subtotalAcumulado | number:'1.0-0' }}</strong>
+          </div>
         </div>
-      </div>
 
-      <!-- Botones de Acción: Carrito y Pedido Directo -->
-      <div class="fila-botones-compra">
-        <button type="button" class="btn-ordenar-pedido" (click)="agregarAlCarrito(c)">
-          Agregar al Carrito
-        </button>
-        <button type="button" class="btn-ordenar-directo" (click)="abrirModal(c)">
-          Pedir Ahora
-        </button>
-      </div>
+        <!-- Botones de Acción: Carrito y Pedido Directo -->
+        <div class="fila-botones-compra">
+          <button type="button" class="btn-ordenar-pedido" (click)="agregarAlCarrito(c)">
+            Agregar al Carrito
+          </button>
+          <button type="button" class="btn-ordenar-directo" (click)="abrirModal(c)">
+            Pedir Ahora
+          </button>
+        </div>
       } @else {
         <div class="alerta-personal-vista-plato">
           <i class="bi bi-shield-lock-fill"></i>
@@ -124,7 +78,6 @@
       }
 
       @if (isModalOpen) {
-
         <div class="modal-backdrop fade show modal-backdrop-elwey" (click)="cerrarModal()"></div>
 
         <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-labelledby="modalPedirAhoraLabel" aria-modal="true">
@@ -161,10 +114,20 @@
                       </div>
                     }
 
-                    @if (bebidaSeleccionada) {
+                    @if (bebidasSeleccionadas.length > 0) {
                       <div class="modal-detalle-bebida">
                         <i class="bi bi-cup-straw text-warning"></i>
-                        <span>Incluye bebida: <strong>{{ cantidadBebida }}x {{ bebidaSeleccionada.nombre }}</strong> (+${{ ((bebidaSeleccionada.precio || 0) * cantidadBebida) | number:'1.0-0' }})</span>
+                        <div>
+                          <span>Incluye <strong>{{ cantidadTotalBebidas }}</strong> bebida(s) seleccionada(s):</span>
+                          <ul class="modal-lista-bebidas-detalle">
+                            @for (itemB of bebidasSeleccionadas; track itemB.bebida.id) {
+                              <li>
+                                <strong>{{ itemB.cantidad }}x</strong> {{ itemB.bebida.nombre }}
+                                (+${{ ((itemB.bebida.precio || 0) * itemB.cantidad) | number:'1.0-0' }})
+                              </li>
+                            }
+                          </ul>
+                        </div>
                       </div>
                     }
                   </div>
@@ -172,7 +135,7 @@
                   <div class="modal-texto-sugerencia">
                     <i class="bi bi-info-circle-fill"></i>
                     <p class="modal-parrafo-sugerencia">
-                      Si deseas pedir algo más (bebidas, entradas o postres), presiona <strong>"Seguir Explorando"</strong> y utiliza el botón <strong>"Agregar al Carrito"</strong> para armar un solo pedido conjunto.
+                      Si deseas pedir algo más (entradas, postres u otros platos), presiona <strong>"Seguir Explorando"</strong> y utiliza el botón <strong>"Agregar al Carrito"</strong> para armar un solo pedido conjunto.
                     </p>
                   </div>
                 }
@@ -197,7 +160,7 @@
           <strong>¡Plato y acompañamiento agregados al carrito!</strong>
           <p class="detalle-exito-pedido">
             {{ cantidadProducto }}x <strong>{{ c.nombre }}</strong>
-            @if (bebidaSeleccionada) { + {{ cantidadBebida }}x <strong>{{ bebidaSeleccionada.nombre }}</strong> }
+            @if (cantidadTotalBebidas > 0) { + {{ cantidadTotalBebidas }} bebida(s) }
             agregado(s) con éxito a tu orden.
           </p>
           <div class="acciones-alerta-carrito">

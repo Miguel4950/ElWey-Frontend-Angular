@@ -7,15 +7,17 @@ import { AdicionalDTO } from '../../../../dtos/adicional.dto';
 import { AdicionalCantidadDTO, CrearPedidoDTO, ItemCrearPedidoDTO } from '../../../../dtos/crear-pedido.dto';
 import { PedidoDTO } from '../../../../dtos/pedido.dto';
 import { ItemCarritoDTO } from '../../../../dtos/carrito.dto';
+import { BebidaSeleccionadaItem } from '../../../../dtos/bebida-seleccion.dto';
 import { PedidoService } from '../../../../service/pedido.service';
 import { ClienteService } from '../../../../service/cliente.service';
 import { CarritoService } from '../../../../service/carrito.service';
 import { ComidaService } from '../../../../service/comida.service';
 import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicionales.component';
+import { ComidaBebidasComponent } from '../comida-bebidas/comida-bebidas.component';
 
 @Component({
   selector: 'app-comida-info-detalle, app-col-info-detalle',
-  imports: [RouterLink, DecimalPipe, ComidaAdicionalesComponent],
+  imports: [RouterLink, DecimalPipe, ComidaAdicionalesComponent, ComidaBebidasComponent],
   templateUrl: './comida-info-detalle.component.html',
   styleUrl: './comida-info-detalle.component.css',
 })
@@ -25,10 +27,10 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
   private carritoService = inject(CarritoService);
   private comidaService = inject(ComidaService);
   private subsBebidas?: Subscription;
-  bebidasDisponibles: ComidaDTO[] = [];
-  bebidaSeleccionada: ComidaDTO | null = null;
-  cantidadBebida: number = 1;
   private subscription?: Subscription;
+
+  bebidasDisponibles: ComidaDTO[] = [];
+  bebidasSeleccionadas: BebidaSeleccionadaItem[] = [];
 
   // Signal Inputs independientes (ComidaDTO y AdicionalDTO[])
   comida = input<ComidaDTO>();
@@ -55,24 +57,8 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleBebida(b: ComidaDTO): void {
-    if (this.bebidaSeleccionada?.id === b.id) {
-      this.bebidaSeleccionada = null;
-      this.cantidadBebida = 1;
-    } else {
-      this.bebidaSeleccionada = b;
-      this.cantidadBebida = 1;
-    }
-  }
-
-  incrementarBebida(): void {
-    this.cantidadBebida++;
-  }
-
-  decrementarBebida(): void {
-    if (this.cantidadBebida > 1) {
-      this.cantidadBebida--;
-    }
+  onBebidasChange(seleccionadas: BebidaSeleccionadaItem[]): void {
+    this.bebidasSeleccionadas = seleccionadas;
   }
 
   get esBebida(): boolean {
@@ -95,6 +81,17 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
     return this.clienteService.esAdmin();
   }
 
+  get totalBebidas(): number {
+    return this.bebidasSeleccionadas.reduce(
+      (sum, item) => sum + (item.bebida.precio || 0) * item.cantidad,
+      0
+    );
+  }
+
+  get cantidadTotalBebidas(): number {
+    return this.bebidasSeleccionadas.reduce((sum, item) => sum + item.cantidad, 0);
+  }
+
   get subtotalAcumulado(): number {
     const plato = this.comida();
     if (!plato) return 0;
@@ -105,8 +102,7 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
       const precio = adicObj?.precio || 0;
       return sum + precio * item.cantidad;
     }, 0);
-    const subtotalBebida = this.bebidaSeleccionada ? ((this.bebidaSeleccionada.precio || 0) * this.cantidadBebida) : 0;
-    return subtotalPlato + subtotalAdicsPorcion * this.cantidadProducto + subtotalBebida;
+    return subtotalPlato + subtotalAdicsPorcion * this.cantidadProducto + this.totalBebidas;
   }
 
   get totalAdicionalesCantidad(): number {
@@ -185,26 +181,31 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
 
     this.carritoService.agregarItem(itemCarrito);
 
-    if (this.bebidaSeleccionada && this.bebidaSeleccionada.id) {
-      const b = this.bebidaSeleccionada;
-      const itemBebida: ItemCarritoDTO = {
-        id: `${b.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-        comidaId: b.id!,
-        comidaNombre: b.nombre,
-        comidaPrecio: b.precio,
-        categoriaNombre: b.categoriaNombre,
-        imagenUrl: b.imagen_url,
-        cantidad: this.cantidadBebida,
-        adicionales: [],
-        subtotalComida: (b.precio || 0) * this.cantidadBebida,
-        subtotalAdicionales: 0,
-        subtotal: (b.precio || 0) * this.cantidadBebida,
-      };
-      this.carritoService.agregarItem(itemBebida);
+    // Agregar cada una de las bebidas seleccionadas con su cantidad respectiva
+    for (const itemB of this.bebidasSeleccionadas) {
+      if (itemB.bebida && itemB.bebida.id && itemB.cantidad > 0) {
+        const b = itemB.bebida;
+        const subtotalBebida = (b.precio || 0) * itemB.cantidad;
+        const itemBebida: ItemCarritoDTO = {
+          id: `${b.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+          comidaId: b.id!,
+          comidaNombre: b.nombre,
+          comidaPrecio: b.precio,
+          categoriaNombre: b.categoriaNombre,
+          imagenUrl: b.imagen_url,
+          cantidad: itemB.cantidad,
+          adicionales: [],
+          subtotalComida: subtotalBebida,
+          subtotalAdicionales: 0,
+          subtotal: subtotalBebida,
+        };
+        this.carritoService.agregarItem(itemBebida);
+      }
     }
+
     this.agregadoAlCarrito = true;
     this.pedidoCreado = null;
-    this.errorMessage = "";
+    this.errorMessage = '';
   }
 
   ordenarPedido(c: ComidaDTO): void {
@@ -230,12 +231,15 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
       },
     ];
 
-    if (this.bebidaSeleccionada && this.bebidaSeleccionada.id) {
-      itemsPedido.push({
-        comidaId: this.bebidaSeleccionada.id!,
-        cantidad: this.cantidadBebida,
-        adicionales: [],
-      });
+    // Incluir cada bebida seleccionada en la comanda del pedido
+    for (const itemB of this.bebidasSeleccionadas) {
+      if (itemB.bebida && itemB.bebida.id && itemB.cantidad > 0) {
+        itemsPedido.push({
+          comidaId: itemB.bebida.id!,
+          cantidad: itemB.cantidad,
+          adicionales: [],
+        });
+      }
     }
 
     const nuevoPedido: CrearPedidoDTO = {
