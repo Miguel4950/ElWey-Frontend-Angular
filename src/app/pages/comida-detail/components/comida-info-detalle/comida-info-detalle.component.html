@@ -77,9 +77,17 @@
 
           @if (bebidaSeleccionada) {
             <div class="alerta-bebida-seleccionada">
-              <div>
+              <div class="d-flex align-items-center gap-2 flex-wrap">
                 <i class="bi bi-check2-circle me-1"></i>
-                Bebida seleccionada: <strong>{{ bebidaSeleccionada.nombre }}</strong> (+${{ bebidaSeleccionada.precio | number:'1.0-0' }})
+                <span>Bebida: <strong>{{ bebidaSeleccionada.nombre }}</strong></span>
+                <span class="precio-unitario-bebida">(${{ bebidaSeleccionada.precio | number:'1.0-0' }} c/u)</span>
+                <div class="control-cantidad-bebida ms-2">
+                  <span class="label-cantidad-mini">Cant:</span>
+                  <button type="button" class="btn-qty-mini" [disabled]="cantidadBebida <= 1" (click)="decrementarBebida()">-</button>
+                  <span class="qty-num-mini">{{ cantidadBebida }}</span>
+                  <button type="button" class="btn-qty-mini" (click)="incrementarBebida()">+</button>
+                  <strong class="subtotal-bebida-mini">(${{ ((bebidaSeleccionada.precio || 0) * cantidadBebida) | number:'1.0-0' }})</strong>
+                </div>
               </div>
               <button type="button" class="btn-quitar-bebida" (click)="toggleBebida(bebidaSeleccionada)">Quitar</button>
             </div>

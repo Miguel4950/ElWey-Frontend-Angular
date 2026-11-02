@@ -58,8 +58,20 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
   toggleBebida(b: ComidaDTO): void {
     if (this.bebidaSeleccionada?.id === b.id) {
       this.bebidaSeleccionada = null;
+      this.cantidadBebida = 1;
     } else {
       this.bebidaSeleccionada = b;
+      this.cantidadBebida = 1;
+    }
+  }
+
+  incrementarBebida(): void {
+    this.cantidadBebida++;
+  }
+
+  decrementarBebida(): void {
+    if (this.cantidadBebida > 1) {
+      this.cantidadBebida--;
     }
   }
 
@@ -182,11 +194,11 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
         comidaPrecio: b.precio,
         categoriaNombre: b.categoriaNombre,
         imagenUrl: b.imagen_url,
-        cantidad: 1,
+        cantidad: this.cantidadBebida,
         adicionales: [],
-        subtotalComida: b.precio || 0,
+        subtotalComida: (b.precio || 0) * this.cantidadBebida,
         subtotalAdicionales: 0,
-        subtotal: b.precio || 0,
+        subtotal: (b.precio || 0) * this.cantidadBebida,
       };
       this.carritoService.agregarItem(itemBebida);
     }
@@ -221,7 +233,7 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
     if (this.bebidaSeleccionada && this.bebidaSeleccionada.id) {
       itemsPedido.push({
         comidaId: this.bebidaSeleccionada.id!,
-        cantidad: 1,
+        cantidad: this.cantidadBebida,
         adicionales: [],
       });
     }
