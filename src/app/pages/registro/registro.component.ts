@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+﻿import { Component, OnDestroy, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -6,13 +6,14 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { ClienteService } from '../../service/cliente.service';
+import { RegistroFormComponent } from './components/registro-form/registro-form.component';
 import { ClienteDTO } from '../../dtos/cliente.dto';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
+    RegistroFormComponent,
     RouterLink,
     NavbarComponent,
     FooterComponent,

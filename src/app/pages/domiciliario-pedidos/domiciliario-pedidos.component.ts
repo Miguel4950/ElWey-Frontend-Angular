@@ -1,11 +1,12 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+﻿import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { DomiciliarioMetricasComponent } from './components/domiciliario-metricas/domiciliario-metricas.component';
-import { DomiciliarioPedidoCardComponent } from './components/domiciliario-pedido-card/domiciliario-pedido-card.component';
+import { DomiciliarioPedidosSeccionComponent } from './components/domiciliario-pedidos-seccion/domiciliario-pedidos-seccion.component';
+import { DomiciliarioPestanasComponent } from './components/domiciliario-pestanas/domiciliario-pestanas.component';
 import { Pedido } from '../../models/pedido.model';
 import { PedidoService } from '../../service/pedido.service';
 import { ClienteService } from '../../service/cliente.service';
@@ -18,7 +19,8 @@ import { ClienteService } from '../../service/cliente.service';
     FooterComponent,
     CalaverasComponent,
     DomiciliarioMetricasComponent,
-    DomiciliarioPedidoCardComponent,
+    DomiciliarioPedidosSeccionComponent,
+    DomiciliarioPestanasComponent,
   ],
   templateUrl: './domiciliario-pedidos.component.html',
   styleUrl: './domiciliario-pedidos.component.css',

@@ -1,0 +1,41 @@
+<!-- Selector de Pestañas / Filtros de Domiciliario (Lego) -->
+<div class="card-pestanas-domi">
+  <div class="grupo-pestanas">
+    <button
+      type="button"
+      class="btn-pestana-domi"
+      [class.pestana-activa]="pestanaActiva() === 'EN_RUTA'"
+      (click)="cambiarPestana('EN_RUTA')"
+    >
+      🛵 En Ruta Activa ({{ enRutaCount() }})
+    </button>
+    <button
+      type="button"
+      class="btn-pestana-domi"
+      [class.pestana-activa]="pestanaActiva() === 'EN_COLA'"
+      (click)="cambiarPestana('EN_COLA')"
+    >
+      ⏳ En Cola / Próximos ({{ enColaCount() }})
+    </button>
+    <button
+      type="button"
+      class="btn-pestana-domi"
+      [class.pestana-activa]="pestanaActiva() === 'ENTREGADOS'"
+      (click)="cambiarPestana('ENTREGADOS')"
+    >
+      ✅ Entregados ({{ entregadosCount() }})
+    </button>
+    <button
+      type="button"
+      class="btn-pestana-domi"
+      [class.pestana-activa]="pestanaActiva() === 'TODOS'"
+      (click)="cambiarPestana('TODOS')"
+    >
+      Todos ({{ totalCount() }})
+    </button>
+  </div>
+
+  <button type="button" class="btn-recargar-domi" (click)="recargar()" title="Actualizar pedidos">
+    <i class="bi bi-arrow-clockwise"></i> Actualizar
+  </button>
+</div>

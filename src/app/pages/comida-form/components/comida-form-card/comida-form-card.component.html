@@ -1,0 +1,213 @@
+<!-- Tarjeta contenedora del formulario reactivo de comidas (Lego) -->
+<div class="crear-plato-card">
+  <div class="crear-plato-header">
+    <h2 class="crear-plato-titulo">
+      {{ isEdit() ? "Editar Plato" : "Nuevo Plato" }}
+    </h2>
+  </div>
+
+  <div class="crear-plato-divider"></div>
+
+  <form
+    [formGroup]="comidaForm()"
+    (ngSubmit)="onSubmit()"
+    class="crear-plato-form"
+  >
+    <!-- Campo 1: Nombre -->
+    <div class="campo-grupo">
+      <label for="nombre" class="campo-label">NOMBRE DEL PLATO</label>
+      <input
+        type="text"
+        id="nombre"
+        formControlName="nombre"
+        placeholder="Ej: Tacos al Pastor"
+        class="campo-input"
+      />
+      @if (
+        comidaForm().get("nombre")?.touched &&
+        comidaForm().get("nombre")?.invalid
+      ) {
+        <div class="campo-error-contenedor">
+          @if (comidaForm().get("nombre")?.errors?.["required"]) {
+            <small class="campo-error">El nombre es obligatorio.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo 2: Descripción -->
+    <div class="campo-grupo">
+      <label for="descripcion" class="campo-label">DESCRIPCIÓN</label>
+      <textarea
+        id="descripcion"
+        formControlName="descripcion"
+        rows="4"
+        placeholder="Describe los ingredientes, preparación y sabor..."
+        class="campo-input campo-textarea"
+      ></textarea>
+      @if (
+        comidaForm().get("descripcion")?.touched &&
+        comidaForm().get("descripcion")?.invalid
+      ) {
+        <div class="campo-error-contenedor">
+          @if (comidaForm().get("descripcion")?.errors?.["required"]) {
+            <small class="campo-error"
+              >La descripción es obligatoria.</small
+            >
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Fila: Precio + Categoría -->
+    <div class="fila-dos-campos">
+      <!-- Precio -->
+      <div class="campo-grupo">
+        <label for="precio" class="campo-label">PRECIO (COP)</label>
+        <input
+          type="number"
+          id="precio"
+          formControlName="precio"
+          placeholder="28900"
+          min="0"
+          class="campo-input"
+        />
+        @if (
+          comidaForm().get("precio")?.touched &&
+          comidaForm().get("precio")?.invalid
+        ) {
+          <div class="campo-error-contenedor">
+            @if (comidaForm().get("precio")?.errors?.["required"]) {
+              <small class="campo-error">El precio es obligatorio.</small>
+            }
+            @if (comidaForm().get("precio")?.errors?.["pattern"]) {
+              <small class="campo-error"
+                >Ingrese solo números válidos.</small
+              >
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Categoría -->
+      <div class="campo-grupo">
+        <label for="categoriaId" class="campo-label">CATEGORÍA</label>
+        <select
+          id="categoriaId"
+          formControlName="categoriaId"
+          class="campo-input campo-select"
+        >
+          <option value="" disabled>Selecciona categoría...</option>
+          @for (cat of categorias(); track cat.id) {
+            <option [value]="cat.id">{{ cat.nombre }}</option>
+          }
+        </select>
+        @if (
+          comidaForm().get("categoriaId")?.touched &&
+          comidaForm().get("categoriaId")?.invalid
+        ) {
+          <div class="campo-error-contenedor">
+            @if (comidaForm().get("categoriaId")?.errors?.["required"]) {
+              <small class="campo-error"
+                >La categoría es obligatoria.</small
+              >
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Fila: Etiqueta + Estado -->
+    <div class="fila-dos-campos">
+      <div class="campo-grupo">
+        <label for="etiqueta" class="campo-label">ETIQUETA</label>
+        <input
+          type="text"
+          id="etiqueta"
+          formControlName="etiqueta"
+          placeholder="Ej: Estrella, Top Ventas, Vegano"
+          class="campo-input"
+        />
+        @if (
+          comidaForm().get("etiqueta")?.touched &&
+          comidaForm().get("etiqueta")?.invalid
+        ) {
+          <div class="campo-error-contenedor">
+            @if (comidaForm().get("etiqueta")?.errors?.["required"]) {
+              <small class="campo-error">La etiqueta es obligatoria.</small>
+            }
+            @if (comidaForm().get("etiqueta")?.errors?.["minlength"]) {
+              <small class="campo-error"
+                >La etiqueta debe tener al menos 2 caracteres.</small
+              >
+            }
+          </div>
+        }
+      </div>
+
+      <div class="campo-grupo">
+        <label for="activo" class="campo-label">ESTADO</label>
+        <select
+          id="activo"
+          formControlName="activo"
+          class="campo-input campo-select"
+        >
+          <option [ngValue]="null" disabled>Selecciona estado...</option>
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+        @if (
+          comidaForm().get("activo")?.touched &&
+          comidaForm().get("activo")?.invalid
+        ) {
+          <div class="campo-error-contenedor">
+            @if (comidaForm().get("activo")?.errors?.["required"]) {
+              <small class="campo-error">El estado es obligatorio.</small>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Campo: URL de Imagen -->
+    <div class="campo-grupo">
+      <label for="imagen_url" class="campo-label">URL DE IMAGEN</label>
+      <input
+        type="url"
+        id="imagen_url"
+        formControlName="imagen_url"
+        placeholder="https://ejemplo.com/imagen.jpg"
+        class="campo-input"
+      />
+      @if (
+        comidaForm().get("imagen_url")?.touched &&
+        comidaForm().get("imagen_url")?.invalid
+      ) {
+        <div class="campo-error-contenedor">
+          @if (comidaForm().get("imagen_url")?.errors?.["required"]) {
+            <small class="campo-error"
+              >La URL de la imagen es obligatoria.</small
+            >
+          }
+          @if (comidaForm().get("imagen_url")?.errors?.["pattern"]) {
+            <small class="campo-error"
+              >Debe ser una URL válida (ej: https://ejemplo.com/foto.jpg).</small
+            >
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="crear-plato-acciones">
+      <a [routerLink]="['/comidas']" class="btn-cancelar"> CANCELAR </a>
+      <button
+        type="submit"
+        [disabled]="!comidaForm().valid"
+        class="btn-crear"
+      >
+        {{ isEdit() ? "GUARDAR CAMBIOS" : "CREAR PLATO" }}
+      </button>
+    </div>
+  </form>
+</div>

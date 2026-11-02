@@ -3,233 +3,27 @@
 <main class="login-main">
   <div class="login-card">
 
-    <!-- Selector de las 4 Pestañas de Rol -->
-    <div class="selector-roles-login">
-      <button
-        type="button"
-        (click)="seleccionarRol('cliente')"
-        class="tab-rol-btn"
-        [class.tab-rol-activa]="rolSeleccionado === 'cliente'"
-      >
-        Cliente
-      </button>
-      <button
-        type="button"
-        (click)="seleccionarRol('operador')"
-        class="tab-rol-btn"
-        [class.tab-rol-activa]="rolSeleccionado === 'operador'"
-      >
-        Operador
-      </button>
-      <button
-        type="button"
-        (click)="seleccionarRol('domiciliario')"
-        class="tab-rol-btn"
-        [class.tab-rol-activa]="rolSeleccionado === 'domiciliario'"
-      >
-        Domiciliario
-      </button>
-      <button
-        type="button"
-        (click)="seleccionarRol('admin')"
-        class="tab-rol-btn"
-        [class.tab-rol-activa]="rolSeleccionado === 'admin'"
-      >
-        Administrador
-      </button>
-    </div>
+    <!-- Subcomponente 1: Selector de Roles y Encabezado Dinámico (Lego) -->
+    <app-login-roles
+      [rolSeleccionado]="rolSeleccionado"
+      (rolSelected)="seleccionarRol($event)"
+    ></app-login-roles>
 
-    <!-- Encabezado de la Tarjeta dinámico según el Rol -->
-    <div class="login-header">
-      <span class="login-subtitle">
-        @if (rolSeleccionado === 'cliente') {
-          Portal de Clientes · Pedidos y Seguimiento
-        } @else if (rolSeleccionado === 'operador') {
-          Cocina y Despachos · Gestión de Comandas
-        } @else if (rolSeleccionado === 'domiciliario') {
-          Reparto y Entregas · Domiciliarios de El Wey
-        } @else {
-          Administración General · Control Total de El Wey
-        }
-      </span>
-      <h1 class="login-title">
-        @if (rolSeleccionado === 'cliente') {
-          Iniciar Sesión
-        } @else if (rolSeleccionado === 'operador') {
-          Acceso Operador
-        } @else if (rolSeleccionado === 'domiciliario') {
-          Acceso Domiciliario
-        } @else {
-          Acceso Administrador
-        }
-      </h1>
-      <p class="login-desc">
-        @if (rolSeleccionado === 'cliente') {
-          Ingresa tu correo registrado y contraseña para acceder a tu portal.
-        } @else if (rolSeleccionado === 'domiciliario') {
-          Ingresa tu número de cédula o celular registrado y tu contraseña.
-        } @else {
-          Ingresa tu usuario asignado o correo oficial y tu contraseña.
-        }
-      </p>
-    </div>
+    <!-- Subcomponente 2: Formulario reactivo de login (Lego) -->
+    <app-login-form
+      [loginForm]="loginForm"
+      [rolSeleccionado]="rolSeleccionado"
+      [errorMessage]="errorMessage"
+      [logoutMessage]="logoutMessage"
+      [portalAlert]="portalAlert"
+      (formSubmitted)="onSubmit()"
+    ></app-login-form>
 
-    <!-- Formulario reactivo de login -->
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-login" autocomplete="off">
-
-      <!-- Alerta de Error -->
-      @if (errorMessage) {
-        <div class="alerta-error">
-          <svg class="alerta-icono" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fill-rule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <span>{{ errorMessage }}</span>
-        </div>
-      }
-
-      <!-- Alerta de Éxito tras logout -->
-      @if (logoutMessage) {
-        <div class="alerta-exito">
-          <span>Has cerrado sesión con éxito.</span>
-        </div>
-      }
-
-      <!-- Alerta de Info Mi Portal -->
-      @if (portalAlert) {
-        <div class="alerta-info">
-          <span>Inicia sesión para acceder a <strong>Mi Portal</strong>, o crea una cuenta nueva.</span>
-        </div>
-      }
-
-      <!-- Campo 1: Identificador -->
-      <div class="form-grupo">
-        <label for="email" class="form-label">
-          @if (rolSeleccionado === 'cliente') {
-            Correo Electrónico
-          } @else if (rolSeleccionado === 'domiciliario') {
-            Número de Cédula o Celular
-          } @else {
-            Nombre de Usuario o Correo
-          }
-        </label>
-        <input
-          type="text"
-          id="email"
-          formControlName="email"
-          autocomplete="off"
-          [placeholder]="
-            rolSeleccionado === 'cliente'
-              ? 'nombre@ejemplo.com'
-              : rolSeleccionado === 'operador'
-              ? 'Ej: chef_camilo'
-              : rolSeleccionado === 'domiciliario'
-              ? 'Ej: 1010203040 o +57 311 222 3333'
-              : 'Ej: admin_elwey'
-          "
-          class="form-input"
-        />
-        @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
-          <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
-            {{
-              rolSeleccionado === 'cliente'
-                ? 'Ingresa un correo electrónico válido'
-                : rolSeleccionado === 'domiciliario'
-                ? 'Ingresa tu cédula o celular (mínimo 3 caracteres)'
-                : 'El usuario es obligatorio (mínimo 3 caracteres)'
-            }}
-          </small>
-        }
-      </div>
-
-      <!-- Campo 2: Contraseña -->
-      <div class="form-grupo">
-        <label for="password" class="form-label">Contraseña</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          autocomplete="new-password"
-          placeholder="••••••••"
-          class="form-input"
-        />
-        @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
-          <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
-            La contraseña es requerida
-          </small>
-        }
-      </div>
-
-      <!-- Botón de Envío -->
-      <button type="submit" id="btn-submit-login" class="btn-submit-login">
-        INGRESAR COMO {{ rolSeleccionado.toUpperCase() }}
-      </button>
-    </form>
-
-    <!-- Enlace a Registro (Solo visible para Clientes) -->
-    @if (rolSeleccionado === 'cliente') {
-      <div class="login-footer-box">
-        <a [routerLink]="['/registro']" class="link-registro">
-          ¿No tienes cuenta de cliente? Regístrate aquí
-        </a>
-      </div>
-    }
-
-    <!-- Credenciales de prueba oficiales (DataLoader) dinámicas según la pestaña activa -->
-    <div class="caja-credenciales">
-      <p class="titulo-credenciales">
-        Credenciales de prueba (DataLoader) para <strong>{{ rolSeleccionado.toUpperCase() }}</strong>:
-      </p>
-
-      @if (rolSeleccionado === 'cliente') {
-        <div class="lista-credenciales">
-          <div (click)="cargarCredencial('lionel.messi@email.com', 'messi10')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo">Lionel Messi:</span>
-            lionel.messi&#64;email.com / <span class="badge-clave">messi10</span>
-          </div>
-          <div (click)="cargarCredencial('cristiano.ronaldo@email.com', 'cr7cr7')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo">Cristiano Ronaldo:</span>
-            cristiano.ronaldo&#64;email.com / <span class="badge-clave">cr7cr7</span>
-          </div>
-        </div>
-      } @else if (rolSeleccionado === 'operador') {
-        <div class="lista-credenciales">
-          <div (click)="cargarCredencial('chef_camilo', 'cocina123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #38bdf8;">Chef Juan Camilo:</span>
-            chef_camilo / <span class="badge-clave">cocina123</span>
-          </div>
-          <div (click)="cargarCredencial('paola_despachos', 'despacho123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #38bdf8;">Paola Despachos:</span>
-            paola_despachos / <span class="badge-clave">despacho123</span>
-          </div>
-        </div>
-      } @else if (rolSeleccionado === 'domiciliario') {
-        <div class="lista-credenciales">
-          <div (click)="cargarCredencial('1010203040', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #4ade80;">Carlos Gómez:</span>
-            1010203040 / <span class="badge-clave">domi123</span>
-          </div>
-          <div (click)="cargarCredencial('1020304050', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #4ade80;">Andrés Parra:</span>
-            1020304050 / <span class="badge-clave">domi123</span>
-          </div>
-          <div (click)="cargarCredencial('1030405060', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #4ade80;">Mateo Quintana:</span>
-            1030405060 / <span class="badge-clave">domi123</span>
-          </div>
-        </div>
-      } @else {
-        <div class="lista-credenciales">
-          <div (click)="cargarCredencial('admin_elwey', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
-            <span class="etiqueta-user-demo" style="color: #fbbf24;">Admin Principal:</span>
-            admin_elwey / <span class="badge-clave">admin123</span>
-          </div>
-        </div>
-      }
-    </div>
+    <!-- Subcomponente 3: Credenciales de prueba oficiales (Lego) -->
+    <app-login-credenciales
+      [rolSeleccionado]="rolSeleccionado"
+      (credencialSelected)="cargarCredencial($event.usuario, $event.clave)"
+    ></app-login-credenciales>
 
   </div>
 </main>

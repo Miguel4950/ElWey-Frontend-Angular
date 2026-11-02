@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+﻿import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,8 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { PedidosTableComponent } from './components/pedidos-table/pedidos-table.component';
+import { PedidosFlotaComponent } from './components/pedidos-flota/pedidos-flota.component';
+import { PedidosFiltrosComponent } from './components/pedidos-filtros/pedidos-filtros.component';
 import { PedidoDTO } from '../../dtos/pedido.dto';
 import { DomiciliarioDTO } from '../../dtos/domiciliario.dto';
 import { PedidoService } from '../../service/pedido.service';
@@ -28,6 +30,8 @@ import { ClienteService } from '../../service/cliente.service';
     FooterComponent,
     CalaverasComponent,
     PedidosTableComponent,
+    PedidosFlotaComponent,
+    PedidosFiltrosComponent,
   ],
   templateUrl: './pedidos-page.component.html',
   styleUrl: './pedidos-page.component.css',

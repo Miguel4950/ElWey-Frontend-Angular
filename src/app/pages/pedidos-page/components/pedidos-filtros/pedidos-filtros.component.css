@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.card-filtros-pedidos {
+  background-color: var(--elwey-card, #1b1412);
+  border: 1px solid var(--elwey-border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pestanas-estado {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-pestana {
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--elwey-muted, #d8ccc3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-pestana:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.btn-pestana.pestana-activa {
+  background-color: var(--elwey-red-hover, #ee1a0e);
+  color: #ffffff;
+  border-color: var(--elwey-red-hover, #ee1a0e);
+}
+
+.buscadores-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.campo-busqueda {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.etiqueta-filtro {
+  font-size: 11px;
+  color: var(--elwey-muted, #d8ccc3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.input-filtro {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #f1f5f9;
+  padding: 8px 12px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-filtro:focus {
+  border-color: var(--elwey-red-hover, #ee1a0e);
+}
+
+.input-fecha {
+  color-scheme: dark;
+}
+
+.limpiar-box {
+  flex: 0 0 auto;
+  min-width: auto;
+}
+
+.btn-limpiar-filtros {
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-limpiar-filtros:hover {
+  background-color: rgba(239, 68, 68, 0.25);
+  color: #ffffff;
+}

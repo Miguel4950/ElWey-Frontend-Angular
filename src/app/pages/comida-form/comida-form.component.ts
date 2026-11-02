@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+﻿import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
+import { ComidaFormCardComponent } from './components/comida-form-card/comida-form-card.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
 import { CategoriaDTO } from '../../dtos/categoria.dto';
 import { ComidaService } from '../../service/comida.service';
@@ -21,11 +22,11 @@ import { ComidaService } from '../../service/comida.service';
 @Component({
   selector: 'app-comida-form',
   imports: [
-    ReactiveFormsModule,
-    RouterLink,
+
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
+    ComidaFormCardComponent,
   ],
   templateUrl: './comida-form.component.html',
   styleUrl: './comida-form.component.css',

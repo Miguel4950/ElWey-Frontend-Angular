@@ -1,0 +1,73 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.selector-roles-login {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  background-color: rgba(0, 0, 0, 0.35);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 24px;
+}
+
+.tab-rol-btn {
+  background: transparent;
+  border: none;
+  color: var(--elwey-muted, #d8ccc3);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.tab-rol-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab-rol-activa {
+  background-color: var(--elwey-red-hover, #ee1a0e) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(238, 26, 14, 0.4);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.login-subtitle {
+  color: var(--elwey-red-hover, #ee1a0e);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
+  display: block;
+}
+
+.login-title {
+  font-family: var(--font-serif, 'Abril Fatface', Georgia, serif);
+  font-size: 36px;
+  color: var(--elwey-light, #f5efe7);
+  margin: 0 0 8px 0;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.15;
+}
+
+.login-desc {
+  color: var(--elwey-muted, #d8ccc3);
+  font-size: 12px;
+  font-weight: 300;
+  margin: 0;
+}

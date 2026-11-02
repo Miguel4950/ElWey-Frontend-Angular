@@ -1,0 +1,103 @@
+<!-- Formulario reactivo de login (Lego) -->
+<form [formGroup]="loginForm()" (ngSubmit)="onSubmit()" class="form-login" autocomplete="off">
+
+  <!-- Alerta de Error -->
+  @if (errorMessage()) {
+    <div class="alerta-error">
+      <svg class="alerta-icono" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+
+  <!-- Alerta de Éxito tras logout -->
+  @if (logoutMessage()) {
+    <div class="alerta-exito">
+      <span>Has cerrado sesión con éxito.</span>
+    </div>
+  }
+
+  <!-- Alerta de Info Mi Portal -->
+  @if (portalAlert()) {
+    <div class="alerta-info">
+      <span>Inicia sesión para acceder a <strong>Mi Portal</strong>, o crea una cuenta nueva.</span>
+    </div>
+  }
+
+  <!-- Campo 1: Identificador -->
+  <div class="form-grupo">
+    <label for="email" class="form-label">
+      @if (rolSeleccionado() === 'cliente') {
+        Correo Electrónico
+      } @else if (rolSeleccionado() === 'domiciliario') {
+        Número de Cédula o Celular
+      } @else {
+        Nombre de Usuario o Correo
+      }
+    </label>
+    <input
+      type="text"
+      id="email"
+      formControlName="email"
+      autocomplete="off"
+      [placeholder]="
+        rolSeleccionado() === 'cliente'
+          ? 'nombre@ejemplo.com'
+          : rolSeleccionado() === 'operador'
+          ? 'Ej: chef_camilo'
+          : rolSeleccionado() === 'domiciliario'
+          ? 'Ej: 1010203040 o +57 311 222 3333'
+          : 'Ej: admin_elwey'
+      "
+      class="form-input"
+    />
+    @if (loginForm().get('email')?.touched && loginForm().get('email')?.invalid) {
+      <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
+        {{
+          rolSeleccionado() === 'cliente'
+            ? 'Ingresa un correo electrónico válido'
+            : rolSeleccionado() === 'domiciliario'
+            ? 'Ingresa tu cédula o celular (mínimo 3 caracteres)'
+            : 'El usuario es obligatorio (mínimo 3 caracteres)'
+        }}
+      </small>
+    }
+  </div>
+
+  <!-- Campo 2: Contraseña -->
+  <div class="form-grupo">
+    <label for="password" class="form-label">Contraseña</label>
+    <input
+      type="password"
+      id="password"
+      formControlName="password"
+      autocomplete="new-password"
+      placeholder="••••••••"
+      class="form-input"
+    />
+    @if (loginForm().get('password')?.touched && loginForm().get('password')?.invalid) {
+      <small class="error-texto" style="color: #f87171; font-size: 11px; margin-top: 4px;">
+        La contraseña es requerida
+      </small>
+    }
+  </div>
+
+  <!-- Botón de Envío -->
+  <button type="submit" id="btn-submit-login" class="btn-submit-login">
+    INGRESAR COMO {{ rolSeleccionado().toUpperCase() }}
+  </button>
+</form>
+
+<!-- Enlace a Registro (Solo visible para Clientes) -->
+@if (rolSeleccionado() === 'cliente') {
+  <div class="login-footer-box">
+    <a [routerLink]="['/registro']" class="link-registro">
+      ¿No tienes cuenta de cliente? Regístrate aquí
+    </a>
+  </div>
+}

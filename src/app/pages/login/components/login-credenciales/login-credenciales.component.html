@@ -1,0 +1,52 @@
+<!-- Credenciales de prueba oficiales (DataLoader) dinámicas según la pestaña activa -->
+<div class="caja-credenciales">
+  <p class="titulo-credenciales">
+    Credenciales de prueba (DataLoader) para <strong>{{ rolSeleccionado().toUpperCase() }}</strong>:
+  </p>
+
+  @if (rolSeleccionado() === 'cliente') {
+    <div class="lista-credenciales">
+      <div (click)="seleccionar('lionel.messi@email.com', 'messi10')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo">Lionel Messi:</span>
+        lionel.messi&#64;email.com / <span class="badge-clave">messi10</span>
+      </div>
+      <div (click)="seleccionar('cristiano.ronaldo@email.com', 'cr7cr7')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo">Cristiano Ronaldo:</span>
+        cristiano.ronaldo&#64;email.com / <span class="badge-clave">cr7cr7</span>
+      </div>
+    </div>
+  } @else if (rolSeleccionado() === 'operador') {
+    <div class="lista-credenciales">
+      <div (click)="seleccionar('chef_camilo', 'cocina123')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo" style="color: #38bdf8;">Chef Juan Camilo:</span>
+        chef_camilo / <span class="badge-clave">cocina123</span>
+      </div>
+      <div (click)="seleccionar('paola_despachos', 'despacho123')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo" style="color: #38bdf8;">Paola Despachos:</span>
+        paola_despachos / <span class="badge-clave">despacho123</span>
+      </div>
+    </div>
+  } @else if (rolSeleccionado() === 'domiciliario') {
+    <div class="lista-credenciales">
+      <div (click)="seleccionar('1010203040', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo" style="color: #4ade80;">Carlos Gómez:</span>
+        1010203040 / <span class="badge-clave">domi123</span>
+      </div>
+      <div (click)="seleccionar('1020304050', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo" style="color: #4ade80;">Andrés Parra:</span>
+        1020304050 / <span class="badge-clave">domi123</span>
+      </div>
+      <div (click)="seleccionar('1030405060', 'domi123')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo" style="color: #4ade80;">Mateo Quintana:</span>
+        1030405060 / <span class="badge-clave">domi123</span>
+      </div>
+    </div>
+  } @else {
+    <div class="lista-credenciales">
+      <div (click)="seleccionar('admin_elwey', 'admin123')" class="item-credencial-click" title="Clic para rellenar">
+        <span class="etiqueta-user-demo" style="color: #fbbf24;">Admin Principal:</span>
+        admin_elwey / <span class="badge-clave">admin123</span>
+      </div>
+    </div>
+  }
+</div>

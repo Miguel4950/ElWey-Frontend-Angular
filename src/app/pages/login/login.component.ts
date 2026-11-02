@@ -1,29 +1,27 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+﻿import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
+import { LoginRolesComponent } from './components/login-roles/login-roles.component';
+import { LoginCredencialesComponent } from './components/login-credenciales/login-credenciales.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 import { ClienteService } from '../../service/cliente.service';
 import { LoginDTO } from '../../dtos/login.dto';
 
-/**
- * Componente de inicio de sesión con soporte explícito para 4 roles:
- * - Cliente (acceso a portal y pedidos personales)
- * - Operador (acceso directo a cocina y portal de despachos)
- * - Domiciliario (acceso de repartidores por cédula o celular)
- * - Administrador (acceso completo a la gestión y CRUDs)
- */
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    RouterLink,
+
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
+    LoginRolesComponent,
+    LoginCredencialesComponent,
+    LoginFormComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -34,7 +32,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private subscription?: Subscription;
 
-  // Rol activo seleccionado en las pestañas
   rolSeleccionado: 'cliente' | 'operador' | 'domiciliario' | 'admin' = 'cliente';
 
   errorMessage: string = '';
@@ -72,9 +69,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscription?.unsubscribe();
   }
 
-  /**
-   * Cambia la pestaña de rol y ajusta dinámicamente las validaciones del formulario.
-   */
   seleccionarRol(rol: 'cliente' | 'operador' | 'domiciliario' | 'admin'): void {
     this.rolSeleccionado = rol;
     this.errorMessage = '';
@@ -83,7 +77,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (rol === 'cliente') {
       emailControl?.setValidators([Validators.required, Validators.email]);
     } else {
-      // Para Operador, Domiciliario o Admin se permite usuario, cédula, celular o correo
       emailControl?.setValidators([Validators.required, Validators.minLength(3)]);
     }
     emailControl?.updateValueAndValidity();
@@ -114,7 +107,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.clienteService.setClienteActual(usuario);
           this.errorMessage = '';
 
-          // Redirección inteligente según el rol autenticado
           if (
             this.rolSeleccionado === 'operador' ||
             usuario.rol === 'OPERADOR'
@@ -140,9 +132,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Carga rápidamente credenciales de prueba en el formulario.
-   */
   cargarCredencial(login: string, pass: string): void {
     this.loginForm.patchValue({
       email: login,

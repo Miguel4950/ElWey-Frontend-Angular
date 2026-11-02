@@ -1,0 +1,76 @@
+<!-- Barra de Filtros y Pestañas de Estado (Lego) -->
+<div class="card-filtros-pedidos">
+  <!-- Pestañas de Estado -->
+  <div class="pestanas-estado">
+    <button
+      type="button"
+      (click)="cambiarPestana('TODOS')"
+      class="btn-pestana"
+      [class.pestana-activa]="pestanaEstado() === 'TODOS'"
+    >
+      Todos ({{ conteoTodos() }})
+    </button>
+    <button
+      type="button"
+      (click)="cambiarPestana('ACTIVOS')"
+      class="btn-pestana"
+      [class.pestana-activa]="pestanaEstado() === 'ACTIVOS'"
+    >
+      Activos ({{ conteoActivos() }})
+    </button>
+    <button
+      type="button"
+      (click)="cambiarPestana('ENTREGADOS')"
+      class="btn-pestana"
+      [class.pestana-activa]="pestanaEstado() === 'ENTREGADOS'"
+    >
+      Entregados ({{ conteoEntregados() }})
+    </button>
+  </div>
+
+  <!-- Buscadores por Plato y Rango de Fechas -->
+  <div class="buscadores-filtros">
+    <!-- Filtro por nombre de comida / plato -->
+    <div class="campo-busqueda">
+      <label class="etiqueta-filtro">Buscar por Plato:</label>
+      <input
+        type="text"
+        [value]="filtroComida()"
+        (input)="onComidaInput($event)"
+        placeholder="Ej: Tacos al Pastor, Guacamole..."
+        class="input-filtro"
+      />
+    </div>
+
+    <!-- Filtro Rango de Fechas: Desde -->
+    <div class="campo-busqueda">
+      <label class="etiqueta-filtro">Fecha Desde:</label>
+      <input
+        type="date"
+        [value]="fechaDesde()"
+        (input)="onFechaDesdeInput($event)"
+        class="input-filtro input-fecha"
+      />
+    </div>
+
+    <!-- Filtro Rango de Fechas: Hasta -->
+    <div class="campo-busqueda">
+      <label class="etiqueta-filtro">Fecha Hasta:</label>
+      <input
+        type="date"
+        [value]="fechaHasta()"
+        (input)="onFechaHastaInput($event)"
+        class="input-filtro input-fecha"
+      />
+    </div>
+
+    <!-- Botón para Limpiar Filtros -->
+    @if (hayFiltrosActivos()) {
+      <div class="campo-busqueda limpiar-box">
+        <button type="button" (click)="limpiar()" class="btn-limpiar-filtros">
+          Limpiar Filtros
+        </button>
+      </div>
+    }
+  </div>
+</div>

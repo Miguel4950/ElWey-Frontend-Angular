@@ -1,0 +1,134 @@
+<!-- Formulario reactivo de registro de clientes (Lego) -->
+<form [formGroup]="registroForm()" (ngSubmit)="onSubmit()" class="form-login" autocomplete="off">
+
+  <!-- Alerta de Error -->
+  @if (errorMessage()) {
+    <div class="alerta-error">
+      <svg class="alerta-icono" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+
+  <!-- Campos Nombre y Apellido en dos columnas -->
+  <div class="form-fila-dos">
+    <!-- Campo: Nombre -->
+    <div class="form-grupo">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input
+        type="text"
+        id="nombre"
+        formControlName="nombre"
+        autocomplete="off"
+        placeholder="Ej. Carlos"
+        class="form-input"
+      />
+      @if (registroForm().get('nombre')?.touched && registroForm().get('nombre')?.invalid) {
+        <small class="error-texto">
+          El nombre debe tener al menos 2 caracteres
+        </small>
+      }
+    </div>
+
+    <!-- Campo: Apellido -->
+    <div class="form-grupo">
+      <label for="apellido" class="form-label">Apellido</label>
+      <input
+        type="text"
+        id="apellido"
+        formControlName="apellido"
+        autocomplete="off"
+        placeholder="Ej. Santana"
+        class="form-input"
+      />
+      @if (registroForm().get('apellido')?.touched && registroForm().get('apellido')?.invalid) {
+        <small class="error-texto">
+          El apellido debe tener al menos 2 caracteres
+        </small>
+      }
+    </div>
+  </div>
+
+  <!-- Campo 2: Correo Electrónico -->
+  <div class="form-grupo">
+    <label for="correo" class="form-label">Correo Electrónico</label>
+    <input
+      type="email"
+      id="correo"
+      formControlName="correo"
+      autocomplete="off"
+      placeholder="nombre@ejemplo.com"
+      class="form-input"
+    />
+    @if (registroForm().get('correo')?.touched && registroForm().get('correo')?.invalid) {
+      <small class="error-texto">
+        Ingresa un correo electrónico válido
+      </small>
+    }
+  </div>
+
+  <!-- Campo 3: Contraseña -->
+  <div class="form-grupo">
+    <label for="contrasena" class="form-label">Contraseña</label>
+    <input
+      type="password"
+      id="contrasena"
+      formControlName="contrasena"
+      autocomplete="new-password"
+      placeholder="••••••••"
+      class="form-input"
+    />
+    @if (registroForm().get('contrasena')?.touched && registroForm().get('contrasena')?.invalid) {
+      <small class="error-texto">
+        La contraseña debe tener al menos 4 caracteres
+      </small>
+    }
+  </div>
+
+  <!-- Campos 4 y 5 en dos columnas: Teléfono y Dirección -->
+  <div class="form-fila-dos">
+    <div class="form-grupo">
+      <label for="telefono" class="form-label">Teléfono</label>
+      <input
+        type="tel"
+        id="telefono"
+        formControlName="telefono"
+        autocomplete="off"
+        placeholder="300 123 4567"
+        class="form-input"
+      />
+      @if (registroForm().get('telefono')?.touched && registroForm().get('telefono')?.invalid) {
+        <small class="error-texto">
+          El teléfono es obligatorio
+        </small>
+      }
+    </div>
+
+    <div class="form-grupo">
+      <label for="direccion" class="form-label">Dirección</label>
+      <input
+        type="text"
+        id="direccion"
+        formControlName="direccion"
+        autocomplete="off"
+        placeholder="Calle 123 # 45-67"
+        class="form-input"
+      />
+      @if (registroForm().get('direccion')?.touched && registroForm().get('direccion')?.invalid) {
+        <small class="error-texto">
+          La dirección es obligatoria
+        </small>
+      }
+    </div>
+  </div>
+
+  <!-- Botón de Envío -->
+  <button type="submit" id="btn-submit-registro" class="btn-submit-login">
+    REGISTRARME
+  </button>
+</form>

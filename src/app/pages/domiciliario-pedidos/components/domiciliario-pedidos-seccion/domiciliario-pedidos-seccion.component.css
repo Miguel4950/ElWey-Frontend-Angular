@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.seccion-bloque-pedidos {
+  margin-bottom: 32px;
+}
+
+.subtitulo-seccion {
+  font-size: 16px;
+  color: var(--elwey-light, #f5efe7);
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.grid-pedidos-domi {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.caja-vacia-pedidos {
+  grid-column: 1 / -1;
+  background-color: var(--elwey-card, #1b1412);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--elwey-muted, #d8ccc3);
+}
+
+.caja-vacia-pedidos i {
+  font-size: 32px;
+  opacity: 0.4;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.caja-vacia-pedidos p {
+  margin: 0;
+  font-size: 13px;
+}

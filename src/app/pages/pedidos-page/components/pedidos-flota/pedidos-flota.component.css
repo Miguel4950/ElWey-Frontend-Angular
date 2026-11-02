@@ -1,0 +1,169 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.card-flota-monitoreo {
+  background-color: var(--elwey-card, #1b1412);
+  border: 1px solid var(--elwey-border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.cabecera-flota-monitoreo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.subtitulo-flota {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #38bdf8;
+  font-weight: 700;
+  display: block;
+}
+
+.titulo-flota {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--elwey-light, #f5efe7);
+  margin: 2px 0 0 0;
+}
+
+.resumen-flota-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip-flota {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.chip-libre {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.chip-total {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.grid-tarjetas-flota {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.tarjeta-repartidor-carga {
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.tarjeta-repartidor-carga.carga-libre {
+  border-left: 3px solid #22c55e;
+}
+
+.tarjeta-repartidor-carga.carga-moderada {
+  border-left: 3px solid #eab308;
+}
+
+.tarjeta-repartidor-carga.carga-saturado {
+  border-left: 3px solid #ef4444;
+}
+
+.tarjeta-repartidor-carga.carga-descanso {
+  border-left: 3px solid #6b7280;
+  opacity: 0.65;
+}
+
+.repartidor-icono-nombre {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-domi {
+  font-size: 20px;
+}
+
+.nombre-domi-flota {
+  font-size: 13px;
+  color: #f1f5f9;
+  display: block;
+}
+
+.celular-domi-flota {
+  font-size: 11px;
+  color: var(--elwey-muted, #d8ccc3);
+}
+
+.estado-pedidos-repartidor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.desglose-carga-domi {
+  display: flex;
+  gap: 8px;
+}
+
+.item-carga-mini {
+  font-size: 11px;
+  color: #cbd5e1;
+}
+
+.item-carga-mini strong {
+  color: #ffffff;
+}
+
+.badge-nivel-carga {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.badge-nivel-libre {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.badge-nivel-moderado {
+  background-color: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+}
+
+.badge-nivel-saturado {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.badge-nivel-descanso {
+  background-color: rgba(107, 114, 128, 0.2);
+  color: #9ca3af;
+}

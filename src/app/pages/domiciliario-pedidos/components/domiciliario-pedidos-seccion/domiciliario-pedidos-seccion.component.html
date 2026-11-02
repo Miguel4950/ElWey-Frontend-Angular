@@ -1,0 +1,20 @@
+<!-- Bloque de Sección de Pedidos para Domiciliarios (Lego) -->
+<section class="seccion-bloque-pedidos">
+  <h2 class="subtitulo-seccion">
+    <i [class]="iconoClase()"></i> {{ titulo() }}
+  </h2>
+
+  <div class="grid-pedidos-domi">
+    @for (p of pedidos(); track p.id) {
+      <app-domiciliario-pedido-card
+        [pedido]="p"
+        (confirmarEntrega)="onEntregar($event)"
+      ></app-domiciliario-pedido-card>
+    } @empty {
+      <div class="caja-vacia-pedidos">
+        <i [class]="'bi ' + iconoVacio()"></i>
+        <p>{{ mensajeVacio() }}</p>
+      </div>
+    }
+  </div>
+</section>

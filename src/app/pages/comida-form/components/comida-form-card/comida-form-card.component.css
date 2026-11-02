@@ -1,0 +1,169 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crear-plato-card {
+  background-color: #1a1716;
+  border: 1px solid #2d2422;
+  border-radius: 6px;
+  padding: 32px 36px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.crear-plato-header {
+  margin-bottom: 16px;
+}
+
+.crear-plato-titulo {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 1.8rem;
+  color: #fcf2e9;
+  margin: 0;
+}
+
+.crear-plato-divider {
+  height: 1px;
+  background-color: #2d2422;
+  margin-bottom: 24px;
+}
+
+.crear-plato-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.fila-dos-campos {
+  display: flex;
+  gap: 16px;
+}
+
+.campo-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a89f95;
+}
+
+.campo-input {
+  background-color: #12100f;
+  border: 1px solid #332b28;
+  border-radius: 4px;
+  color: #fcf2e9;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.campo-input:focus {
+  outline: none;
+  border-color: #ee1a0e;
+  box-shadow: 0 0 0 3px rgba(238, 26, 14, 0.2);
+}
+
+.campo-input.ng-invalid.ng-touched {
+  border-color: #ee1a0e;
+  box-shadow: 0 0 0 1px #ee1a0e;
+}
+
+.campo-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.campo-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a89f95' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.campo-select option {
+  background-color: #1a1716;
+  color: #fcf2e9;
+}
+
+.campo-error-contenedor {
+  margin-top: 2px;
+}
+
+.campo-error {
+  color: #ee1a0e;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.crear-plato-acciones {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 18px;
+  border-top: 1px solid #2d2422;
+}
+
+.btn-cancelar {
+  background: transparent;
+  border: 1px solid #3d3632;
+  color: #a89f95;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #282420;
+  color: #fcf2e9;
+}
+
+.btn-crear {
+  background-color: #ab1d19;
+  border: none;
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-crear:hover:not(:disabled) {
+  background-color: #ee1a0e;
+  box-shadow: 0 4px 15px rgba(238, 26, 14, 0.4);
+}
+
+.btn-crear:disabled {
+  background-color: #3d3632;
+  color: #6b635b;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .fila-dos-campos {
+    flex-direction: column;
+  }
+}

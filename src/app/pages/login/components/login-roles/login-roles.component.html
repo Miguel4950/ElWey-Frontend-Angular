@@ -1,0 +1,70 @@
+<!-- Selector de las 4 Pestañas de Rol -->
+<div class="selector-roles-login">
+  <button
+    type="button"
+    (click)="seleccionar('cliente')"
+    class="tab-rol-btn"
+    [class.tab-rol-activa]="rolSeleccionado() === 'cliente'"
+  >
+    Cliente
+  </button>
+  <button
+    type="button"
+    (click)="seleccionar('operador')"
+    class="tab-rol-btn"
+    [class.tab-rol-activa]="rolSeleccionado() === 'operador'"
+  >
+    Operador
+  </button>
+  <button
+    type="button"
+    (click)="seleccionar('domiciliario')"
+    class="tab-rol-btn"
+    [class.tab-rol-activa]="rolSeleccionado() === 'domiciliario'"
+  >
+    Domiciliario
+  </button>
+  <button
+    type="button"
+    (click)="seleccionar('admin')"
+    class="tab-rol-btn"
+    [class.tab-rol-activa]="rolSeleccionado() === 'admin'"
+  >
+    Administrador
+  </button>
+</div>
+
+<!-- Encabezado de la Tarjeta dinámico según el Rol -->
+<div class="login-header">
+  <span class="login-subtitle">
+    @if (rolSeleccionado() === 'cliente') {
+      Portal de Clientes · Pedidos y Seguimiento
+    } @else if (rolSeleccionado() === 'operador') {
+      Cocina y Despachos · Gestión de Comandas
+    } @else if (rolSeleccionado() === 'domiciliario') {
+      Reparto y Entregas · Domiciliarios de El Wey
+    } @else {
+      Administración General · Control Total de El Wey
+    }
+  </span>
+  <h1 class="login-title">
+    @if (rolSeleccionado() === 'cliente') {
+      Iniciar Sesión
+    } @else if (rolSeleccionado() === 'operador') {
+      Acceso Operador
+    } @else if (rolSeleccionado() === 'domiciliario') {
+      Acceso Domiciliario
+    } @else {
+      Acceso Administrador
+    }
+  </h1>
+  <p class="login-desc">
+    @if (rolSeleccionado() === 'cliente') {
+      Ingresa tu correo registrado y contraseña para acceder a tu portal.
+    } @else if (rolSeleccionado() === 'domiciliario') {
+      Ingresa tu número de cédula o celular registrado y tu contraseña.
+    } @else {
+      Ingresa tu usuario asignado o correo oficial y tu contraseña.
+    }
+  </p>
+</div>

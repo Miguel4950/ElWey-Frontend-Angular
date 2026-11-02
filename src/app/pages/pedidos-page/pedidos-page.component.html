@@ -15,186 +15,80 @@
         </a>
       </div>
     } @else {
-    <!-- Barra superior del Portal de Operario y Administración -->
-    <div class="barra-superior-operario">
-      <div>
-        <p class="subtitulo-operario">
-          @if (esAdmin) {
-            Panel de Administración · Monitoreo Integral de Pedidos
-          } @else {
-            Portal de Operaciones · Cocina y Despachos
-          }
-        </p>
-        <h1 class="titulo-operario">Monitoreo de Pedidos</h1>
-        <p class="desc-operario">
-          Gestiona el flujo de las comandas: cocina los pedidos, asigna repartidores y confirma entregas a clientes.
-        </p>
-      </div>
-
-      <div class="info-derecha-operario">
-        @if (usuarioActual) {
-          <span class="badge-operario-sesion">
-            {{ esAdmin ? 'Admin:' : 'Operador:' }}
-            <strong>{{ usuarioActual.nombre }}</strong>
-          </span>
-        }
-        <span class="badge-total-pedidos">
-          Repartidores en Turno: <strong>{{ totalDomiciliariosTrabajando }}</strong> / {{ domiciliariosArray.length }}
-        </span>
-      </div>
-    </div>
-
-
-    <!-- Panel de Monitoreo de Flota y Carga de Domiciliarios -->
-    <div class="card-flota-monitoreo">
-      <div class="cabecera-flota-monitoreo">
+      <!-- Barra superior del Portal de Operario y Administración -->
+      <div class="barra-superior-operario">
         <div>
-          <span class="subtitulo-flota">Monitoreo de Flota de Despachos</span>
-          <h3 class="titulo-flota">Carga de Trabajo de Repartidores</h3>
+          <p class="subtitulo-operario">
+            @if (esAdmin) {
+              Panel de Administración · Monitoreo Integral de Pedidos
+            } @else {
+              Portal de Operaciones · Cocina y Despachos
+            }
+          </p>
+          <h1 class="titulo-operario">Monitoreo de Pedidos</h1>
+          <p class="desc-operario">
+            Gestiona el flujo de las comandas: cocina los pedidos, asigna repartidores y confirma entregas a clientes.
+          </p>
         </div>
-        <div class="resumen-flota-chips">
-          <span class="chip-flota chip-libre">
-            🟢 {{ totalDomiciliariosTrabajando }} Trabajando ({{ totalDomiciliariosLibres }} libres)
+
+        <div class="info-derecha-operario">
+          @if (usuarioActual) {
+            <span class="badge-operario-sesion">
+              {{ esAdmin ? 'Admin:' : 'Operador:' }}
+              <strong>{{ usuarioActual.nombre }}</strong>
+            </span>
+          }
+          <span class="badge-total-pedidos">
+            Repartidores en Turno: <strong>{{ totalDomiciliariosTrabajando }}</strong> / {{ domiciliariosArray.length }}
           </span>
-          <span class="chip-flota chip-total">
-            ⚪ {{ totalDomiciliariosDescanso }} en Descanso
-          </span>
         </div>
       </div>
 
-      <div class="grid-tarjetas-flota">
-        @for (item of flotaConCarga; track item.domiciliario.id) {
-          <div
-            class="tarjeta-repartidor-carga"
-            [class.carga-libre]="item.estadoCarga === 'LIBRE'"
-            [class.carga-moderada]="item.estadoCarga === 'MODERADA'"
-            [class.carga-saturado]="item.estadoCarga === 'SATURADO'"
-            [class.carga-descanso]="item.estadoCarga === 'DESCANSO'"
-          >
-            <div class="repartidor-icono-nombre">
-              <span class="avatar-domi">🛵</span>
-              <div>
-                <strong class="nombre-domi-flota">{{ item.domiciliario.nombre }}</strong>
-                <span class="celular-domi-flota">{{ item.domiciliario.celular }}</span>
-              </div>
-            </div>
+      <!-- Subcomponente 1: Monitoreo de Flota (Lego) -->
+      <app-pedidos-flota
+        [flotaConCarga]="flotaConCarga"
+        [totalDomiciliariosTrabajando]="totalDomiciliariosTrabajando"
+        [totalDomiciliariosLibres]="totalDomiciliariosLibres"
+        [totalDomiciliariosDescanso]="totalDomiciliariosDescanso"
+      ></app-pedidos-flota>
 
-            <div class="estado-pedidos-repartidor">
-              <div class="desglose-carga-domi">
-                <span class="item-carga-mini">En ruta: <strong>{{ item.pedidosEnRuta }}</strong></span>
-                <span class="item-carga-mini">En cola: <strong>{{ item.pedidosEnCola }}</strong></span>
-              </div>
+      <!-- Alertas de Éxito y Error -->
+      @if (mensajeExito) {
+        <div class="alerta-exito-pedidos">
+          <span>{{ mensajeExito }}</span>
+        </div>
+      }
 
-              @if (item.estadoCarga === 'DESCANSO') {
-                <span class="badge-nivel-carga badge-nivel-descanso">⚪ Descanso</span>
-              } @else if (item.estadoCarga === 'LIBRE') {
-                <span class="badge-nivel-carga badge-nivel-libre">🟢 Libre</span>
-              } @else if (item.estadoCarga === 'MODERADA') {
-                <span class="badge-nivel-carga badge-nivel-moderado">🟡 {{ item.pedidosActivos }} activo(s)</span>
-              } @else {
-                <span class="badge-nivel-carga badge-nivel-saturado">🔴 {{ item.pedidosActivos }} (Saturado)</span>
-              }
-            </div>
-          </div>
-        }
-      </div>
-    </div>
+      @if (errorMessage) {
+        <div class="alerta-error-pedidos">
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
 
-    <!-- Alertas de Éxito y Error -->
-    @if (mensajeExito) {
-      <div class="alerta-exito-pedidos">
-        <span>{{ mensajeExito }}</span>
-      </div>
+      <!-- Subcomponente 2: Filtros de Pedidos (Lego) -->
+      <app-pedidos-filtros
+        [pestanaEstado]="pestanaEstado"
+        [filtroComida]="filtroComida"
+        [fechaDesde]="fechaDesde"
+        [fechaHasta]="fechaHasta"
+        [conteoTodos]="pedidosArray.length"
+        [conteoActivos]="conteoActivos"
+        [conteoEntregados]="conteoEntregados"
+        [hayFiltrosActivos]="hayFiltrosActivos"
+        (pestanaChanged)="pestanaEstado = $event"
+        (filtroComidaChanged)="filtroComida = $event"
+        (fechaDesdeChanged)="fechaDesde = $event"
+        (fechaHastaChanged)="fechaHasta = $event"
+        (limpiarFiltrosClicked)="limpiarFiltros()"
+      ></app-pedidos-filtros>
+
+      <!-- Subcomponente 3: Tabla de Pedidos (Lego) -->
+      <app-pedidos-table
+        [pedidosArray]="pedidosFiltrados"
+        [domiciliariosDisponibles]="domiciliariosTrabajando"
+        (onActualizarEstado)="actualizarEstadoPedido($event)"
+      ></app-pedidos-table>
     }
-
-    @if (errorMessage) {
-      <div class="alerta-error-pedidos">
-        <span>{{ errorMessage }}</span>
-      </div>
-    }
-
-    <!-- Barra de Filtros y Pestañas de Estado -->
-    <div class="card-filtros-pedidos">
-      <!-- Pestañas de Estado -->
-      <div class="pestanas-estado">
-        <button
-          type="button"
-          (click)="pestanaEstado = 'TODOS'"
-          class="btn-pestana"
-          [class.pestana-activa]="pestanaEstado === 'TODOS'"
-        >
-          Todos ({{ pedidosArray.length }})
-        </button>
-        <button
-          type="button"
-          (click)="pestanaEstado = 'ACTIVOS'"
-          class="btn-pestana"
-          [class.pestana-activa]="pestanaEstado === 'ACTIVOS'"
-        >
-          Activos ({{ conteoActivos }})
-        </button>
-        <button
-          type="button"
-          (click)="pestanaEstado = 'ENTREGADOS'"
-          class="btn-pestana"
-          [class.pestana-activa]="pestanaEstado === 'ENTREGADOS'"
-        >
-          Entregados ({{ conteoEntregados }})
-        </button>
-      </div>
-
-      <!-- Buscadores por Plato y Rango de Fechas -->
-      <div class="buscadores-filtros">
-        <!-- Filtro por nombre de comida / plato -->
-        <div class="campo-busqueda">
-          <label class="etiqueta-filtro">Buscar por Plato:</label>
-          <input
-            type="text"
-            [(ngModel)]="filtroComida"
-            placeholder="Ej: Tacos al Pastor, Guacamole..."
-            class="input-filtro"
-          />
-        </div>
-
-        <!-- Filtro Rango de Fechas: Desde -->
-        <div class="campo-busqueda">
-          <label class="etiqueta-filtro">Fecha Desde:</label>
-          <input
-            type="date"
-            [(ngModel)]="fechaDesde"
-            class="input-filtro input-fecha"
-          />
-        </div>
-
-        <!-- Filtro Rango de Fechas: Hasta -->
-        <div class="campo-busqueda">
-          <label class="etiqueta-filtro">Fecha Hasta:</label>
-          <input
-            type="date"
-            [(ngModel)]="fechaHasta"
-            class="input-filtro input-fecha"
-          />
-        </div>
-
-        <!-- Botón para Limpiar Filtros -->
-        @if (hayFiltrosActivos) {
-          <div class="campo-busqueda limpiar-box">
-            <button type="button" (click)="limpiarFiltros()" class="btn-limpiar-filtros">
-              Limpiar Filtros
-            </button>
-          </div>
-        }
-      </div>
-    </div>
-
-    <!-- Tabla de Pedidos (Subcomponente Hijo) -->
-    <app-pedidos-table
-      [pedidosArray]="pedidosFiltrados"
-      [domiciliariosDisponibles]="domiciliariosTrabajando"
-      (onActualizarEstado)="actualizarEstadoPedido($event)"
-    ></app-pedidos-table>
-    }
-
 
   </div>
 </main>
