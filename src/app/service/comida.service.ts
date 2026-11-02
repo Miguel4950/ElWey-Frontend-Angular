@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Comida } from '../models/comida.model';
@@ -45,9 +45,5 @@ export class ComidaService {
   // Elimina un plato por su ID
   eliminarComida(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/comidas/delete/${id}`);
-  }
-
-  deleteComida(id: number): Observable<void> {
-    return this.eliminarComida(id);
   }
 }
