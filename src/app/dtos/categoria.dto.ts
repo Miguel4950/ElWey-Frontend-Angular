@@ -1,1 +1,5 @@
-export * from '../models/categoria.model';
+export interface CategoriaDTO {
+  id: number;
+  nombre: string;
+  adicionalesIds: number[];
+}

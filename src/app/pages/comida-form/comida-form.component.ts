@@ -12,7 +12,8 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
 import { ComidaFormCardComponent } from './components/comida-form-card/comida-form-card.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
-import { CategoriaDTO } from '../../dtos/categoria.dto';
+import { Categoria } from '../../models/categoria.model';
+import { CategoriaService } from '../../service/categoria.service';
 import { ComidaService } from '../../service/comida.service';
 
 /**
@@ -33,13 +34,14 @@ import { ComidaService } from '../../service/comida.service';
 })
 export class ComidaFormComponent implements OnInit, OnDestroy {
   private comidaService = inject(ComidaService);
+  private categoriaService = inject(CategoriaService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private subscription: Subscription = new Subscription();
 
   comidaId: number | undefined = undefined;
   isEdit = false;
-  categorias: CategoriaDTO[] = [];
+  categorias: Categoria[] = [];
 
   comidaForm = new FormGroup({
     nombre: new FormControl('', [
@@ -73,7 +75,7 @@ export class ComidaFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // 1. Cargar categorías para el selector
     this.subscription.add(
-      this.comidaService.getCategorias().subscribe({
+      this.categoriaService.getCategorias().subscribe({
         next: (cats) => {
           this.categorias = cats;
         },

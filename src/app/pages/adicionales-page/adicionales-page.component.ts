@@ -61,6 +61,7 @@ export class AdicionalesPageComponent implements OnInit, OnDestroy {
         },
       })
     );
+
   }
 
   abrirNuevoAdicional(): void {

@@ -56,7 +56,7 @@ export class ComidaDetailComponent implements OnInit, OnDestroy {
 
       // Consulta 2: Obtener los adicionales disponibles para este plato (AdicionalDTO[])
       this.subscription.add(
-        this.adicionalService.getAdicionalesByComidaId(this.comidaId).subscribe({
+        this.adicionalService.getAdicionalesActivosByComidaId(this.comidaId).subscribe({
           next: (adicionales) => {
             this.adicionalesDisponibles = adicionales;
           },

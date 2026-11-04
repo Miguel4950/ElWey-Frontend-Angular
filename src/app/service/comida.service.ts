@@ -2,7 +2,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Comida } from '../models/comida.model';
-import { Categoria } from '../models/categoria.model';
 
 // Servicio para el catálogo de comidas y categorías
 @Injectable({
@@ -25,11 +24,6 @@ export class ComidaService {
   // Obtiene un plato por su ID
   getComidaById(id: number): Observable<Comida> {
     return this.http.get<Comida>(`${this.apiUrl}/comidas/${id}`);
-  }
-
-  // Categorías disponibles (Tacos, Bebidas, etc.)
-  getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.apiUrl}/categorias`);
   }
 
   // Agrega un nuevo plato

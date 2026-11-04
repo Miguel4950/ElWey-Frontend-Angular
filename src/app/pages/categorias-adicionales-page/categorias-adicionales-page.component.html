@@ -77,7 +77,7 @@
         <button
           type="button"
           class="btn-guardar"
-          [disabled]="!categoriaSeleccionada || cargando || guardando || adicionales.length === 0"
+          [disabled]="!categoriaSeleccionada || cargando || guardando"
           (click)="guardarAsignaciones()"
         >
           {{ guardando ? 'Guardando...' : 'Guardar asignaciones' }}

@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { CategoriaDTO } from '../../../../dtos/categoria.dto';
+import { Categoria } from '../../../../models/categoria.model';
 
 @Component({
   selector: 'app-comida-form-card',
@@ -11,7 +11,7 @@ import { CategoriaDTO } from '../../../../dtos/categoria.dto';
 })
 export class ComidaFormCardComponent {
   comidaForm = input.required<FormGroup>();
-  categorias = input.required<CategoriaDTO[]>();
+  categorias = input.required<Categoria[]>();
   isEdit = input<boolean>(false);
 
   formSubmitted = output<void>();
