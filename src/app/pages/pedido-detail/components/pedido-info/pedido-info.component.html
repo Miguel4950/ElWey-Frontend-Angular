@@ -25,6 +25,38 @@
     </div>
   </div>
 
+  <!-- Stepper Visual de Seguimiento de Estado -->
+  <div class="stepper-seguimiento-contenedor" aria-label="Línea de progreso del pedido">
+    <div class="stepper-barra-fondo">
+      <div class="stepper-barra-relleno" [style.width.%]="porcentajeProgreso()"></div>
+    </div>
+
+    <div class="stepper-pasos-grid">
+      @for (paso of pasos; track paso.numero) {
+        <div
+          class="stepper-paso-item"
+          [class.paso-completado]="paso.numero < pasoActualNumero()"
+          [class.paso-activo]="paso.numero === pasoActualNumero()"
+          [class.paso-pendiente]="paso.numero > pasoActualNumero()"
+        >
+          <div class="stepper-circulo-nodo">
+            @if (paso.numero < pasoActualNumero()) {
+              <svg class="stepper-icono-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            } @else {
+              <span class="stepper-icono-emoji">{{ paso.icono }}</span>
+            }
+          </div>
+          <div class="stepper-info-nodo">
+            <span class="stepper-etiqueta-nodo">{{ paso.etiqueta }}</span>
+            <span class="stepper-desc-nodo">{{ paso.descripcion }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
   <!-- Información del Cliente y Entrega -->
   <div class="grid-info-pedido">
     <div class="caja-info-bloque">
@@ -66,7 +98,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of pedido().items; track $index) {
+          @for (item of pedido().items; track (item.id || $index)) {
             <tr>
               <td>
                 <strong class="nombre-plato-item">{{ item.comidaNombre }}</strong>
@@ -81,7 +113,7 @@
               <td>
                 @if (item.adicionales && item.adicionales.length > 0) {
                   <div class="lista-chips-adic">
-                    @for (adic of item.adicionales; track $index) {
+                    @for (adic of item.adicionales; track (adic.id || $index)) {
                       <span class="adic-chip">
                         <strong>{{ adic.cantidad }}x</strong> {{ adic.nombre }}
                         <span class="precio-chip">(+${{ adic.subtotal | number:'1.0-0' }})</span>

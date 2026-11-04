@@ -287,3 +287,148 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ========================================================
+   STEPPER VISUAL DE SEGUIMIENTO DE ORDEN
+   ======================================================== */
+.stepper-seguimiento-contenedor {
+  position: relative;
+  background-color: #12100f;
+  border: 1px solid #282420;
+  border-radius: 8px;
+  padding: 24px 28px 20px 28px;
+  margin-bottom: 28px;
+}
+
+.stepper-barra-fondo {
+  position: absolute;
+  top: 42px;
+  left: 60px;
+  right: 60px;
+  height: 4px;
+  background-color: #26211d;
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.stepper-barra-relleno {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #22c55e 100%);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+.stepper-pasos-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  z-index: 2;
+}
+
+.stepper-paso-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.stepper-circulo-nodo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1716;
+  border: 2px solid #3a322c;
+  color: #8c8278;
+  font-size: 18px;
+  margin-bottom: 10px;
+  transition: all 0.25s ease;
+}
+
+.stepper-icono-check {
+  width: 18px;
+  height: 18px;
+  stroke: #22c55e;
+}
+
+.stepper-info-nodo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stepper-etiqueta-nodo {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8c8278;
+  transition: color 0.2s ease;
+}
+
+.stepper-desc-nodo {
+  font-size: 11px;
+  color: #5a504a;
+  transition: color 0.2s ease;
+}
+
+/* Estado: Completado */
+.paso-completado .stepper-circulo-nodo {
+  background-color: rgba(34, 197, 94, 0.15);
+  border-color: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.paso-completado .stepper-etiqueta-nodo {
+  color: #4ade80;
+}
+
+.paso-completado .stepper-desc-nodo {
+  color: #86efac;
+}
+
+/* Estado: Activo / En Curso */
+.paso-activo .stepper-circulo-nodo {
+  background-color: #261f18;
+  border-color: #f59e0b;
+  transform: scale(1.15);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.55);
+  animation: pulse-nodo 2s infinite;
+}
+
+.paso-activo .stepper-etiqueta-nodo {
+  color: #fbbf24;
+  font-weight: 800;
+}
+
+.paso-activo .stepper-desc-nodo {
+  color: #fcf2e9;
+}
+
+/* Estado: Pendiente */
+.paso-pendiente .stepper-circulo-nodo {
+  opacity: 0.5;
+}
+
+@keyframes pulse-nodo {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
+  }
+}
+
+@media (max-width: 640px) {
+  .stepper-desc-nodo {
+    display: none;
+  }
+  .stepper-barra-fondo {
+    left: 40px;
+    right: 40px;
+  }
+}
