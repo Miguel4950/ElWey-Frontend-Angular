@@ -259,3 +259,7 @@
     margin: 4px 6px;
   }
 }
+
+.badge-carrito-animado { box-shadow: 0 0 8px rgba(238, 26, 14, 0.6); transition: transform 0.2s ease, background-color 0.2s ease; }
+.btn-carrito-nav:hover .badge-carrito-animado { background-color: #1a1716; color: #facc15; }
+

@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ClienteService } from '../../service/cliente.service';
 import { CarritoService } from '../../service/carrito.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  imports: [RouterLink, DecimalPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
@@ -15,6 +17,15 @@ export class NavbarComponent {
   private router = inject(Router);
 
   title: string = 'El Wey';
+
+  // Reactividad en tiempo real mediante Signals convertidos desde observables de CarritoService
+  readonly cantidadCarrito = toSignal(this.carritoService.cantidadTotal$, {
+    initialValue: this.carritoService.getCantidadTotal(),
+  });
+
+  readonly totalCarrito = toSignal(this.carritoService.total$, {
+    initialValue: this.carritoService.getTotal(),
+  });
 
   get clienteActual() {
     return this.clienteService.getClienteActual();
@@ -41,10 +52,6 @@ export class NavbarComponent {
 
   get esPersonal(): boolean {
     return this.esAdmin || this.esOperador || this.esDomiciliario;
-  }
-
-  get cantidadCarrito(): number {
-    return this.carritoService.getCantidadTotal();
   }
 
   cerrarSesion(): void {
