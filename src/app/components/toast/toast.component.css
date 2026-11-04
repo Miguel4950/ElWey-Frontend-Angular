@@ -6,17 +6,17 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  background-color: #1f1b18;
+  background-color: var(--elwey-card, #1f1b18);
   border-left: 4px solid #10b981;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--elwey-border, rgba(255, 255, 255, 0.08));
+  border-right: 1px solid var(--elwey-border, rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid var(--elwey-border, rgba(255, 255, 255, 0.08));
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
   border-radius: 8px;
   padding: 14px 18px;
   max-width: 420px;
   animation: slide-in-toast 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  color: #fcf2e9;
+  color: var(--elwey-light, #fcf2e9);
   font-family: 'Poppins', sans-serif;
 }
 
@@ -65,7 +65,7 @@
 .btn-cerrar-toast {
   background: none;
   border: none;
-  color: #8c8278;
+  color: var(--elwey-muted, #8c8278);
   font-size: 14px;
   cursor: pointer;
   padding: 4px;
