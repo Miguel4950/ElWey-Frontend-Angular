@@ -11,6 +11,7 @@ export class ComidaFiltrosComponent {
   filtroCategoria = input<string>('');
   busqueda = input<string>('');
   comidaArray = input.required<ComidaDTO[]>();
+  totalFiltradas = input<number>(0);
 
   categoriaSelected = output<string>();
   busquedaChanged = output<string>();
@@ -22,6 +23,15 @@ export class ComidaFiltrosComponent {
   onBuscarInput(event: Event): void {
     const inputEl = event.target as HTMLInputElement;
     this.busquedaChanged.emit(inputEl.value);
+  }
+
+  limpiarBusqueda(): void {
+    this.busquedaChanged.emit('');
+  }
+
+  limpiarTodosLosFiltros(): void {
+    this.categoriaSelected.emit('');
+    this.busquedaChanged.emit('');
   }
 
   contarPorCategoria(categoria: string): number {

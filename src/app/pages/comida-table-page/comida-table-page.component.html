@@ -36,6 +36,7 @@
         [filtroCategoria]="filtroCategoria"
         [busqueda]="busqueda"
         [comidaArray]="comidaArray"
+        [totalFiltradas]="comidasFiltradas.length"
         (categoriaSelected)="seleccionarCategoria($event)"
         (busquedaChanged)="busqueda = $event"
       ></app-comida-filtros>

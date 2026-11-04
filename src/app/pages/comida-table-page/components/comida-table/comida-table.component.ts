@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ComidaDTO } from '../../../../dtos/comida.dto';
 import { Router, RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
@@ -10,7 +10,6 @@ import { DecimalPipe } from '@angular/common';
   styleUrl: './comida-table.component.css',
 })
 export class ComidaTableComponent {
-  // Inyección de dependencias funcional como en el código del profesor
   router = inject(Router);
 
   ancho: number = 60;
@@ -21,6 +20,31 @@ export class ComidaTableComponent {
   esAdmin = input<boolean>(false);
 
   comidaDeleted = output<ComidaDTO>();
+
+  // Filtro reactivo en vivo para la tabla de inventario
+  filtroTabla = signal<string>('');
+
+  comidasVisibles = computed(() => {
+    const lista = this.comidaArray() || [];
+    const q = this.filtroTabla().toLowerCase().trim();
+    if (!q) return lista;
+    return lista.filter(
+      (c) =>
+        c.nombre.toLowerCase().includes(q) ||
+        (c.categoriaNombre && c.categoriaNombre.toLowerCase().includes(q)) ||
+        (c.etiqueta && c.etiqueta.toLowerCase().includes(q)) ||
+        (c.id && c.id.toString().includes(q))
+    );
+  });
+
+  onFiltroInput(event: Event): void {
+    const inputEl = event.target as HTMLInputElement;
+    this.filtroTabla.set(inputEl.value);
+  }
+
+  limpiarFiltro(): void {
+    this.filtroTabla.set('');
+  }
 
   verDetalleComida(comida: ComidaDTO): void {
     this.router.navigate(['/comidas', comida.id]);

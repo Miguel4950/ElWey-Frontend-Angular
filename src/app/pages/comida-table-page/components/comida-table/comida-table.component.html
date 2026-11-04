@@ -1,4 +1,26 @@
 <div class="tabla-contenedor-responsive">
+  <div class="barra-filtro-tabla-admin">
+    <div class="caja-buscar-tabla">
+      <svg class="icono-lupa-tabla" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        [value]="filtroTabla()"
+        (input)="onFiltroInput($event)"
+        placeholder="Filtrar por nombre, categoría o ID..."
+        class="input-filtro-tabla"
+      />
+      @if (filtroTabla()) {
+        <button type="button" (click)="limpiarFiltro()" class="btn-limpiar-filtro-tabla">✕</button>
+      }
+    </div>
+    <span class="conteo-tabla">
+      Mostrando {{ comidasVisibles().length }} de {{ (comidaArray() || []).length }} platos
+    </span>
+  </div>
+
   <table class="tabla-elwey">
     <thead>
       <tr>
@@ -11,7 +33,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (comida of comidaArray(); track $index) {
+      @for (comida of comidasVisibles(); track comida.id) {
         <tr>
           <!-- Foto -->
           <td class="celda-foto">
@@ -69,8 +91,8 @@
         </tr>
       } @empty {
         <tr>
-          <td colspan="6" class="celda-vacia">
-            No se encontraron comidas en el inventario.
+          <td colspan="6" class="celda-vacia-tabla">
+            <p>No se encontraron platos que coincidan con el filtro.</p>
           </td>
         </tr>
       }

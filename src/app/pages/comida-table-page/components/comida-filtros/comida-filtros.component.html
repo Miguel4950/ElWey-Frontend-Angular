@@ -51,8 +51,27 @@
     </button>
   </div>
 
-  <div class="caja-buscador">
-    <input type="text" [value]="busqueda()" (input)="onBuscarInput($event)" placeholder="Buscar por plato o ingrediente..."
-      class="input-buscador" />
+  <div class="caja-buscador-contenedor">
+    <div class="caja-buscador">
+      <svg class="icono-lupa-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" [value]="busqueda()" (input)="onBuscarInput($event)" placeholder="Buscar por plato o ingrediente..."
+        class="input-buscador" />
+      @if (busqueda()) {
+        <button type="button" (click)="limpiarBusqueda()" class="btn-limpiar-busqueda" title="Limpiar búsqueda">✕</button>
+      }
+    </div>
+    @if (filtroCategoria() || busqueda()) {
+      <div class="barra-info-filtro">
+        <span class="texto-filtro-activo">
+          Mostrando {{ totalFiltradas() }} de {{ comidaArray().length }} opciones
+        </span>
+        <button type="button" (click)="limpiarTodosLosFiltros()" class="btn-reestablecer-filtros">
+          Ver carta completa
+        </button>
+      </div>
+    }
   </div>
 </div>
