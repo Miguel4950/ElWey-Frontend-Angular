@@ -12,6 +12,7 @@ import { PedidoService } from '../../../../service/pedido.service';
 import { ClienteService } from '../../../../service/cliente.service';
 import { CarritoService } from '../../../../service/carrito.service';
 import { ComidaService } from '../../../../service/comida.service';
+import { ToastService } from '../../../../service/toast.service';
 import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicionales.component';
 import { ComidaBebidasComponent } from '../comida-bebidas/comida-bebidas.component';
 
@@ -26,6 +27,7 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
   private clienteService = inject(ClienteService);
   private carritoService = inject(CarritoService);
   private comidaService = inject(ComidaService);
+  private toastService = inject(ToastService);
   private subsBebidas?: Subscription;
   private subscription?: Subscription;
 
@@ -206,6 +208,7 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
     this.agregadoAlCarrito = true;
     this.pedidoCreado = null;
     this.errorMessage = '';
+    this.toastService.mostrar(`¡${c.nombre} agregado al carrito con éxito!`, 'success', 'Ver Carrito', '/carrito');
   }
 
   ordenarPedido(c: ComidaDTO): void {
