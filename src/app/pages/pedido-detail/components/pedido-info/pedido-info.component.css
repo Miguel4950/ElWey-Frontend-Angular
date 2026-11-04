@@ -1,4 +1,4 @@
-.card-pedido-detalle {
+﻿.card-pedido-detalle {
   background-color: #1a1716;
   border: 1px solid #282420;
   border-radius: 8px;
@@ -286,4 +286,45 @@
   .grid-info-pedido {
     grid-template-columns: 1fr;
   }
+}
+
+/* Botón interactivo para copiar comanda formateada */
+.acciones-cabecera-pedido {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-copiar-ticket {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f5efe7;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-copiar-ticket:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-copiar-ticket.btn-copiado-exito {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: #22c55e;
+  color: #4ade80;
+}
+
+.icono-ticket-svg {
+  flex-shrink: 0;
 }

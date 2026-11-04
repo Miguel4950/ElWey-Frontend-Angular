@@ -7,7 +7,28 @@
       <h1 class="titulo-pedido-num">Pedido #{{ pedido().id }}</h1>
       <p class="fecha-pedido-texto">Registrado el {{ pedido().fechaCreacion }}</p>
     </div>
-    <div>
+    <div class="acciones-cabecera-pedido">
+      <button
+        type="button"
+        (click)="copiarTicketWhatsApp()"
+        class="btn-copiar-ticket"
+        [class.btn-copiado-exito]="ticketCopiado()"
+        [title]="ticketCopiado() ? '¡Copiado al portapapeles!' : 'Copiar comanda en formato texto para compartir en WhatsApp'"
+      >
+        @if (ticketCopiado()) {
+          <svg class="icono-ticket-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>¡Ticket Copiado!</span>
+        } @else {
+          <svg class="icono-ticket-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>Copiar Ticket WhatsApp</span>
+        }
+      </button>
+
       <span
         class="badge-estado-grande"
         [class.badge-preparacion]="pedido().estado === 'Cocinando' || pedido().estado === 'En preparación'"
@@ -66,7 +87,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of pedido().items; track $index) {
+          @for (item of pedido().items; track (item.id || $index)) {
             <tr>
               <td>
                 <strong class="nombre-plato-item">{{ item.comidaNombre }}</strong>
@@ -81,7 +102,7 @@
               <td>
                 @if (item.adicionales && item.adicionales.length > 0) {
                   <div class="lista-chips-adic">
-                    @for (adic of item.adicionales; track $index) {
+                    @for (adic of item.adicionales; track (adic.id || $index)) {
                       <span class="adic-chip">
                         <strong>{{ adic.cantidad }}x</strong> {{ adic.nombre }}
                         <span class="precio-chip">(+${{ adic.subtotal | number:'1.0-0' }})</span>
