@@ -33,6 +33,14 @@
         </div>
       </div>
 
+      <!-- Asistente de Enlace GPS, Maps, Waze y WhatsApp (Subcomponente Lego) -->
+      <app-domiciliario-acciones-ruta
+        [direccion]="pedido().clienteDireccion || ''"
+        [telefono]="pedido().clienteTelefono || ''"
+        [clienteNombre]="pedido().clienteNombre"
+        [pedidoId]="pedido().id"
+      ></app-domiciliario-acciones-ruta>
+
       <!-- Desglose de Platos en la Maleta -->
       <div class="bloque-items-domi">
         <h4 class="titulo-items-domi">Contenido del Pedido:</h4>

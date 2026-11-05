@@ -1,0 +1,58 @@
+<div class="panel-acciones-ruta" aria-label="Herramientas de navegación y contacto de despacho">
+  <div class="cabecera-acciones-ruta">
+    <i class="bi bi-compass-fill icono-brujula"></i>
+    <span class="titulo-asistente">Asistente de Enlace y Navegación GPS:</span>
+  </div>
+
+  <div class="grupo-botones-navegacion">
+    <!-- Botón Google Maps -->
+    <a
+      [href]="urlGoogleMaps()"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-ruta-accion btn-maps"
+      title="Abrir ubicación en Google Maps"
+    >
+      <i class="bi bi-geo-alt-fill"></i>
+      <span>Google Maps</span>
+    </a>
+
+    <!-- Botón Waze -->
+    <a
+      [href]="urlWaze()"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-ruta-accion btn-waze"
+      title="Navegar ruta en Waze"
+    >
+      <i class="bi bi-signpost-split-fill"></i>
+      <span>Waze</span>
+    </a>
+
+    <!-- Botón WhatsApp -->
+    @if (urlWhatsApp(); as linkWa) {
+      <a
+        [href]="linkWa"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-ruta-accion btn-whatsapp"
+        title="Enviar mensaje de WhatsApp al cliente"
+      >
+        <i class="bi bi-whatsapp"></i>
+        <span>WhatsApp</span>
+      </a>
+    }
+
+    <!-- Botón Teléfono -->
+    @if (urlTelefono(); as linkTel) {
+      <a
+        [href]="linkTel"
+        class="btn-ruta-accion btn-llamada"
+        title="Llamar al cliente directamente"
+      >
+        <i class="bi bi-telephone-fill"></i>
+        <span>Llamar</span>
+      </a>
+    }
+  </div>
+</div>

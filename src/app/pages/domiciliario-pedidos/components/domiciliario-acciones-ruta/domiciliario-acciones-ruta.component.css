@@ -1,0 +1,90 @@
+.panel-acciones-ruta {
+  background-color: #171513;
+  border: 1px solid #332d29;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.cabecera-acciones-ruta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.icono-brujula {
+  color: #facc15;
+  font-size: 0.9rem;
+}
+
+.titulo-asistente {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #bfb5ac;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.grupo-botones-navegacion {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-ruta-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  min-height: 32px;
+  box-sizing: border-box;
+}
+
+.btn-ruta-accion:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.15);
+}
+
+.btn-maps {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+.btn-waze {
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(14, 165, 233, 0.3);
+}
+
+.btn-whatsapp {
+  background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+}
+
+.btn-llamada {
+  background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+}
+
+@media (max-width: 480px) {
+  .grupo-botones-navegacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btn-ruta-accion {
+    justify-content: center;
+  }
+}
