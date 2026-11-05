@@ -1,0 +1,195 @@
+@if (mostrar()) {
+  <div class="overlay-taquiza" (click)="onCerrar()">
+    <div class="modal-taquiza" (click)="$event.stopPropagation()">
+
+      <!-- Encabezado Modal -->
+      <header class="header-taquiza">
+        <div class="badge-fiesta">
+          <span>🎉 Modo Eventos & Reuniones</span>
+        </div>
+        <h2 class="titulo-taquiza">Calculador de Taquizas</h2>
+        <p class="subtitulo-taquiza">
+          Calcula automáticamente el surtido ideal de tacos, entradas y bebidas para tus invitados con 10% de ahorro grupal.
+        </p>
+        <button type="button" class="btn-cerrar-modal" (click)="onCerrar()" title="Cerrar">
+          &times;
+        </button>
+      </header>
+
+      @if (taquizaAgregada()) {
+        <!-- Estado de Éxito al Inyectar al Carrito -->
+        <div class="cuerpo-exito-taquiza">
+          <div class="icono-check-fiesta">🌮✨</div>
+          <h3 class="titulo-exito-taquiza">¡Taquiza Agregada al Carrito!</h3>
+          <p class="desc-exito-taquiza">
+            Se han añadido <strong>{{ totalTacos() }} tacos</strong>
+            @if (totalEntradas() > 0) { y <strong>{{ totalEntradas() }} entradas</strong> }
+            @if (totalBebidas() > 0) { con <strong>{{ totalBebidas() }} bebidas</strong> }
+            para tus <strong>{{ comensales() }} invitados</strong>.
+          </p>
+
+          <div class="resumen-exito-box">
+            <div class="fila-resumen-exito">
+              <span>Total Estimado:</span>
+              <strong class="precio-exito">${{ precioFinal() | number:'1.0-0' }}</strong>
+            </div>
+            <div class="fila-resumen-exito">
+              <span>Ahorro Grupal (10% OFF):</span>
+              <span class="ahorro-exito">- ${{ descuentoEvento() | number:'1.0-0' }}</span>
+            </div>
+          </div>
+
+          <div class="acciones-exito-taquiza">
+            <button type="button" class="btn-ir-al-carrito" (click)="irAlCarrito()">
+              Ver mi Carrito &rarr;
+            </button>
+            <button type="button" class="btn-seguir-viendo" (click)="onCerrar()">
+              Seguir en el Menú
+            </button>
+          </div>
+        </div>
+      } @else {
+        <!-- Formulario Interactivo del Calculador -->
+        <div class="cuerpo-taquiza">
+
+          <!-- 1. Selector de Comensales -->
+          <section class="seccion-calculo">
+            <label class="label-seccion">
+              1. ¿Cuántos comensales asistirán?
+              <strong class="valor-comensales">{{ comensales() }} personas</strong>
+            </label>
+
+            <div class="control-comensales">
+              <button type="button" class="btn-contador" (click)="cambiarComensales(-1)" [disabled]="comensales() <= 2">-</button>
+              <div class="slider-comensales-box">
+                <div class="botones-rapidos-personas">
+                  @for (n of [4, 6, 8, 12, 20]; track n) {
+                    <button
+                      type="button"
+                      class="chip-personas"
+                      [class.activo]="comensales() === n"
+                      (click)="setComensales(n)"
+                    >
+                      {{ n }} pers.
+                    </button>
+                  }
+                </div>
+              </div>
+              <button type="button" class="btn-contador" (click)="cambiarComensales(1)" [disabled]="comensales() >= 30">+</button>
+            </div>
+          </section>
+
+          <!-- 2. Nivel de Apetito -->
+          <section class="seccion-calculo">
+            <label class="label-seccion">2. Nivel de Apetito por Invitado:</label>
+            <div class="grilla-apetito">
+              <button
+                type="button"
+                class="card-apetito"
+                [class.activo]="apetito() === 'ligero'"
+                (click)="setApetito('ligero')"
+              >
+                <span class="emoji-apetito">🥗</span>
+                <span class="nombre-apetito">Ligero</span>
+                <small class="detalle-apetito">2 tacos / persona</small>
+              </button>
+
+              <button
+                type="button"
+                class="card-apetito"
+                [class.activo]="apetito() === 'estandar'"
+                (click)="setApetito('estandar')"
+              >
+                <span class="emoji-apetito">🌮</span>
+                <span class="nombre-apetito">Estándar</span>
+                <small class="detalle-apetito">3 tacos / persona</small>
+              </button>
+
+              <button
+                type="button"
+                class="card-apetito"
+                [class.activo]="apetito() === 'wey'"
+                (click)="setApetito('wey')"
+              >
+                <span class="emoji-apetito">🔥</span>
+                <span class="nombre-apetito">Modo Wey</span>
+                <small class="detalle-apetito">4 tacos / persona</small>
+              </button>
+            </div>
+          </section>
+
+          <!-- 3. Extras opcionales -->
+          <section class="seccion-calculo">
+            <label class="label-seccion">3. Complementos para el Evento:</label>
+            <div class="toggles-extras">
+              <button
+                type="button"
+                class="btn-toggle-extra"
+                [class.activo]="incluirBebidas()"
+                (click)="toggleBebidas()"
+              >
+                <span>🥤 Incluir Bebidas ({{ totalBebidas() }} uds)</span>
+                <strong>{{ incluirBebidas() ? 'SÍ' : 'NO' }}</strong>
+              </button>
+
+              <button
+                type="button"
+                class="btn-toggle-extra"
+                [class.activo]="incluirEntradas()"
+                (click)="toggleEntradas()"
+              >
+                <span>🥑 Totopos & Guacamole ({{ totalEntradas() }} porc.)</span>
+                <strong>{{ incluirEntradas() ? 'SÍ' : 'NO' }}</strong>
+              </button>
+            </div>
+          </section>
+
+          <!-- 4. Surtido Calculado en Vivo -->
+          <section class="seccion-surtido">
+            <div class="header-surtido">
+              <span class="label-surtido">Surtido Sugerido para tu Taquiza:</span>
+              <span class="badge-total-items">{{ totalTacos() }} Tacos Totales</span>
+            </div>
+
+            <div class="lista-items-taquiza">
+              @for (it of surtidoTaquiza(); track it.comida.id) {
+                <div class="item-taquiza-fila">
+                  <div class="info-item-taquiza">
+                    <span class="cantidad-badge">{{ it.cantidad }}x</span>
+                    <span class="nombre-comida-taquiza">{{ it.comida.nombre }}</span>
+                  </div>
+                  <span class="precio-item-taquiza">${{ it.subtotal | number:'1.0-0' }}</span>
+                </div>
+              }
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Footer Resumen y CTA -->
+        <footer class="footer-taquiza">
+          <div class="resumen-financiero-taquiza">
+            <div class="precios-caja">
+              <span class="precio-tachado">${{ precioRegular() | number:'1.0-0' }}</span>
+              <span class="precio-total-taquiza">${{ precioFinal() | number:'1.0-0' }}</span>
+              <span class="badge-ahorro-taquiza">Ahorras ${{ descuentoEvento() | number:'1.0-0' }}</span>
+            </div>
+            <small class="nota-per-capita">
+              Aprox. ${{ (precioFinal() / comensales()) | number:'1.0-0' }} por persona
+            </small>
+          </div>
+
+          <button
+            type="button"
+            class="btn-agregar-taquiza"
+            (click)="agregarAlCarrito()"
+            [disabled]="surtidoTaquiza().length === 0"
+          >
+            🌮 Agregar Taquiza al Carrito &rarr;
+          </button>
+        </footer>
+      }
+
+    </div>
+  </div>
+}

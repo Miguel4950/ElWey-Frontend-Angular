@@ -1,4 +1,4 @@
-﻿import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CalaverasComponent } from '../../components/calaveras/calaveras.component';
@@ -6,6 +6,7 @@ import { PageTitleComponent } from './components/page-title/page-title.component
 import { ComidaTableComponent } from './components/comida-table/comida-table.component';
 import { ComidaCardsComponent } from './components/comida-cards/comida-cards.component';
 import { ComidaFiltrosComponent } from './components/comida-filtros/comida-filtros.component';
+import { CalculadorTaquizaComponent } from './components/calculador-taquiza/calculador-taquiza.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
 import { ComidaService } from '../../service/comida.service';
 import { ClienteService } from '../../service/cliente.service';
@@ -17,6 +18,7 @@ import { filter, Subscription } from 'rxjs';
  * Soporta dos modos visuales divididos en subcomponentes:
  * - ComidaTableComponent: Vista de inventario tabular (personal staff / admin / operadores / domiciliarios).
  * - ComidaCardsComponent: Vista en cuadrícula de tarjetas de menú gastronómico para clientes y público general.
+ * - CalculadorTaquizaComponent: Herramienta interactiva para eventos con cálculo automático de porciones y descuento grupal.
  */
 @Component({
   selector: 'app-comida-table-page',
@@ -29,6 +31,7 @@ import { filter, Subscription } from 'rxjs';
     ComidaTableComponent,
     ComidaCardsComponent,
     ComidaFiltrosComponent,
+    CalculadorTaquizaComponent,
     RouterLink,
   ],
   templateUrl: './comida-table-page.component.html',
@@ -63,6 +66,17 @@ export class ComidaTablePageComponent implements OnInit, OnDestroy {
   filtroCategoria: string = '';
   busqueda: string = '';
   errorMessage: string = '';
+
+  // Modal Calculador de Taquizas
+  mostrarCalculadorTaquiza = signal<boolean>(false);
+
+  abrirCalculadorTaquiza(): void {
+    this.mostrarCalculadorTaquiza.set(true);
+  }
+
+  cerrarCalculadorTaquiza(): void {
+    this.mostrarCalculadorTaquiza.set(false);
+  }
 
   ngOnInit(): void {
     this.evaluarRuta();

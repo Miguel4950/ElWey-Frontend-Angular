@@ -1,0 +1,519 @@
+/* Overlay */
+.overlay-taquiza {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 16px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Modal */
+.modal-taquiza {
+  background-color: #211c19;
+  border: 1px solid #332b28;
+  border-radius: 12px;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-height: 90vh;
+}
+
+/* Header */
+.header-taquiza {
+  background: linear-gradient(135deg, #1b1412 0%, #171614 100%);
+  border-bottom: 1px solid #332b28;
+  padding: 20px 24px;
+  position: relative;
+}
+
+.badge-fiesta {
+  display: inline-block;
+  background: rgba(250, 204, 21, 0.15);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.titulo-taquiza {
+  font-family: 'Abril Fatface', Georgia, serif;
+  font-size: 24px;
+  color: #facc15;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.subtitulo-taquiza {
+  font-size: 12px;
+  color: #d8c8ba;
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+}
+
+.btn-cerrar-modal {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  color: #a89a8c;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.btn-cerrar-modal:hover {
+  color: #fcf2e9;
+}
+
+/* Cuerpo */
+.cuerpo-taquiza {
+  padding: 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.seccion-calculo {
+  background: #171614;
+  border: 1px solid #2b231f;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.label-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fcf2e9;
+  margin-bottom: 12px;
+}
+
+.valor-comensales {
+  color: #facc15;
+  font-size: 15px;
+}
+
+/* Control comensales */
+.control-comensales {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-contador {
+  width: 36px;
+  height: 36px;
+  background: #2b231f;
+  border: 1px solid #453933;
+  color: #fcf2e9;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.btn-contador:hover:not(:disabled) {
+  background: #ab1d19;
+  border-color: #ee1a0e;
+}
+
+.btn-contador:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.slider-comensales-box {
+  flex: 1;
+}
+
+.botones-rapidos-personas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.chip-personas {
+  background: #211c19;
+  border: 1px solid #332b28;
+  color: #d8c8ba;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip-personas:hover {
+  border-color: #facc15;
+  color: #facc15;
+}
+
+.chip-personas.activo {
+  background: #ab1d19;
+  border-color: #ee1a0e;
+  color: #ffffff;
+}
+
+/* Grilla Apetito */
+.grilla-apetito {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.card-apetito {
+  background: #211c19;
+  border: 1px solid #332b28;
+  border-radius: 8px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.card-apetito:hover {
+  border-color: #574c43;
+}
+
+.card-apetito.activo {
+  border-color: #facc15;
+  background: rgba(250, 204, 21, 0.08);
+}
+
+.emoji-apetito {
+  font-size: 22px;
+}
+
+.nombre-apetito {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fcf2e9;
+}
+
+.card-apetito.activo .nombre-apetito {
+  color: #facc15;
+}
+
+.detalle-apetito {
+  font-size: 11px;
+  color: #a89a8c;
+}
+
+/* Toggles extras */
+.toggles-extras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-toggle-extra {
+  background: #211c19;
+  border: 1px solid #332b28;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #d8c8ba;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-toggle-extra:hover {
+  border-color: #574c43;
+}
+
+.btn-toggle-extra.activo {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  color: #fcf2e9;
+}
+
+.btn-toggle-extra.activo strong {
+  color: #4ade80;
+}
+
+/* Surtido */
+.seccion-surtido {
+  background: #171614;
+  border: 1px dashed #453933;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.header-surtido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.label-surtido {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fcf2e9;
+}
+
+.badge-total-items {
+  background: #ab1d19;
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.lista-items-taquiza {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.item-taquiza-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid #231c18;
+}
+
+.info-item-taquiza {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cantidad-badge {
+  color: #facc15;
+  font-weight: 800;
+}
+
+.nombre-comida-taquiza {
+  color: #d8c8ba;
+}
+
+.precio-item-taquiza {
+  color: #fcf2e9;
+  font-weight: 700;
+}
+
+/* Footer */
+.footer-taquiza {
+  background: #1b1412;
+  border-top: 1px solid #332b28;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.resumen-financiero-taquiza {
+  display: flex;
+  flex-direction: column;
+}
+
+.precios-caja {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.precio-tachado {
+  font-size: 13px;
+  color: #a89a8c;
+  text-decoration: line-through;
+}
+
+.precio-total-taquiza {
+  font-size: 22px;
+  font-weight: 900;
+  color: #facc15;
+}
+
+.badge-ahorro-taquiza {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid #22c55e;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.nota-per-capita {
+  font-size: 11px;
+  color: #a89a8c;
+}
+
+.btn-agregar-taquiza {
+  background: #ab1d19;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(171, 29, 25, 0.4);
+}
+
+.btn-agregar-taquiza:hover:not(:disabled) {
+  background: #ee1a0e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(238, 26, 14, 0.5);
+}
+
+.btn-agregar-taquiza:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Pantalla Éxito */
+.cuerpo-exito-taquiza {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.icono-check-fiesta {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.titulo-exito-taquiza {
+  font-size: 20px;
+  color: #86efac;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+}
+
+.desc-exito-taquiza {
+  font-size: 13px;
+  color: #d8c8ba;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.resumen-exito-box {
+  background: #171614;
+  border: 1px solid #332b28;
+  border-radius: 6px;
+  padding: 14px 18px;
+  max-width: 380px;
+  margin: 0 auto 24px auto;
+}
+
+.fila-resumen-exito {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #d8c8ba;
+  padding: 4px 0;
+}
+
+.precio-exito {
+  color: #facc15;
+  font-size: 16px;
+}
+
+.ahorro-exito {
+  color: #4ade80;
+  font-weight: 700;
+}
+
+.acciones-exito-taquiza {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-ir-al-carrito {
+  background: #ab1d19;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ir-al-carrito:hover {
+  background: #ee1a0e;
+}
+
+.btn-seguir-viendo {
+  background: transparent;
+  color: #fcf2e9;
+  border: 1px solid #453933;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-seguir-viendo:hover {
+  border-color: #facc15;
+  color: #facc15;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .grilla-apetito {
+    grid-template-columns: 1fr;
+  }
+  .toggles-extras {
+    grid-template-columns: 1fr;
+  }
+  .footer-taquiza {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

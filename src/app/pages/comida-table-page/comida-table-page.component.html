@@ -31,6 +31,23 @@
         }
       </div>
 
+      <!-- Banner Festivo: Calculador de Taquizas para Eventos y Reuniones -->
+      <div class="banner-taquiza-cta" (click)="abrirCalculadorTaquiza()">
+        <div class="info-banner-taquiza">
+          <span class="icono-banner-taquiza">🎉🌮</span>
+          <div>
+            <span class="subtitulo-banner-taquiza">¿Planeas una reunión o evento familiar?</span>
+            <h3 class="titulo-banner-taquiza">Arma tu Taquiza Grupal con 10% OFF</h3>
+            <p class="desc-banner-taquiza">
+              Calcula porciones exactas de tacos, entradas y bebidas según tus invitados y añade todo al carrito en 1 clic.
+            </p>
+          </div>
+        </div>
+        <button type="button" class="btn-abrir-taquiza" (click)="$event.stopPropagation(); abrirCalculadorTaquiza()">
+          Abrir Calculador &rarr;
+        </button>
+      </div>
+
       <!-- Subcomponente: Filtros de Tarjetas (Lego) -->
       <app-comida-filtros
         [filtroCategoria]="filtroCategoria"
@@ -71,6 +88,13 @@
 
   </div>
 </main>
+
+<!-- Subcomponente Lego: Modal Calculador de Taquizas -->
+<app-calculador-taquiza
+  [mostrar]="mostrarCalculadorTaquiza()"
+  [comidas]="comidaArray"
+  (cerrar)="cerrarCalculadorTaquiza()"
+></app-calculador-taquiza>
 
 <app-calaveras></app-calaveras>
 <app-footer></app-footer>
