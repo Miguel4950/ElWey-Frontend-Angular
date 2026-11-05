@@ -1,0 +1,84 @@
+<section class="seccion-testimonios" aria-labelledby="titulo-testimonios">
+  <div class="contenedor-header">
+    <span class="badge-mexicano">Opiniones Auténticas</span>
+    <h2 id="titulo-testimonios">Lo que dicen nuestros comensales</h2>
+    <p class="subtitulo-testimonios">
+      La voz de quienes disfrutan la sazón tradicional mexicana en Bogotá todos los días.
+    </p>
+
+    <!-- Barra de Metricas Comerciales -->
+    <div class="grid-metricas">
+      @for (m of metricas; track m.etiqueta) {
+        <div class="tarjeta-metrica">
+          <span class="icono-metrica">{{ m.icono }}</span>
+          <span class="valor-metrica">{{ m.valor }}</span>
+          <span class="etiqueta-metrica">{{ m.etiqueta }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Filtro de Categorias de Testimonios -->
+    <div class="chips-filtro" role="tablist">
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaSeleccionada() === 'todos'"
+        (click)="seleccionarCategoria('todos')"
+      >
+        ✨ Todas las Opiniones
+      </button>
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaSeleccionada() === 'tacos'"
+        (click)="seleccionarCategoria('tacos')"
+      >
+        🌮 Tacos al Pastor y Carnitas
+      </button>
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaSeleccionada() === 'quesadillas'"
+        (click)="seleccionarCategoria('quesadillas')"
+      >
+        🧀 Quesadillas & Entradas
+      </button>
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaSeleccionada() === 'domicilios'"
+        (click)="seleccionarCategoria('domicilios')"
+      >
+        🛵 Entregas a Domicilio
+      </button>
+    </div>
+  </div>
+
+  <!-- Grid de Testimonios -->
+  <div class="grid-testimonios">
+    @for (testimonio of testimoniosFiltrados(); track testimonio.id) {
+      <article class="tarjeta-testimonio">
+        <div class="encabezado-card">
+          <div class="avatar-box">
+            <span class="avatar-emoji">{{ testimonio.avatarEmoji }}</span>
+          </div>
+          <div class="info-usuario">
+            <strong class="nombre-usuario">{{ testimonio.nombre }}</strong>
+            <span class="rol-usuario">{{ testimonio.rol }}</span>
+          </div>
+          <span class="tiempo-testimonio">{{ testimonio.fecha }}</span>
+        </div>
+
+        <div class="estrellas-calificacion" aria-label="Calificación de 5 estrellas">
+          ★★★★★
+        </div>
+
+        <blockquote class="cuerpo-comentario">
+          "{{ testimonio.comentario }}"
+        </blockquote>
+      </article>
+    } @empty {
+      <p class="sin-testimonios">No hay testimonios en esta categoría por el momento.</p>
+    }
+  </div>
+</section>

@@ -97,3 +97,52 @@
     font-size: 38px;
   }
 }
+
+
+/* Badge de Estado Operativo en Vivo */
+.badge-estado-servicio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(46, 125, 50, 0.2);
+  border: 1px solid rgba(129, 199, 132, 0.4);
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(8px);
+}
+
+.punto-vivo {
+  width: 10px;
+  height: 10px;
+  background-color: #4caf50;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #4caf50;
+  animation: pulso-vivo 2s infinite ease-in-out;
+}
+
+@keyframes pulso-vivo {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+.texto-estado {
+  color: #c8e6c9;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.texto-estado strong {
+  color: #ffffff;
+}

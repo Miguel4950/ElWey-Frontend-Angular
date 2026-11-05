@@ -9,6 +9,7 @@ import { MenuDestacadoComponent } from './components/menu-destacado/menu-destaca
 import { GaleriaComponent } from './components/galeria/galeria.component';
 import { BannerCtaComponent } from './components/banner-cta/banner-cta.component';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
+import { TestimoniosComponent } from './components/testimonios/testimonios.component';
 import { ComidaDTO } from '../../dtos/comida.dto';
 import { ComidaService } from '../../service/comida.service';
 
@@ -24,6 +25,7 @@ import { ComidaService } from '../../service/comida.service';
     GaleriaComponent,
     BannerCtaComponent,
     UbicacionComponent,
+    TestimoniosComponent,
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
