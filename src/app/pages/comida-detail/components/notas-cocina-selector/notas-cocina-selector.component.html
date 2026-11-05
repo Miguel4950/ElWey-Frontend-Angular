@@ -1,0 +1,56 @@
+<div class="modulo-personalizacion-cocina">
+
+  <!-- Encabezado con Icono Cultural -->
+  <div class="cabecera-modulo">
+    <span class="icono-termometro">🌶️</span>
+    <div>
+      <h3 class="titulo-modulo">Termómetro de Picante & Notas del Chef</h3>
+      <p class="subtitulo-modulo">Personaliza el nivel de chile e instrucciones para los cocineros.</p>
+    </div>
+  </div>
+
+  <!-- Botones del Termómetro de Picante -->
+  <div class="selector-termometro-grid">
+    @for (nivel of nivelesPicante; track nivel.id) {
+      <button
+        type="button"
+        class="btn-nivel-picante"
+        [class.activo]="nivelSeleccionado() === nivel.id"
+        [class]="nivel.claseColor"
+        (click)="seleccionarNivel(nivel.id)"
+      >
+        <span class="icono-nivel">{{ nivel.icono }}</span>
+        <strong class="nombre-nivel">{{ nivel.etiqueta }}</strong>
+        <small class="desc-nivel">{{ nivel.desc }}</small>
+      </button>
+    }
+  </div>
+
+  <!-- Instrucciones Especiales de Cocina -->
+  <div class="seccion-notas-cocina">
+    <label class="etiqueta-notas">Instrucciones o Alergias Especiales (Opcional):</label>
+    <input
+      type="text"
+      [value]="notasEspeciales()"
+      (input)="onNotasInput($event)"
+      placeholder="Ej. Salsas aparte, sin cebolla, tortillas bien tostadas..."
+      class="input-notas-cocina"
+      maxlength="120"
+    />
+
+    <!-- Chips de sugerencias rápidas con un solo clic -->
+    <div class="chips-sugerencias-notas">
+      <span class="label-chips">Sugerencias rápidas:</span>
+      @for (sug of sugerenciasRapidas; track sug) {
+        <button
+          type="button"
+          class="chip-nota"
+          (click)="agregarSugerencia(sug)"
+        >
+          + {{ sug }}
+        </button>
+      }
+    </div>
+  </div>
+
+</div>

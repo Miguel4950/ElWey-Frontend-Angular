@@ -14,10 +14,18 @@ import { CarritoService } from '../../../../service/carrito.service';
 import { ComidaService } from '../../../../service/comida.service';
 import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicionales.component';
 import { ComidaBebidasComponent } from '../comida-bebidas/comida-bebidas.component';
+import { NotasCocinaSelectorComponent, PreferenciaCocina } from '../notas-cocina-selector/notas-cocina-selector.component';
 
 @Component({
   selector: 'app-comida-info-detalle, app-col-info-detalle',
-  imports: [RouterLink, DecimalPipe, ComidaAdicionalesComponent, ComidaBebidasComponent],
+  standalone: true,
+  imports: [
+    RouterLink,
+    DecimalPipe,
+    ComidaAdicionalesComponent,
+    ComidaBebidasComponent,
+    NotasCocinaSelectorComponent,
+  ],
   templateUrl: './comida-info-detalle.component.html',
   styleUrl: './comida-info-detalle.component.css',
 })
@@ -35,6 +43,14 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
   // Signal Inputs independientes (ComidaDTO y AdicionalDTO[])
   comida = input<ComidaDTO>();
   adicionales = input<AdicionalDTO[]>([]);
+
+  // Preferencias gastronómicas y notas del chef
+  preferenciasCocina: PreferenciaCocina = {
+    nivel: 2,
+    etiqueta: 'Medio Taquero',
+    icono: '🌶️🌶️',
+    notas: '',
+  };
 
   cantidadProducto: number = 1;
   // Control reactivo del pop-up modal (Angular Way con @if + Bootstrap 5)
@@ -55,6 +71,10 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Error al cargar bebidas recomendadas:', err),
     });
+  }
+
+  onPreferenciasCocinaChange(pref: PreferenciaCocina): void {
+    this.preferenciasCocina = pref;
   }
 
   onBebidasChange(seleccionadas: BebidaSeleccionadaItem[]): void {
@@ -165,10 +185,24 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
 
     const subtotalAdics = adicsMapeados.reduce((sum, a) => sum + a.subtotal, 0);
 
+    let nombrePersonalizado = c.nombre;
+    if (!this.esBebida && this.preferenciasCocina) {
+      const notasArr: string[] = [];
+      if (this.preferenciasCocina.etiqueta !== 'Medio Taquero') {
+        notasArr.push(`${this.preferenciasCocina.icono} ${this.preferenciasCocina.etiqueta}`);
+      }
+      if (this.preferenciasCocina.notas) {
+        notasArr.push(`Nota: ${this.preferenciasCocina.notas}`);
+      }
+      if (notasArr.length > 0) {
+        nombrePersonalizado = `${c.nombre} (${notasArr.join(', ')})`;
+      }
+    }
+
     const itemCarrito: ItemCarritoDTO = {
       id: `${c.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       comidaId: c.id,
-      comidaNombre: c.nombre,
+      comidaNombre: nombrePersonalizado,
       comidaPrecio: c.precio,
       categoriaNombre: c.categoriaNombre,
       imagenUrl: c.imagen_url,
@@ -184,15 +218,14 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
     // Agregar cada una de las bebidas seleccionadas con su cantidad respectiva
     for (const itemB of this.bebidasSeleccionadas) {
       if (itemB.bebida && itemB.bebida.id && itemB.cantidad > 0) {
-        const b = itemB.bebida;
-        const subtotalBebida = (b.precio || 0) * itemB.cantidad;
+        const subtotalBebida = (itemB.bebida.precio || 0) * itemB.cantidad;
         const itemBebida: ItemCarritoDTO = {
-          id: `${b.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-          comidaId: b.id!,
-          comidaNombre: b.nombre,
-          comidaPrecio: b.precio,
-          categoriaNombre: b.categoriaNombre,
-          imagenUrl: b.imagen_url,
+          id: `${itemB.bebida.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+          comidaId: itemB.bebida.id,
+          comidaNombre: itemB.bebida.nombre,
+          comidaPrecio: itemB.bebida.precio,
+          categoriaNombre: 'Bebidas',
+          imagenUrl: itemB.bebida.imagen_url,
           cantidad: itemB.cantidad,
           adicionales: [],
           subtotalComida: subtotalBebida,

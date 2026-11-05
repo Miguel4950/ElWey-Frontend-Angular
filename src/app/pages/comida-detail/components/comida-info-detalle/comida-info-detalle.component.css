@@ -559,3 +559,32 @@
     padding: 24px;
   }
 }
+
+.fila-resumen-picante {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #3d342f;
+}
+
+.badge-resumen-picante {
+  background: rgba(200, 150, 62, 0.15);
+  color: var(--elwey-gold, #c8963e);
+  border: 1px solid rgba(200, 150, 62, 0.35);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.badge-resumen-nota {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d8c8ba;
+  font-size: 11px;
+  font-style: italic;
+  padding: 2px 8px;
+  border-radius: 12px;
+}

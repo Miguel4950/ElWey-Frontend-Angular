@@ -49,6 +49,13 @@
         ></app-comida-bebidas>
       }
 
+      <!-- Selector de Nivel de Picante y Notas del Chef (Subcomponente Lego) -->
+      @if (!esBebida && !esPersonal) {
+        <app-notas-cocina-selector
+          (preferenciasCambiadas)="onPreferenciasCocinaChange($event)"
+        ></app-notas-cocina-selector>
+      }
+
       @if (!esPersonal) {
         <!-- Resumen acumulado estimado en tiempo real -->
         <div class="caja-subtotal-estimado">
@@ -56,6 +63,14 @@
             <span>Subtotal estimado ({{ cantidadProducto }} plato(s)@if (totalAdicionalesCantidad > 0) { + {{ totalAdicionalesCantidad }} adicionales}@if (cantidadTotalBebidas > 0) { + {{ cantidadTotalBebidas }} bebida(s)}):</span>
             <strong class="precio-subtotal-estimado">${{ subtotalAcumulado | number:'1.0-0' }}</strong>
           </div>
+          @if (!esBebida && preferenciasCocina) {
+            <div class="fila-resumen-picante">
+              <span class="badge-resumen-picante">🌶️ Picante: {{ preferenciasCocina.icono }} {{ preferenciasCocina.etiqueta }}</span>
+              @if (preferenciasCocina.notas) {
+                <span class="badge-resumen-nota">📝 "{{ preferenciasCocina.notas }}"</span>
+              }
+            </div>
+          }
         </div>
 
         <!-- Botones de Acción: Carrito y Pedido Directo -->

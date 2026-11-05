@@ -1,0 +1,167 @@
+.modulo-personalizacion-cocina {
+  background: #1f1b18;
+  border: 1px solid #362e2a;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 18px 0;
+}
+
+.cabecera-modulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.icono-termometro {
+  font-size: 24px;
+}
+
+.titulo-modulo {
+  font-family: var(--elwey-font-heading, 'Abril Fatface', serif);
+  font-size: 15px;
+  color: #fcf2e9;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.subtitulo-modulo {
+  font-size: 11px;
+  color: #a89a8c;
+  margin: 2px 0 0 0;
+}
+
+.selector-termometro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.btn-nivel-picante {
+  background: #2a2420;
+  border: 1.5px solid #3d342f;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3px;
+  transition: all 0.2s ease;
+  color: #fcf2e9;
+}
+
+.btn-nivel-picante:hover {
+  background: #362e29;
+  border-color: #63554e;
+  transform: translateY(-2px);
+}
+
+.icono-nivel {
+  font-size: 16px;
+}
+
+.nombre-nivel {
+  font-size: 12px;
+  font-family: var(--elwey-font-body, 'Montserrat', sans-serif);
+}
+
+.desc-nivel {
+  font-size: 10px;
+  color: #9e8e7f;
+  line-height: 1.2;
+}
+
+/* Estados Activos según color de nivel */
+.btn-nivel-picante.activo.nivel-0 {
+  background: rgba(46, 125, 50, 0.25);
+  border-color: #4caf50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.btn-nivel-picante.activo.nivel-1 {
+  background: rgba(245, 127, 23, 0.25);
+  border-color: #fbc02d;
+  box-shadow: 0 0 10px rgba(251, 192, 45, 0.3);
+}
+
+.btn-nivel-picante.activo.nivel-2 {
+  background: rgba(230, 81, 0, 0.25);
+  border-color: #ff9800;
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.35);
+}
+
+.btn-nivel-picante.activo.nivel-3 {
+  background: rgba(198, 40, 40, 0.25);
+  border-color: #e53935;
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.4);
+}
+
+.btn-nivel-picante.activo.nivel-4 {
+  background: linear-gradient(135deg, rgba(136, 14, 79, 0.4), rgba(213, 0, 0, 0.4));
+  border-color: #ff1744;
+  box-shadow: 0 0 12px rgba(255, 23, 68, 0.5);
+}
+
+.seccion-notas-cocina {
+  margin-top: 10px;
+}
+
+.etiqueta-notas {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #d8c8ba;
+  margin-bottom: 6px;
+}
+
+.input-notas-cocina {
+  width: 100%;
+  padding: 8px 12px;
+  background: #171614;
+  border: 1px solid #3d342f;
+  border-radius: 6px;
+  color: #fcf2e9;
+  font-family: var(--elwey-font-body, 'Poppins', sans-serif);
+  font-size: 12px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-notas-cocina:focus {
+  border-color: var(--elwey-gold, #c8963e);
+  box-shadow: 0 0 0 2px rgba(200, 150, 62, 0.2);
+}
+
+.chips-sugerencias-notas {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.label-chips {
+  font-size: 11px;
+  color: #8c8278;
+}
+
+.chip-nota {
+  background: #2a2420;
+  border: 1px solid #4a3e37;
+  color: #d8c8ba;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chip-nota:hover {
+  background: #3d342f;
+  color: #fcf2e9;
+  border-color: var(--elwey-gold, #c8963e);
+  transform: scale(1.03);
+}
