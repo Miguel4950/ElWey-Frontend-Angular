@@ -108,3 +108,33 @@
   color: #8c8278;
   font-size: 0.85rem;
 }
+
+.btn-calificar-mini {
+  background: rgba(250, 204, 21, 0.15);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.4);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-calificar-mini:hover {
+  background: #facc15;
+  color: #171614;
+  transform: translateY(-1px);
+}
+
+.badge-calificado-exito {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.35);
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}

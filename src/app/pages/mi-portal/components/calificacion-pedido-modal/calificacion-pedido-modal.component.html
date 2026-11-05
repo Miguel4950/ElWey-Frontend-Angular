@@ -1,0 +1,125 @@
+@if (visible()) {
+  <div class="modal-backdrop-calif" (click)="onCerrar()">
+    <div class="modal-card-calif" (click)="$event.stopPropagation()">
+
+      <!-- Encabezado del Modal -->
+      <div class="cabecera-modal-calif">
+        <div>
+          <span class="subtitulo-calif">OPINIÓN & EXPERIENCIA</span>
+          <h2 class="titulo-calif">Califica tu Pedido #{{ pedido()?.id }}</h2>
+        </div>
+        <button type="button" class="btn-cerrar-calif" (click)="onCerrar()">✕</button>
+      </div>
+
+      @if (!enviado()) {
+        <!-- Selector Principal de 5 Estrellas -->
+        <div class="seccion-estrellas-principal">
+          <p class="pregunta-calif">¿Qué tan sabrosa estuvo tu comida?</p>
+          <div class="fila-estrellas-grandes">
+            @for (num of [1, 2, 3, 4, 5]; track num) {
+              <button
+                type="button"
+                class="btn-estrella"
+                [class.estrella-activa]="num <= estrellas()"
+                (click)="setEstrellas(num)"
+                [title]="num + ' estrellas'"
+              >
+                ★
+              </button>
+            }
+          </div>
+          <span class="etiqueta-veredicto">{{ etiquetasEstrellas[estrellas()] }}</span>
+        </div>
+
+        <!-- Calificación de Aspectos Específicos -->
+        <div class="grid-aspectos-calif">
+          <div class="fila-aspecto">
+            <span class="label-aspecto">🌮 Sabor de los Platos:</span>
+            <div class="botones-mini-estrellas">
+              @for (n of [1, 2, 3, 4, 5]; track n) {
+                <button
+                  type="button"
+                  class="btn-mini-estrella"
+                  [class.activa]="n <= sabor()"
+                  (click)="setSabor(n)"
+                >
+                  ★
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="fila-aspecto">
+            <span class="label-aspecto">🛵 Tiempo del Domicilio:</span>
+            <div class="botones-mini-estrellas">
+              @for (n of [1, 2, 3, 4, 5]; track n) {
+                <button
+                  type="button"
+                  class="btn-mini-estrella"
+                  [class.activa]="n <= rapidez()"
+                  (click)="setRapidez(n)"
+                >
+                  ★
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Chips de Reconocimientos / Aspectos Positivos -->
+        <div class="seccion-chips-calif">
+          <p class="label-chips-calif">¿Qué destacarías de tu pedido?</p>
+          <div class="contenedor-tags-calif">
+            @for (tag of tagsDisponibles; track tag) {
+              <button
+                type="button"
+                class="tag-calif-btn"
+                [class.tag-activo]="tagsSeleccionados().includes(tag)"
+                (click)="toggleTag(tag)"
+              >
+                {{ tag }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Comentario Adicional -->
+        <div class="seccion-comentario-calif">
+          <label class="label-comentario">Comentario para el Restaurante (Opcional):</label>
+          <textarea
+            rows="3"
+            [value]="comentario()"
+            (input)="onComentarioInput($event)"
+            placeholder="Cuéntanos más detalles sobre tu experiencia..."
+            class="textarea-calif"
+            maxlength="250"
+          ></textarea>
+        </div>
+
+        <!-- Botón de Envío -->
+        <div class="pie-acciones-calif">
+          <button type="button" class="btn-cancelar-calif" (click)="onCerrar()">Cancelar</button>
+          <button type="button" class="btn-enviar-calif" (click)="enviar()">
+            ✨ Enviar Calificación
+          </button>
+        </div>
+      } @else {
+        <!-- Vista de Agradecimiento -->
+        <div class="card-agradecimiento-calif">
+          <span class="icono-agradecimiento">🎉</span>
+          <h3 class="titulo-gracias">¡Muchas gracias, Compadre!</h3>
+          <p class="desc-gracias">
+            Tu calificación de <strong>{{ estrellas() }} estrellas</strong> fue registrada y compartida con nuestros taqueros y el repartidor {{ pedido()?.domiciliarioNombre || 'asignado' }}.
+          </p>
+          <div class="badge-puntos-extra">
+            <span>+ 20 Puntos Wey sumados a tu membresía VIP 🌮</span>
+          </div>
+          <button type="button" class="btn-volver-portal" (click)="onCerrar()">
+            Volver a Mi Portal
+          </button>
+        </div>
+      }
+
+    </div>
+  </div>
+}

@@ -17,6 +17,7 @@
             <th>Repartidor</th>
             <th>Total</th>
             <th>Estado</th>
+            <th>Calificación</th>
             <th></th>
           </tr>
         </thead>
@@ -39,6 +40,21 @@
                 </span>
               </td>
               <td>
+                @if (ped.id && calificaciones()[ped.id]) {
+                  <span class="badge-calificado-exito">
+                    ⭐ {{ calificaciones()[ped.id].estrellas }}/5 Calificado
+                  </span>
+                } @else {
+                  <button
+                    type="button"
+                    class="btn-calificar-mini"
+                    (click)="abrirModalCalificacion(ped)"
+                  >
+                    ⭐ Calificar
+                  </button>
+                }
+              </td>
+              <td>
                 <a [routerLink]="['/pedidos', ped.id]" class="link-detalle-mini">Ver &rarr;</a>
               </td>
             </tr>
@@ -52,3 +68,10 @@
     </div>
   }
 </div>
+
+<app-calificacion-pedido-modal
+  [pedido]="pedidoAEditar()"
+  [visible]="modalVisible()"
+  (cerrar)="cerrarModal()"
+  (calificacionEnviada)="onCalificacionGuardada($event)"
+></app-calificacion-pedido-modal>
