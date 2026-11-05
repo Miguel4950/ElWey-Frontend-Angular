@@ -115,3 +115,117 @@
 .nota-estado-defecto strong {
   color: #facc15;
 }
+
+
+/* Estilos del Selector de Propina Voluntaria */
+.bloque-propina {
+  background-color: #171614;
+  border: 1px dashed #4e3a2f;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.encabezado-propina {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.icono-repartidor {
+  font-size: 16px;
+}
+
+.titulo-propina {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fcf2e9;
+}
+
+.subtexto-propina {
+  font-size: 11px;
+  color: #a89a8c;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.chips-propina {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.chip-prop {
+  background-color: #211c19;
+  border: 1px solid #4a3d37;
+  color: #e5dacd;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-prop:hover {
+  border-color: #facc15;
+  color: #facc15;
+}
+
+.chip-prop.activo {
+  background-color: #ab1d19;
+  border-color: #ee1a0e;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(238, 26, 14, 0.4);
+}
+
+.input-propina-custom {
+  display: flex;
+  align-items: center;
+  background-color: #211c19;
+  border: 1px solid #4a3d37;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-top: 6px;
+}
+
+.signo-peso {
+  color: #facc15;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.campo-propina {
+  background: transparent;
+  border: none;
+  color: #fcf2e9;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  width: 100%;
+  outline: none;
+}
+
+.campo-propina::-webkit-inner-spin-button,
+.campo-propina::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mensaje-agradecimiento-propina {
+  background: rgba(46, 125, 50, 0.15);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: #a5d6a7;
+  font-size: 11px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.propina-resaltada {
+  color: #4caf50 !important;
+}

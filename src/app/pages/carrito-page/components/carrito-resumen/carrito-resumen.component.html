@@ -23,11 +23,89 @@
       <strong>${{ subtotalAdicionales() | number:'1.0-0' }}</strong>
     </div>
 
+    <!-- Bloque de Selector de Propina Voluntaria -->
+    <div class="bloque-propina">
+      <div class="encabezado-propina">
+        <span class="icono-repartidor">🛵</span>
+        <span class="titulo-propina">Propina para el Domiciliario</span>
+      </div>
+      <p class="subtexto-propina">100% directa para el repartidor de turno en Bogotá.</p>
+
+      <div class="chips-propina" role="group" aria-label="Porcentaje de propina voluntaria">
+        <button
+          type="button"
+          class="chip-prop"
+          [class.activo]="!modoPersonalizado() && porcentajePropina() === 0"
+          (click)="seleccionarPorcentaje(0)"
+        >
+          0%
+        </button>
+        <button
+          type="button"
+          class="chip-prop"
+          [class.activo]="!modoPersonalizado() && porcentajePropina() === 5"
+          (click)="seleccionarPorcentaje(5)"
+        >
+          5%
+        </button>
+        <button
+          type="button"
+          class="chip-prop"
+          [class.activo]="!modoPersonalizado() && porcentajePropina() === 10"
+          (click)="seleccionarPorcentaje(10)"
+        >
+          10% ⭐
+        </button>
+        <button
+          type="button"
+          class="chip-prop"
+          [class.activo]="!modoPersonalizado() && porcentajePropina() === 15"
+          (click)="seleccionarPorcentaje(15)"
+        >
+          15% 🔥
+        </button>
+        <button
+          type="button"
+          class="chip-prop"
+          [class.activo]="modoPersonalizado()"
+          (click)="activarPersonalizado()"
+        >
+          Otro
+        </button>
+      </div>
+
+      @if (modoPersonalizado()) {
+        <div class="input-propina-custom">
+          <span class="signo-peso">$</span>
+          <input
+            type="number"
+            min="0"
+            step="500"
+            placeholder="Monto voluntario COP"
+            [value]="propinaPersonalizadaInput()"
+            (input)="onInputPropina($event)"
+            class="campo-propina"
+          />
+        </div>
+      }
+
+      @if (valorPropina() > 0) {
+        <div class="mensaje-agradecimiento-propina">
+          ❤️ ¡Muchas gracias por apoyar a nuestra flota de repartidores!
+        </div>
+      }
+    </div>
+
+    <div class="fila-resumen">
+      <span>Propina al Domiciliario:</span>
+      <strong class="propina-resaltada">+${{ valorPropina() | number:'1.0-0' }}</strong>
+    </div>
+
     <div class="divider-resumen"></div>
 
     <div class="fila-resumen total-fila">
-      <span>TOTAL:</span>
-      <span class="total-monto">${{ total() | number:'1.0-0' }}</span>
+      <span>TOTAL A PAGAR:</span>
+      <span class="total-monto">${{ totalConPropina() | number:'1.0-0' }}</span>
     </div>
 
     <!-- Información del Cliente comprador -->
