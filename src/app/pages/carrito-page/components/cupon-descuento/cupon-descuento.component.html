@@ -1,0 +1,71 @@
+<div class="modulo-cupon">
+  <div class="encabezado-cupon">
+    <span class="icono-cupon">🎟️</span>
+    <span class="titulo-cupon">¿Tienes un Cupón de Descuento?</span>
+  </div>
+
+  @if (!cuponActual()) {
+    <div class="input-grupo-cupon">
+      <input
+        type="text"
+        [value]="codigoInput()"
+        (input)="onCodigoInput($event)"
+        (keyup.enter)="aplicarCupon()"
+        placeholder="Ej. ELWEY10"
+        class="input-cupon"
+        maxlength="15"
+      />
+      <button
+        type="button"
+        (click)="aplicarCupon()"
+        class="btn-aplicar-cupon"
+      >
+        Canjear
+      </button>
+    </div>
+
+    <!-- Sugerencias rápidas para demo en vivo -->
+    <div class="sugerencias-cupon">
+      <span class="label-sugerencias">Prueba rápida:</span>
+      @for (sug of sugerencias; track sug) {
+        <button
+          type="button"
+          class="badge-sugerencia"
+          (click)="seleccionarSugerencia(sug)"
+        >
+          {{ sug }}
+        </button>
+      }
+    </div>
+
+    @if (mensajeError()) {
+      <div class="alerta-cupon alerta-error-cupon">
+        <span>⚠️ {{ mensajeError() }}</span>
+      </div>
+    }
+  } @else {
+    <div class="tarjeta-cupon-activo">
+      <div class="info-cupon-activo">
+        <span class="badge-codigo">{{ cuponActual()?.codigo }}</span>
+        <span class="desc-cupon">{{ cuponActual()?.descripcion }}</span>
+        <strong class="ahorro-cupon">
+          Ahorras: -${{ descuentoCalculado() | number:'1.0-0' }}
+        </strong>
+      </div>
+      <button
+        type="button"
+        (click)="removerCupon()"
+        class="btn-remover-cupon"
+        title="Quitar cupón"
+      >
+        ✕ Quitar
+      </button>
+    </div>
+
+    @if (mensajeExito()) {
+      <div class="alerta-cupon alerta-exito-cupon">
+        <span>🎉 {{ mensajeExito() }}</span>
+      </div>
+    }
+  }
+</div>

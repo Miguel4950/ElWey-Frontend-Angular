@@ -1,0 +1,171 @@
+.modulo-cupon {
+  margin: 1rem 0;
+  padding: 0.9rem;
+  background: #fffdf7;
+  border: 1.5px dashed var(--elwey-gold, #c8963e);
+  border-radius: 10px;
+}
+
+.encabezado-cupon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.icono-cupon {
+  font-size: 1.2rem;
+}
+
+.titulo-cupon {
+  font-family: var(--elwey-font-heading, 'Abril Fatface', serif);
+  font-size: 0.95rem;
+  color: var(--elwey-green-dark, #063d1e);
+  letter-spacing: 0.3px;
+}
+
+.input-grupo-cupon {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.input-cupon {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--elwey-font-body, 'Poppins', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  outline: none;
+  background: #ffffff;
+}
+
+.input-cupon:focus {
+  border-color: var(--elwey-green, #0b6623);
+  box-shadow: 0 0 0 2px rgba(11, 102, 35, 0.15);
+}
+
+.btn-aplicar-cupon {
+  padding: 0.5rem 1rem;
+  font-family: var(--elwey-font-body, 'Montserrat', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--elwey-green, #0b6623);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-aplicar-cupon:hover {
+  background: var(--elwey-green-dark, #063d1e);
+  transform: translateY(-1px);
+}
+
+.sugerencias-cupon {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.label-sugerencias {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.badge-sugerencia {
+  background: #f0f7f2;
+  border: 1px solid var(--elwey-green, #0b6623);
+  color: var(--elwey-green, #0b6623);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.badge-sugerencia:hover {
+  background: var(--elwey-green, #0b6623);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.tarjeta-cupon-activo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #e8f5e9;
+  border: 1px solid #81c784;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+}
+
+.info-cupon-activo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.badge-codigo {
+  display: inline-block;
+  background: var(--elwey-green, #0b6623);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.desc-cupon {
+  font-size: 0.78rem;
+  color: #2e7d32;
+}
+
+.ahorro-cupon {
+  font-size: 0.85rem;
+  color: #1b5e20;
+}
+
+.btn-remover-cupon {
+  background: transparent;
+  border: 1px solid #c62828;
+  color: #c62828;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-remover-cupon:hover {
+  background: #c62828;
+  color: #ffffff;
+}
+
+.alerta-cupon {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.alerta-error-cupon {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.alerta-exito-cupon {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}

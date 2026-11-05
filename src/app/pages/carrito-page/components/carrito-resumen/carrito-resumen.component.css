@@ -115,3 +115,17 @@
 .nota-estado-defecto strong {
   color: #facc15;
 }
+
+.fila-descuento {
+  color: #4caf50 !important;
+  font-weight: 700;
+  background: rgba(76, 175, 80, 0.1);
+  padding: 6px 8px !important;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+.monto-descuento {
+  color: #4caf50 !important;
+  font-size: 14px;
+}

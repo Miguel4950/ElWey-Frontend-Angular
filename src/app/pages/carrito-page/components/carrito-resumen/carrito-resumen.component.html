@@ -23,11 +23,24 @@
       <strong>${{ subtotalAdicionales() | number:'1.0-0' }}</strong>
     </div>
 
+    <!-- Módulo interactivo de cupón de descuento -->
+    <app-cupon-descuento
+      [subtotal]="total()"
+      (cuponCambiado)="onCuponCambiado($event)"
+    ></app-cupon-descuento>
+
+    @if (cuponActual()) {
+      <div class="fila-resumen fila-descuento">
+        <span>Descuento ({{ cuponActual()?.codigo }}):</span>
+        <strong class="monto-descuento">-${{ descuentoCupon() | number:'1.0-0' }}</strong>
+      </div>
+    }
+
     <div class="divider-resumen"></div>
 
     <div class="fila-resumen total-fila">
       <span>TOTAL:</span>
-      <span class="total-monto">${{ total() | number:'1.0-0' }}</span>
+      <span class="total-monto">${{ totalFinal() | number:'1.0-0' }}</span>
     </div>
 
     <!-- Información del Cliente comprador -->
