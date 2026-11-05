@@ -13,12 +13,14 @@ import { CrearPedidoDTO } from '../../dtos/crear-pedido.dto';
 import { PedidoDTO } from '../../dtos/pedido.dto';
 import { CarritoItemsComponent } from './components/carrito-items/carrito-items.component';
 import { CarritoResumenComponent } from './components/carrito-resumen/carrito-resumen.component';
+import { EmptyStateComponent } from '../../components/empty-state/empty-state.component';
 
 /**
  * Página principal del Carrito de Compras en "El Wey".
  * Dividida en subcomponentes visuales reutilizables:
  * - CarritoItemsComponent: Lista de platos, adicionales, modificadores de cantidad y eliminación.
  * - CarritoResumenComponent: Resumen de totales, desglose financiero y botón de checkout.
+ * - EmptyStateComponent: Estado vacío reactivo con llamada a la acción y estética mexicana.
  */
 @Component({
   selector: 'app-carrito-page',
@@ -31,6 +33,7 @@ import { CarritoResumenComponent } from './components/carrito-resumen/carrito-re
     CalaverasComponent,
     CarritoItemsComponent,
     CarritoResumenComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css',

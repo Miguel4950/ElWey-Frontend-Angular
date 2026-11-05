@@ -59,13 +59,13 @@
 
     <!-- Estado vacío si no hay ítems en el carrito -->
     @else if (items.length === 0) {
-      <div class="card-carrito-vacio">
-        <h2 class="titulo-vacio">Tu carrito está vacío</h2>
-        <p class="desc-vacio">No has seleccionado ningún plato ni adicionales aún. Explora nuestro menú y personaliza tus órdenes.</p>
-        <a [routerLink]="['/comidas/tarjetas']" class="btn-ir-menu">
-          + Explorar Menú de Comidas
-        </a>
-      </div>
+      <app-empty-state
+        titulo="Tu carrito está vacío"
+        mensaje="No has seleccionado ningún plato ni adicionales aún. Explora nuestro menú tradicional mexicano y arma tu orden a tu gusto."
+        icono="🛒"
+        botonTexto="+ Explorar Menú de Comidas"
+        botonRuta="/comidas/tarjetas"
+      ></app-empty-state>
     }
 
     <!-- Grilla del Carrito con Subcomponentes -->

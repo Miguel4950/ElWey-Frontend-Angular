@@ -1,0 +1,93 @@
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: radial-gradient(circle at center, #23221e 0%, #151412 100%);
+  border: 1.5px dashed rgba(227, 98, 9, 0.45);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin: 1.5rem auto;
+  max-width: 640px;
+  animation: fadeInEmpty 0.35s ease-out;
+}
+
+@keyframes fadeInEmpty {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.empty-state-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+  filter: drop-shadow(0 4px 12px rgba(227, 98, 9, 0.3));
+  animation: pulseIcon 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseIcon {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffbb33;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.empty-state-message {
+  font-size: 1rem;
+  color: #c9c3b8;
+  max-width: 480px;
+  line-height: 1.55;
+  margin: 0 auto 1.5rem auto;
+}
+
+.empty-state-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-empty-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #e36209, #d03801);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.75rem;
+  border: none;
+  border-radius: 9999px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(227, 98, 9, 0.4);
+  transition: all 0.25s ease;
+}
+
+.btn-empty-action:hover {
+  background: linear-gradient(135deg, #f27218, #df4408);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(227, 98, 9, 0.6);
+  color: #ffffff;
+}
+
+.btn-empty-action:active {
+  transform: translateY(0);
+}

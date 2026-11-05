@@ -155,7 +155,11 @@
       } @empty {
         <tr>
           <td colspan="10" class="celda-vacia">
-            No se encontraron pedidos registrados con los criterios seleccionados.
+            <app-empty-state
+              titulo="Sin pedidos registrados"
+              mensaje="No se encontraron pedidos que coincidan con los filtros seleccionados."
+              icono="📋"
+            ></app-empty-state>
           </td>
         </tr>
       }

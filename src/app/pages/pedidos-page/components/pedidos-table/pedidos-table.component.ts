@@ -5,14 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { PedidoDTO } from '../../../../dtos/pedido.dto';
 import { DomiciliarioDTO } from '../../../../dtos/domiciliario.dto';
 import { ClienteService } from '../../../../service/cliente.service';
+import { EmptyStateComponent } from '../../../../components/empty-state/empty-state.component';
 
 /**
  * Componente hijo para la visualización y gestión del ciclo de vida de pedidos en comanda.
- * Maneja los 3 estados del pedido: 'Cocinando', 'Enviado' y 'Entregado'.
+ * Maneja los estados del pedido: 'Cocinando', 'Listo', 'Enviado' y 'Entregado'.
  */
 @Component({
   selector: 'app-pedidos-table',
-  imports: [DecimalPipe, FormsModule],
+  imports: [DecimalPipe, FormsModule, EmptyStateComponent],
   templateUrl: './pedidos-table.component.html',
   styleUrl: './pedidos-table.component.css',
 })

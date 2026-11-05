@@ -1,0 +1,22 @@
+<div class="empty-state-card">
+  <div class="empty-state-icon" aria-hidden="true">
+    {{ icono() }}
+  </div>
+
+  <h3 class="empty-state-title">{{ titulo() }}</h3>
+  <p class="empty-state-message">{{ mensaje() }}</p>
+
+  @if (botonTexto()) {
+    <div class="empty-state-actions">
+      @if (botonRuta()) {
+        <a [routerLink]="[botonRuta()]" class="btn-empty-action">
+          {{ botonTexto() }}
+        </a>
+      } @else {
+        <button type="button" (click)="onAccion()" class="btn-empty-action">
+          {{ botonTexto() }}
+        </button>
+      }
+    </div>
+  }
+</div>
