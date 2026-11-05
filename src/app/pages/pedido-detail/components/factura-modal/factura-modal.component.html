@@ -1,0 +1,144 @@
+@if (visible()) {
+  <div class="modal-backdrop-factura" (click)="onCerrar()">
+    <div class="modal-contenedor-factura" (click)="$event.stopPropagation()">
+
+      <!-- Barra de acciones superior -->
+      <div class="acciones-superiores no-print">
+        <span class="titulo-modal">Comprobante Fiscal Electrónico</span>
+        <div class="grupo-botones-modal">
+          <button type="button" class="btn-accion-imprimir" (click)="imprimir()">
+            🖨️ Imprimir / Guardar PDF
+          </button>
+          <button type="button" class="btn-accion-cerrar" (click)="onCerrar()">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Ticket Fiscal Imprimible -->
+      <div class="ticket-imprimible" id="seccion-ticket-fiscal">
+        <div class="encabezado-ticket">
+          <h2 class="nombre-empresa">🌮 TAQUERÍA EL WEY S.A.S.</h2>
+          <p class="nit-empresa">NIT: 901.458.712-3 | Régimen Común</p>
+          <p class="direccion-empresa">Calle 67 # 8-32, Chapinero — Bogotá D.C.</p>
+          <p class="tel-empresa">Tel: +57 (601) 320-8300 | www.elwey.co</p>
+          <div class="linea-corte">========================================</div>
+          <h3 class="tipo-documento">FACTURA ELECTRÓNICA DE VENTA</h3>
+          <p class="numero-factura"><strong>No. {{ numeroFactura() }}</strong></p>
+          <p class="fecha-factura">Fecha: {{ pedido().fechaCreacion }}</p>
+          <div class="linea-corte">========================================</div>
+        </div>
+
+        <div class="datos-cliente-ticket">
+          <p><strong>Adquirente:</strong> {{ pedido().clienteNombre }}</p>
+          <p><strong>Correo:</strong> {{ pedido().clienteCorreo || 'Consumidor Final' }}</p>
+          <p><strong>Teléfono:</strong> {{ pedido().clienteTelefono || 'No registrado' }}</p>
+          <p><strong>Dirección:</strong> {{ pedido().clienteDireccion || 'Entrega en barra' }}</p>
+          <p><strong>Repartidor:</strong> {{ pedido().domiciliarioNombre || 'Despacho interno' }}</p>
+          <p><strong>Estado:</strong> {{ pedido().estado }}</p>
+        </div>
+
+        <div class="linea-corte">----------------------------------------</div>
+
+        <table class="tabla-ticket">
+          <thead>
+            <tr>
+              <th class="col-cant">Cant</th>
+              <th class="col-desc">Descripción</th>
+              <th class="col-unit">Unit.</th>
+              <th class="col-sub">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of pedido().items; track $index) {
+              <tr>
+                <td class="col-cant">{{ item.cantidad }}x</td>
+                <td class="col-desc">
+                  <strong>{{ item.comidaNombre }}</strong>
+                  @if (item.adicionales && item.adicionales.length > 0) {
+                    <div class="adicionales-ticket">
+                      @for (ad of item.adicionales; track $index) {
+                        <small>+ {{ ad.cantidad }}x {{ ad.nombre }} (${{ ad.subtotal | number:'1.0-0' }})</small>
+                      }
+                    </div>
+                  }
+                </td>
+                <td class="col-unit">${{ item.comidaPrecio | number:'1.0-0' }}</td>
+                <td class="col-sub">${{ item.subtotal | number:'1.0-0' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div class="linea-corte">----------------------------------------</div>
+
+        <div class="totales-ticket">
+          <div class="fila-ticket">
+            <span>Base Gravable:</span>
+            <strong>${{ subtotalBase() | number:'1.0-0' }}</strong>
+          </div>
+          <div class="fila-ticket">
+            <span>Impoconsumo (8%):</span>
+            <strong>${{ impoconsumo() | number:'1.0-0' }}</strong>
+          </div>
+          <div class="linea-corte">========================================</div>
+          <div class="fila-ticket fila-gran-total">
+            <span>TOTAL PAGADO:</span>
+            <span class="monto-gran-total">${{ pedido().total | number:'1.0-0' }} COP</span>
+          </div>
+          <div class="linea-corte">========================================</div>
+        </div>
+
+        <!-- Código QR Fiscal Vectorial Simulado -->
+        <div class="seccion-qr-fiscal">
+          <svg class="qr-vector" width="110" height="110" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+            <rect width="110" height="110" fill="#ffffff" />
+            <!-- Patrones esquineros QR -->
+            <rect x="10" y="10" width="28" height="28" fill="#111111" />
+            <rect x="14" y="14" width="20" height="20" fill="#ffffff" />
+            <rect x="18" y="18" width="12" height="12" fill="#111111" />
+
+            <rect x="72" y="10" width="28" height="28" fill="#111111" />
+            <rect x="76" y="14" width="20" height="20" fill="#ffffff" />
+            <rect x="80" y="18" width="12" height="12" fill="#111111" />
+
+            <rect x="10" y="72" width="28" height="28" fill="#111111" />
+            <rect x="14" y="76" width="20" height="20" fill="#ffffff" />
+            <rect x="18" y="80" width="12" height="12" fill="#111111" />
+
+            <!-- Píxeles de datos aleatorios reproducibles -->
+            <rect x="44" y="12" width="6" height="6" fill="#111111" />
+            <rect x="54" y="12" width="6" height="6" fill="#111111" />
+            <rect x="44" y="24" width="6" height="6" fill="#111111" />
+            <rect x="58" y="24" width="6" height="6" fill="#111111" />
+            <rect x="48" y="34" width="6" height="6" fill="#111111" />
+            <rect x="12" y="46" width="6" height="6" fill="#111111" />
+            <rect x="24" y="46" width="6" height="6" fill="#111111" />
+            <rect x="36" y="46" width="6" height="6" fill="#111111" />
+            <rect x="48" y="46" width="14" height="6" fill="#111111" />
+            <rect x="68" y="46" width="6" height="6" fill="#111111" />
+            <rect x="82" y="46" width="14" height="6" fill="#111111" />
+            <rect x="44" y="58" width="8" height="8" fill="#111111" />
+            <rect x="58" y="58" width="8" height="8" fill="#111111" />
+            <rect x="44" y="72" width="6" height="6" fill="#111111" />
+            <rect x="56" y="72" width="6" height="6" fill="#111111" />
+            <rect x="68" y="72" width="8" height="8" fill="#111111" />
+            <rect x="82" y="72" width="8" height="8" fill="#111111" />
+            <rect x="48" y="86" width="14" height="6" fill="#111111" />
+            <rect x="68" y="86" width="8" height="12" fill="#111111" />
+            <rect x="84" y="86" width="12" height="12" fill="#111111" />
+          </svg>
+          <p class="cufe-texto">CUFE: 8f9b2d3e4a5c6e7f8a9b0c1d2e3f4a5b6c7d8e9f</p>
+        </div>
+
+        <div class="pie-ticket">
+          <p>Resolución DIAN No. 18764000123 de 2026</p>
+          <p>Rango autorizado del EW-00001 al EW-99999</p>
+          <p class="agradecimiento">🌮 ¡GRACIAS POR TU COMPRA EN EL WEY! 🌮</p>
+          <small>Desarrollo Web — Pontificia Universidad Javeriana</small>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

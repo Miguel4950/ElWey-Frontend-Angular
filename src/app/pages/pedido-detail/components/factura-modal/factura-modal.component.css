@@ -1,0 +1,282 @@
+.modal-backdrop-factura {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-contenedor-factura {
+  background: #ffffff;
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.acciones-superiores {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.2rem;
+  background: #1e1b18;
+  color: #fcf2e9;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.titulo-modal {
+  font-family: var(--elwey-font-heading, 'Abril Fatface', serif);
+  font-size: 1rem;
+  color: var(--elwey-gold, #c8963e);
+}
+
+.grupo-botones-modal {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-accion-imprimir {
+  background: var(--elwey-green, #0b6623);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-accion-imprimir:hover {
+  background: var(--elwey-green-dark, #063d1e);
+  transform: translateY(-1px);
+}
+
+.btn-accion-cerrar {
+  background: #332b28;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-accion-cerrar:hover {
+  background: #c62828;
+}
+
+/* Diseño de Comanda / Ticket Fiscal Térmico */
+.ticket-imprimible {
+  background: #fffdf9;
+  color: #1a1a1a;
+  padding: 1.5rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.encabezado-ticket {
+  text-align: center;
+}
+
+.nombre-empresa {
+  font-family: var(--elwey-font-heading, 'Abril Fatface', serif);
+  font-size: 1.15rem;
+  margin: 0 0 0.2rem 0;
+  color: #0b6623;
+}
+
+.nit-empresa,
+.direccion-empresa,
+.tel-empresa {
+  margin: 0.1rem 0;
+  font-size: 0.75rem;
+  color: #444444;
+}
+
+.tipo-documento {
+  font-size: 0.9rem;
+  font-weight: 800;
+  margin: 0.4rem 0 0.1rem 0;
+  letter-spacing: 0.5px;
+}
+
+.numero-factura {
+  font-size: 0.85rem;
+  margin: 0.1rem 0;
+}
+
+.fecha-factura {
+  font-size: 0.75rem;
+  color: #555555;
+  margin: 0.1rem 0;
+}
+
+.linea-corte {
+  font-size: 0.75rem;
+  color: #777777;
+  text-align: center;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.datos-cliente-ticket p {
+  margin: 0.2rem 0;
+}
+
+.tabla-ticket {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+}
+
+.tabla-ticket th {
+  border-bottom: 1px dashed #444444;
+  padding: 0.3rem 0;
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.tabla-ticket td {
+  padding: 0.35rem 0;
+  vertical-align: top;
+}
+
+.col-cant {
+  width: 12%;
+  font-weight: 700;
+}
+
+.col-desc {
+  width: 50%;
+}
+
+.col-unit {
+  width: 18%;
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+.col-sub {
+  width: 20%;
+  text-align: right;
+  font-weight: 700;
+}
+
+.adicionales-ticket {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.3rem;
+  font-size: 0.72rem;
+  color: #555555;
+}
+
+.totales-ticket {
+  margin: 0.4rem 0;
+}
+
+.fila-ticket {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.25rem 0;
+}
+
+.fila-gran-total {
+  font-size: 1rem;
+  font-weight: 900;
+  padding: 0.3rem 0;
+}
+
+.monto-gran-total {
+  color: #0b6623;
+  font-size: 1.05rem;
+}
+
+.seccion-qr-fiscal {
+  text-align: center;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.qr-vector {
+  border: 1px solid #e0e0e0;
+  padding: 4px;
+  background: #ffffff;
+}
+
+.cufe-texto {
+  font-size: 0.65rem;
+  color: #777777;
+  word-break: break-all;
+  margin: 0.3rem 0 0 0;
+}
+
+.pie-ticket {
+  text-align: center;
+  margin-top: 0.8rem;
+  font-size: 0.72rem;
+  color: #555555;
+}
+
+.pie-ticket p {
+  margin: 0.15rem 0;
+}
+
+.agradecimiento {
+  font-weight: 800;
+  margin: 0.5rem 0 !important;
+  color: #ab1d19;
+}
+
+/* Reglas de Impresión Nativa (Solo se imprime el ticket) */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .ticket-imprimible,
+  .ticket-imprimible * {
+    visibility: visible;
+  }
+
+  .ticket-imprimible {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0.5cm;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .modal-backdrop-factura {
+    position: static;
+    background: transparent;
+    padding: 0;
+  }
+
+  .modal-contenedor-factura {
+    box-shadow: none;
+    border: none;
+    max-width: 100%;
+  }
+}

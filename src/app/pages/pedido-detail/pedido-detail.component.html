@@ -17,6 +17,13 @@
         <span class="breadcrumb-item-activo">Pedido #{{ pedido.id }}</span>
       </div>
 
+      <!-- Barra de acciones rápidas (Factura Fiscal) -->
+      <div class="barra-acciones-comanda no-print">
+        <button type="button" class="btn-abrir-factura" (click)="abrirFactura()">
+          🧾 Factura / Comanda Fiscal Electrónica (PDF)
+        </button>
+      </div>
+
       <!-- Alertas de Feedback -->
       @if (mensajeExito) {
         <div class="alerta-exito-detalle">
@@ -58,6 +65,13 @@
           </a>
         }
       </div>
+
+      <!-- Subcomponente 3: Factura Fiscal Electrónica Imprimible -->
+      <app-factura-modal
+        [pedido]="pedido"
+        [visible]="mostrarFacturaModal()"
+        (cerrar)="cerrarFactura()"
+      ></app-factura-modal>
 
     } @else {
       <div class="no-encontrado">

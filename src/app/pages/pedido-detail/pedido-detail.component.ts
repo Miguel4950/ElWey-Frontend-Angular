@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -11,12 +11,14 @@ import { DomiciliarioService } from '../../service/domiciliario.service';
 import { ClienteService } from '../../service/cliente.service';
 import { PedidoGestionComponent } from './components/pedido-gestion/pedido-gestion.component';
 import { PedidoInfoComponent } from './components/pedido-info/pedido-info.component';
+import { FacturaModalComponent } from './components/factura-modal/factura-modal.component';
 
 /**
  * Detalle consolidado de un pedido (Comanda).
  * Estructurado en subcomponentes visuales especializados:
  * - PedidoGestionComponent: Barra de operaciones de cocina y asignación/despacho de repartidores.
  * - PedidoInfoComponent: Datos del comensal, desglose de platos, adicionales y totales.
+ * - FacturaModalComponent: Generador e impresor de factura fiscal electrónica con QR.
  */
 @Component({
   selector: 'app-pedido-detail',
@@ -28,6 +30,7 @@ import { PedidoInfoComponent } from './components/pedido-info/pedido-info.compon
     CalaverasComponent,
     PedidoGestionComponent,
     PedidoInfoComponent,
+    FacturaModalComponent,
   ],
   templateUrl: './pedido-detail.component.html',
   styleUrl: './pedido-detail.component.css',
@@ -44,6 +47,7 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
   pedido: PedidoDTO | undefined;
   domiciliariosDisponibles: DomiciliarioDTO[] = [];
 
+  mostrarFacturaModal = signal<boolean>(false);
   mensajeExito: string = '';
   errorMessage: string = '';
 
@@ -97,6 +101,14 @@ export class PedidoDetailComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  abrirFactura(): void {
+    this.mostrarFacturaModal.set(true);
+  }
+
+  cerrarFactura(): void {
+    this.mostrarFacturaModal.set(false);
   }
 
   enviarPedido(domiciliarioId: number): void {
