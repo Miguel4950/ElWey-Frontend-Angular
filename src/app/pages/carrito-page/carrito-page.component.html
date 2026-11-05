@@ -40,6 +40,12 @@
             <span>Total Adicionales:</span>
             <strong>{{ pedidoExitoso.cantidadTotalAdicionales }} porciones</strong>
           </div>
+          @if (resultadoPago) {
+            <div class="item-resumen-conf">
+              <span>Pago Autorizado:</span>
+              <strong style="color: var(--elwey-verde, #16a34a);">💳 {{ resultadoPago.detalle }}</strong>
+            </div>
+          }
           <div class="item-resumen-conf total-conf">
             <span>Total a Pagar:</span>
             <strong>${{ pedidoExitoso.total | number:'1.0-0' }}</strong>
@@ -95,10 +101,19 @@
           [total]="total"
           [clienteActual]="clienteActual"
           [cargando]="cargando"
-          (confirmar)="confirmarPedido()"
+          (confirmar)="solicitarConfirmacion()"
         ></app-carrito-resumen>
       </div>
     }
+
+    <!-- Subcomponente 3: Pasarela de Pago Simulada (El Wey Pay) -->
+    <app-carrito-pasarela-pago
+      [mostrar]="mostrarPasarela"
+      [total]="total"
+      [clienteNombre]="clienteActual?.nombre || ''"
+      (cerrar)="mostrarPasarela = false"
+      (pagoAprobado)="onPagoAprobado($event)"
+    ></app-carrito-pasarela-pago>
 
   </div>
 </main>

@@ -13,12 +13,14 @@ import { CrearPedidoDTO } from '../../dtos/crear-pedido.dto';
 import { PedidoDTO } from '../../dtos/pedido.dto';
 import { CarritoItemsComponent } from './components/carrito-items/carrito-items.component';
 import { CarritoResumenComponent } from './components/carrito-resumen/carrito-resumen.component';
+import { CarritoPasarelaPagoComponent, ResultadoPago } from './components/carrito-pasarela-pago/carrito-pasarela-pago.component';
 
 /**
  * Página principal del Carrito de Compras en "El Wey".
  * Dividida en subcomponentes visuales reutilizables:
  * - CarritoItemsComponent: Lista de platos, adicionales, modificadores de cantidad y eliminación.
  * - CarritoResumenComponent: Resumen de totales, desglose financiero y botón de checkout.
+ * - CarritoPasarelaPagoComponent: Modal de pasarela simulada con métodos de pago e interacción segura.
  */
 @Component({
   selector: 'app-carrito-page',
@@ -31,6 +33,7 @@ import { CarritoResumenComponent } from './components/carrito-resumen/carrito-re
     CalaverasComponent,
     CarritoItemsComponent,
     CarritoResumenComponent,
+    CarritoPasarelaPagoComponent,
   ],
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css',
@@ -59,6 +62,7 @@ export class CarritoPageComponent implements OnInit, OnDestroy {
       this.router.navigate([this.rutaRetornoPersonal]);
     }
   }
+
   private carritoService = inject(CarritoService);
   private pedidoService = inject(PedidoService);
   private clienteService = inject(ClienteService);
@@ -68,6 +72,10 @@ export class CarritoPageComponent implements OnInit, OnDestroy {
   cargando: boolean = false;
   pedidoExitoso: PedidoDTO | null = null;
   errorMessage: string = '';
+
+  // Pasarela de Pago
+  mostrarPasarela: boolean = false;
+  resultadoPago: ResultadoPago | null = null;
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
@@ -113,6 +121,28 @@ export class CarritoPageComponent implements OnInit, OnDestroy {
     if (confirm('¿Deseas vaciar tu carrito de compras?')) {
       this.carritoService.limpiar();
     }
+  }
+
+  solicitarConfirmacion(): void {
+    if (this.items.length === 0) {
+      this.errorMessage = 'El carrito está vacío.';
+      return;
+    }
+
+    const clienteId = this.clienteActual?.id;
+    if (clienteId == null) {
+      this.errorMessage = 'Debes iniciar sesión para confirmar tu pedido.';
+      return;
+    }
+
+    this.errorMessage = '';
+    this.mostrarPasarela = true;
+  }
+
+  onPagoAprobado(resultado: ResultadoPago): void {
+    this.resultadoPago = resultado;
+    this.mostrarPasarela = false;
+    this.confirmarPedido();
   }
 
   confirmarPedido(): void {

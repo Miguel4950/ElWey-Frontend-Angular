@@ -1,0 +1,222 @@
+@if (mostrar()) {
+  <div class="overlay-pasarela" (click)="cancelar()">
+    <div class="modal-pasarela" (click)="$event.stopPropagation()">
+
+      <!-- Encabezado del Modal -->
+      <header class="header-pasarela">
+        <div class="badge-seguridad">
+          <span class="icono-candado">🔒</span> Pasarela Segura 256-bit SSL
+        </div>
+        <h2 class="titulo-pasarela">El Wey Pay &trade;</h2>
+        <p class="subtitulo-pasarela">Selecciona tu medio de pago preferido para confirmar tu pedido</p>
+        <button type="button" class="btn-cerrar-pasarela" (click)="cancelar()" [disabled]="procesando()">
+          &times;
+        </button>
+      </header>
+
+      <!-- Selector de Método de Pago -->
+      <div class="metodos-grid">
+        <button
+          type="button"
+          class="btn-metodo"
+          [class.activo]="metodoSeleccionado() === 'tarjeta'"
+          (click)="seleccionarMetodo('tarjeta')"
+          [disabled]="procesando()"
+        >
+          <span class="icono-metodo">💳</span>
+          <span class="label-metodo">Tarjeta Débito / Crédito</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-metodo"
+          [class.activo]="metodoSeleccionado() === 'pse'"
+          (click)="seleccionarMetodo('pse')"
+          [disabled]="procesando()"
+        >
+          <span class="icono-metodo">📱</span>
+          <span class="label-metodo">PSE / Billeteras Móviles</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-metodo"
+          [class.activo]="metodoSeleccionado() === 'efectivo'"
+          (click)="seleccionarMetodo('efectivo')"
+          [disabled]="procesando()"
+        >
+          <span class="icono-metodo">💵</span>
+          <span class="label-metodo">Efectivo contra Entrega</span>
+        </button>
+      </div>
+
+      <!-- Detalle según Método Seleccionado -->
+      <div class="cuerpo-metodo">
+        @if (metodoSeleccionado() === 'tarjeta') {
+          <div class="formulario-tarjeta">
+            <!-- Simulación visual de plástico de tarjeta -->
+            <div class="plastico-tarjeta">
+              <div class="tarjeta-top">
+                <span class="chip-tarjeta"></span>
+                <span class="franquicia-badge">{{ franquiciaTarjeta }}</span>
+              </div>
+              <div class="tarjeta-numero">{{ numeroTarjeta || '•••• •••• •••• ••••' }}</div>
+              <div class="tarjeta-bottom">
+                <div class="tarjeta-titular">
+                  <span class="label-plastico">TITULAR</span>
+                  <span class="valor-plastico">{{ (nombreTitular || clienteNombre() || 'CLIENTE EL WEY') | uppercase }}</span>
+                </div>
+                <div class="tarjeta-exp">
+                  <span class="label-plastico">VENCE</span>
+                  <span class="valor-plastico">{{ expiracion || 'MM/AA' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Inputs de Tarjeta -->
+            <div class="campos-tarjeta">
+              <div class="campo-grupo">
+                <label for="numTarjeta">Número de Tarjeta:</label>
+                <input
+                  id="numTarjeta"
+                  type="text"
+                  [(ngModel)]="numeroTarjeta"
+                  maxlength="19"
+                  placeholder="4532 8921 7840 9123"
+                  [disabled]="procesando()"
+                  class="input-pasarela"
+                />
+              </div>
+
+              <div class="campo-grupo">
+                <label for="titular">Nombre del Titular:</label>
+                <input
+                  id="titular"
+                  type="text"
+                  [(ngModel)]="nombreTitular"
+                  placeholder="Ej: Miguel Ángel"
+                  [disabled]="procesando()"
+                  class="input-pasarela"
+                />
+              </div>
+
+              <div class="fila-campos">
+                <div class="campo-grupo">
+                  <label for="exp">Fecha Exp. (MM/AA):</label>
+                  <input
+                    id="exp"
+                    type="text"
+                    [(ngModel)]="expiracion"
+                    maxlength="5"
+                    placeholder="12/28"
+                    [disabled]="procesando()"
+                    class="input-pasarela"
+                  />
+                </div>
+                <div class="campo-grupo">
+                  <label for="cvv">CVV:</label>
+                  <input
+                    id="cvv"
+                    type="password"
+                    [(ngModel)]="cvv"
+                    maxlength="4"
+                    placeholder="888"
+                    [disabled]="procesando()"
+                    class="input-pasarela"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        } @else if (metodoSeleccionado() === 'pse') {
+          <div class="formulario-pse">
+            <div class="banner-pse">
+              <span class="pse-logo">⚡ PSE</span>
+              <p>Transferencias seguras e instantáneas desde tu cuenta de ahorros o billetera móvil.</p>
+            </div>
+
+            <div class="campo-grupo">
+              <label for="selectBanco">Selecciona tu Entidad Financiera:</label>
+              <select id="selectBanco" [(ngModel)]="banco" class="input-pasarela" [disabled]="procesando()">
+                @for (b of bancosDisponibles; track b) {
+                  <option [value]="b">{{ b }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="campo-grupo">
+              <label for="celularPse">Número de Celular Asociado:</label>
+              <input
+                id="celularPse"
+                type="tel"
+                [(ngModel)]="celularPSE"
+                placeholder="300 123 4567"
+                [disabled]="procesando()"
+                class="input-pasarela"
+              />
+            </div>
+          </div>
+        } @else {
+          <div class="formulario-efectivo">
+            <div class="banner-efectivo">
+              <span class="icono-billete">💵</span>
+              <p>Pagas en efectivo al momento en que el domiciliario toque a tu puerta.</p>
+            </div>
+
+            <div class="campo-grupo">
+              <label for="montoEfectivo">¿Con cuánto vas a pagar? (Para que el repartidor lleve cambio exacto):</label>
+              <input
+                id="montoEfectivo"
+                type="number"
+                step="5000"
+                [(ngModel)]="montoEfectivo"
+                class="input-pasarela"
+                [disabled]="procesando()"
+              />
+            </div>
+
+            <div class="resumen-cambio">
+              <div class="linea-cambio">
+                <span>Total de la cuenta:</span>
+                <strong>${{ total() | number:'1.0-0' }}</strong>
+              </div>
+              <div class="linea-cambio">
+                <span>Pagas con:</span>
+                <strong>${{ (montoEfectivo || total()) | number:'1.0-0' }}</strong>
+              </div>
+              <div class="linea-cambio total-cambio">
+                <span>Tus vueltas / cambio:</span>
+                <span class="monto-vueltas">${{ cambioEfectivo | number:'1.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Resumen del Total -->
+      <footer class="footer-pasarela">
+        <div class="total-resumen-pasarela">
+          <span class="label-total">Total a Autorizar:</span>
+          <span class="valor-total">${{ total() | number:'1.0-0' }} COP</span>
+        </div>
+
+        @if (procesando()) {
+          <div class="estado-procesando">
+            <div class="spinner-pasarela"></div>
+            <span class="texto-procesando">{{ mensajeEstado() }}</span>
+          </div>
+        } @else {
+          <div class="acciones-pasarela">
+            <button type="button" class="btn-cancelar-pasarela" (click)="cancelar()">
+              Volver al Carrito
+            </button>
+            <button type="button" class="btn-confirmar-pago" (click)="confirmarTransaccion()">
+              Pagar ${{ total() | number:'1.0-0' }} &rarr;
+            </button>
+          </div>
+        }
+      </footer>
+
+    </div>
+  </div>
+}
