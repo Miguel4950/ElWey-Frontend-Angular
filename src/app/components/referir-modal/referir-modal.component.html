@@ -1,0 +1,78 @@
+@if (visible()) {
+  <div class="modal-backdrop-referir" (click)="onCerrar()">
+    <div class="modal-card-referir" (click)="$event.stopPropagation()">
+
+      <!-- Encabezado con Icono -->
+      <div class="cabecera-modal-referir">
+        <div class="titulo-con-icono-referir">
+          <span class="icono-regalo-referir">🎁</span>
+          <div>
+            <span class="subtitulo-referir">PROGRAMA DE EMBAJADORES</span>
+            <h2 class="titulo-referir">¡Invita a un Compadre y Ganan Ambos!</h2>
+          </div>
+        </div>
+        <button type="button" class="btn-cerrar-referir" (click)="onCerrar()">✕</button>
+      </div>
+
+      <!-- Resumen del Incentivo -->
+      <div class="banner-incentivo-referir">
+        <p class="texto-incentivo">
+          Tu amigo recibe <strong>$5.000 COP</strong> de descuento en su primera orden y tú recibes <strong>$5.000 COP</strong> en saldo cuando complete su pedido. ¡Sin límites!
+        </p>
+      </div>
+
+      <!-- Caja del Código Personal -->
+      <div class="caja-codigo-personal">
+        <span class="label-codigo">Tu Código de Embajador Único:</span>
+        <div class="fila-codigo-accion">
+          <strong class="texto-codigo-badge">{{ codigoReferido() }}</strong>
+          <button type="button" class="btn-copiar-codigo" (click)="copiarCodigo()">
+            @if (!copiado()) {
+              📋 Copiar Enlace
+            } @else {
+              ✅ ¡Copiado!
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- Botón Directo para Compartir en WhatsApp -->
+      <button type="button" class="btn-compartir-whatsapp" (click)="compartirWhatsApp()">
+        <span class="icono-ws">💬</span>
+        <span>Compartir por WhatsApp con tus Amigos</span>
+      </button>
+
+      <!-- Estadísticas de Referidos en Vivo -->
+      <div class="grid-stats-referidos">
+        <div class="stat-caja">
+          <span class="stat-numero">{{ referidosExitosos() }}</span>
+          <span class="stat-label">Compadres Unidos</span>
+        </div>
+        <div class="stat-caja">
+          <span class="stat-numero valor-oro">${{ saldoGanado() | number:'1.0-0' }} COP</span>
+          <span class="stat-label">Saldo Acumulado</span>
+        </div>
+      </div>
+
+      <!-- Explicación de 3 Pasos -->
+      <div class="pasos-referidos-seccion">
+        <h4 class="titulo-pasos">¿Cómo funciona?</h4>
+        <div class="lista-pasos">
+          <div class="paso-item">
+            <span class="paso-num">1</span>
+            <p>Comparte tu código con amigos, familiares o en tus grupos de WhatsApp.</p>
+          </div>
+          <div class="paso-item">
+            <span class="paso-num">2</span>
+            <p>Tu compadre realiza su primer pedido y canjea su cupón de $5.000 COP.</p>
+          </div>
+          <div class="paso-item">
+            <span class="paso-num">3</span>
+            <p>Se te abonan automáticamente $5.000 COP en tu cuenta para tu próxima taquiza.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

@@ -1,0 +1,245 @@
+.modal-backdrop-referir {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-card-referir {
+  background: #1e1b18;
+  border: 1px solid #362e2a;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.65);
+  padding: 24px;
+  color: #fcf2e9;
+}
+
+.cabecera-modal-referir {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.titulo-con-icono-referir {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icono-regalo-referir {
+  font-size: 28px;
+}
+
+.subtitulo-referir {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #e5b25d;
+  text-transform: uppercase;
+}
+
+.titulo-referir {
+  font-family: var(--elwey-font-heading, 'Abril Fatface', serif);
+  font-size: 19px;
+  color: #fcf2e9;
+  margin: 2px 0 0 0;
+}
+
+.btn-cerrar-referir {
+  background: #2a2420;
+  color: #ffffff;
+  border: 1px solid #3d342f;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-cerrar-referir:hover {
+  background: #c62828;
+}
+
+.banner-incentivo-referir {
+  background: linear-gradient(135deg, rgba(200, 150, 62, 0.15), rgba(11, 102, 35, 0.15));
+  border: 1px dashed var(--elwey-gold, #c8963e);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+}
+
+.texto-incentivo {
+  margin: 0;
+  font-size: 13px;
+  color: #e6ded7;
+  line-height: 1.4;
+}
+
+.texto-incentivo strong {
+  color: #facc15;
+}
+
+.caja-codigo-personal {
+  background: #26211d;
+  border: 1px solid #3d342f;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.label-codigo {
+  font-size: 11px;
+  color: #a89a8c;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.fila-codigo-accion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.texto-codigo-badge {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  color: #facc15;
+  letter-spacing: 1.5px;
+}
+
+.btn-copiar-codigo {
+  background: var(--elwey-gold, #c8963e);
+  color: #171614;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copiar-codigo:hover {
+  background: #e5be48;
+  transform: translateY(-1px);
+}
+
+.btn-compartir-whatsapp {
+  width: 100%;
+  background: #25d366;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: all 0.2s ease;
+}
+
+.btn-compartir-whatsapp:hover {
+  background: #20ba59;
+  transform: translateY(-1px);
+}
+
+.icono-ws {
+  font-size: 16px;
+}
+
+.grid-stats-referidos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.stat-caja {
+  background: #241f1c;
+  border: 1px solid #362e29;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.stat-numero {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.stat-numero.valor-oro {
+  color: #facc15;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #8c8278;
+}
+
+.pasos-referidos-seccion {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.titulo-pasos {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #e5b25d;
+  letter-spacing: 1px;
+  margin: 0 0 10px 0;
+}
+
+.lista-pasos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.paso-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.paso-num {
+  background: var(--elwey-gold, #c8963e);
+  color: #171614;
+  font-weight: 800;
+  font-size: 11px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.paso-item p {
+  margin: 0;
+  font-size: 11px;
+  color: #b0a498;
+  line-height: 1.4;
+}
