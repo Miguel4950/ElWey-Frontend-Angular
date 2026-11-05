@@ -1,11 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ClienteService } from '../../service/cliente.service';
 import { CarritoService } from '../../service/carrito.service';
+import { CoberturaModalComponent } from '../cobertura-modal/cobertura-modal.component';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [RouterLink, CoberturaModalComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
@@ -15,6 +17,7 @@ export class NavbarComponent {
   private router = inject(Router);
 
   title: string = 'El Wey';
+  modalCoberturaVisible = signal<boolean>(false);
 
   get clienteActual() {
     return this.clienteService.getClienteActual();
@@ -45,6 +48,14 @@ export class NavbarComponent {
 
   get cantidadCarrito(): number {
     return this.carritoService.getCantidadTotal();
+  }
+
+  abrirModalCobertura(): void {
+    this.modalCoberturaVisible.set(true);
+  }
+
+  cerrarModalCobertura(): void {
+    this.modalCoberturaVisible.set(false);
   }
 
   cerrarSesion(): void {

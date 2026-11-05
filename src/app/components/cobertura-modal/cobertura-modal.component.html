@@ -1,0 +1,84 @@
+@if (visible()) {
+  <div class="modal-backdrop-cobertura" (click)="onCerrar()">
+    <div class="modal-card-cobertura" (click)="$event.stopPropagation()">
+
+      <!-- Encabezado del Modal -->
+      <div class="cabecera-modal-cobertura">
+        <div class="titulo-con-icono">
+          <span class="icono-mapa">📍</span>
+          <div>
+            <span class="subtitulo-modal">ZONAS & TIEMPOS DE DESPACHO</span>
+            <h2 class="titulo-modal">Cobertura de Domicilios — Bogotá</h2>
+          </div>
+        </div>
+        <button type="button" class="btn-cerrar-cobertura" (click)="onCerrar()">✕</button>
+      </div>
+
+      <!-- Buscador de Localidad / Barrio -->
+      <div class="caja-buscador-cobertura">
+        <input
+          type="text"
+          [value]="busqueda()"
+          (input)="onBusquedaInput($event)"
+          placeholder="Busca tu localidad o barrio (ej. Chapinero, Cedritos, Modelia)..."
+          class="input-buscador-cobertura"
+        />
+      </div>
+
+      <!-- Resumen de Zona Seleccionada -->
+      @if (localidadSeleccionada(); as zona) {
+        <div class="panel-zona-activa">
+          <div class="fila-zona-cabecera">
+            <div>
+              <span class="badge-estado-zona" [class.badge-total]="zona.estado === 'Total'">
+                ● Cobertura {{ zona.estado }}
+              </span>
+              <h3 class="nombre-zona-activa">{{ zona.nombre }}</h3>
+            </div>
+            <div class="precio-zona-box">
+              <span class="label-tarifa">Tarifa de Envío:</span>
+              <strong class="tarifa-monto">${{ zona.tarifaEnvio | number:'1.0-0' }} COP</strong>
+            </div>
+          </div>
+
+          <div class="estimacion-entrega-box">
+            <span class="icono-reloj">⏱️</span>
+            <div>
+              <p class="tiempo-rango">Tiempo estimado: <strong>{{ zona.tiempoMin }} a {{ zona.tiempoMax }} minutos</strong></p>
+              @if (ventanaEntregaEstimada()) {
+                <small class="ventana-horaria">Llegada estimada hoy entre: <strong>{{ ventanaEntregaEstimada() }}</strong></small>
+              }
+            </div>
+          </div>
+
+          <p class="barrios-lista"><strong>Barrios cubiertos:</strong> {{ zona.barrios }}</p>
+        </div>
+      }
+
+      <!-- Grid de Localidades -->
+      <div class="grid-localidades-cobertura">
+        @for (z of zonasFiltradas(); track z.id) {
+          <button
+            type="button"
+            class="card-localidad-item"
+            [class.seleccionada]="localidadSeleccionada()?.id === z.id"
+            (click)="seleccionarZona(z)"
+          >
+            <div class="fila-loc-titulo">
+              <strong class="nombre-loc">{{ z.nombre }}</strong>
+              <span class="badge-tiempo-loc">{{ z.tiempoMin }}-{{ z.tiempoMax }} min</span>
+            </div>
+            <span class="precio-loc">${{ z.tarifaEnvio | number:'1.0-0' }} COP</span>
+            <small class="barrios-resumen">{{ z.barrios }}</small>
+          </button>
+        }
+      </div>
+
+      <!-- Footer Informativo -->
+      <div class="pie-modal-cobertura">
+        <p>🌮 Sede Central de Cocina: <strong>Calle 67 # 8-32, Chapinero</strong>. Entregas en moto con flota propia de "El Wey".</p>
+      </div>
+
+    </div>
+  </div>
+}

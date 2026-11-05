@@ -38,6 +38,17 @@
 
     <!-- Botones de acción a la derecha -->
     <div class="acciones-nav">
+      <!-- Botón de Cobertura Bogotá -->
+      <button
+        type="button"
+        class="btn-cobertura-nav"
+        (click)="abrirModalCobertura()"
+        title="Consultar zonas y tiempos de entrega en Bogotá"
+      >
+        <span class="icono-pin-nav">📍</span>
+        <span class="texto-cobertura-nav">Cobertura</span>
+      </button>
+
       @if (!esPersonal) {
         <a [routerLink]="['/carrito']" class="btn-carrito-nav" title="Ver carrito de compras">
           <!-- Icono vectorial SVG nativo para el carrito -->
@@ -77,3 +88,8 @@
     </div>
   </div>
 </header>
+
+<app-cobertura-modal
+  [visible]="modalCoberturaVisible()"
+  (cerrar)="cerrarModalCobertura()"
+></app-cobertura-modal>
