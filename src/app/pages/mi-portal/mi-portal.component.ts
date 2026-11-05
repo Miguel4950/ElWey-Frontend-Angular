@@ -11,10 +11,12 @@ import { PedidoDTO } from '../../dtos/pedido.dto';
 import { PortalPedidosActivosComponent } from './components/portal-pedidos-activos/portal-pedidos-activos.component';
 import { PortalHistorialPedidosComponent } from './components/portal-historial-pedidos/portal-historial-pedidos.component';
 import { PortalPerfilFormComponent } from './components/portal-perfil-form/portal-perfil-form.component';
+import { PortalFidelizacionCardComponent } from './components/portal-fidelizacion-card/portal-fidelizacion-card.component';
 
 /**
  * Portal del Cliente en "El Wey".
  * Estructurado modularmente en subcomponentes pequeños:
+ * - PortalFidelizacionCardComponent: Tarjeta VIP con rango y puntos acumulados.
  * - PortalPedidosActivosComponent: Monitoreo en tiempo real de órdenes activas.
  * - PortalHistorialPedidosComponent: Tabla de historial de pedidos completados.
  * - PortalPerfilFormComponent: Formulario reactivo de actualización de perfil y eliminación de cuenta.
@@ -26,6 +28,7 @@ import { PortalPerfilFormComponent } from './components/portal-perfil-form/porta
     NavbarComponent,
     FooterComponent,
     CalaverasComponent,
+    PortalFidelizacionCardComponent,
     PortalPedidosActivosComponent,
     PortalHistorialPedidosComponent,
     PortalPerfilFormComponent,

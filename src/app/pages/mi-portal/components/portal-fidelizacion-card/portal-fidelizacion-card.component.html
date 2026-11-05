@@ -1,0 +1,76 @@
+<div class="tarjeta-fidelizacion-vip" [class]="nivel().color">
+
+  <!-- Encabezado de la Tarjeta VIP -->
+  <div class="cabecera-tarjeta">
+    <div class="marca-club">
+      <span class="icono-corona">{{ nivel().icono }}</span>
+      <div>
+        <span class="subtitulo-club">CLUB DE FIDELIZACIÓN</span>
+        <h2 class="nombre-club">Puntos Wey & Membresía VIP</h2>
+      </div>
+    </div>
+    <div class="badge-nivel-actual">
+      {{ nivel().badge }}
+    </div>
+  </div>
+
+  <!-- Cuerpo de la Tarjeta con Datos y Puntos -->
+  <div class="cuerpo-tarjeta">
+    <div class="info-socio">
+      <p class="etiqueta-socio">Titular de la Membresía</p>
+      <h3 class="nombre-socio">{{ cliente()?.nombre || 'Comensal Frecuente' }}</h3>
+      <span class="codigo-socio">{{ codigoMembresia() }}</span>
+    </div>
+
+    <div class="contador-puntos">
+      <span class="etiqueta-puntos">Puntos Acumulados</span>
+      <div class="cifra-puntos">
+        <strong>{{ puntosWey() | number:'1.0-0' }}</strong>
+        <span class="unidad-pts">PTS</span>
+      </div>
+      <small class="gasto-acumulado">(${{ gastoTotal() | number:'1.0-0' }} COP consumidos)</small>
+    </div>
+  </div>
+
+  <!-- Barra de Progreso hacia el Próximo Nivel -->
+  <div class="barra-progreso-seccion">
+    <div class="meta-progreso-texto">
+      <span>Rango: <strong>{{ nivel().nombre }}</strong></span>
+      <span class="restante-texto">{{ nivel().proxNivel }}</span>
+    </div>
+    <div class="track-progreso">
+      <div class="fill-progreso" [style.width.%]="nivel().progreso"></div>
+    </div>
+  </div>
+
+  <!-- Beneficio Exclusivo del Rango -->
+  <div class="beneficio-destacado">
+    <span class="icono-regalo">🎁</span>
+    <div class="texto-beneficio">
+      <strong>Beneficio de tu Rango:</strong>
+      <p>{{ nivel().beneficio }}</p>
+    </div>
+  </div>
+
+  <!-- Botón de Canje Rápido para Demostración en Pantalla -->
+  <div class="acciones-fidelizacion">
+    @if (!beneficioCanjeado()) {
+      <button
+        type="button"
+        class="btn-canjear-puntos"
+        (click)="canjearRecompensa()"
+      >
+        ✨ Canjear Beneficio del Mes en Carrito
+      </button>
+    } @else {
+      <div class="cupon-recompensa-desbloqueado">
+        <span class="icono-check">🎉</span>
+        <div>
+          <strong>¡Beneficio activado!</strong>
+          <p>Usa el cupón <code>TACOLOVER</code> en tu próximo carrito para 15% OFF.</p>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>

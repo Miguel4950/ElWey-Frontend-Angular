@@ -1,0 +1,249 @@
+.tarjeta-fidelizacion-vip {
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 28px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta-fidelizacion-vip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65);
+}
+
+/* Paletas según Nivel */
+.tarjeta-fidelizacion-vip.oro {
+  background: linear-gradient(135deg, #1f1806 0%, #3e3012 40%, #1f1806 100%);
+  border: 1.5px solid #d4af37;
+}
+
+.tarjeta-fidelizacion-vip.plata {
+  background: linear-gradient(135deg, #18191a 0%, #2e3136 40%, #18191a 100%);
+  border: 1.5px solid #c0c0c0;
+}
+
+.tarjeta-fidelizacion-vip.bronce {
+  background: linear-gradient(135deg, #1a1410 0%, #3a2a20 40%, #1a1410 100%);
+  border: 1.5px solid #cd7f32;
+}
+
+.cabecera-tarjeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.marca-club {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icono-corona {
+  font-size: 32px;
+}
+
+.subtitulo-club {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #e5b25d;
+  text-transform: uppercase;
+}
+
+.nombre-club {
+  font-family: var(--elwey-font-heading, 'Abril Fatface', serif);
+  font-size: 19px;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.badge-nivel-actual {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+}
+
+.cuerpo-tarjeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 14px 18px;
+  border-radius: 10px;
+}
+
+.etiqueta-socio {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #b0a498;
+  margin: 0 0 2px 0;
+  letter-spacing: 1px;
+}
+
+.nombre-socio {
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.codigo-socio {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #e5b25d;
+  letter-spacing: 1.5px;
+}
+
+.contador-puntos {
+  text-align: right;
+}
+
+.etiqueta-puntos {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #b0a498;
+  letter-spacing: 1px;
+}
+
+.cifra-puntos {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.cifra-puntos strong {
+  font-size: 28px;
+  color: #facc15;
+}
+
+.unidad-pts {
+  font-size: 12px;
+  font-weight: 800;
+  color: #e5b25d;
+}
+
+.gasto-acumulado {
+  font-size: 10px;
+  color: #8c8278;
+}
+
+.barra-progreso-seccion {
+  margin-bottom: 16px;
+}
+
+.meta-progreso-texto {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.restante-texto {
+  color: #e5b25d;
+  font-weight: 600;
+}
+
+.track-progreso {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.fill-progreso {
+  height: 100%;
+  background: linear-gradient(90deg, #facc15, #f59e0b);
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.beneficio-destacado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.icono-regalo {
+  font-size: 22px;
+}
+
+.texto-beneficio {
+  font-size: 12px;
+}
+
+.texto-beneficio strong {
+  color: #facc15;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.texto-beneficio p {
+  margin: 0;
+  color: #e6ded7;
+}
+
+.acciones-fidelizacion {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-canjear-puntos {
+  background: linear-gradient(135deg, #d4af37, #f39c12);
+  color: #1a1410;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  transition: all 0.2s ease;
+}
+
+.btn-canjear-puntos:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+  background: linear-gradient(135deg, #e5be48, #f5ab2a);
+}
+
+.cupon-recompensa-desbloqueado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(46, 125, 50, 0.25);
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #c8e6c9;
+}
+
+.icono-check {
+  font-size: 20px;
+}
+
+.cupon-recompensa-desbloqueado code {
+  background: #1b5e20;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+}

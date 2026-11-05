@@ -35,6 +35,12 @@
       </div>
     }
 
+    <!-- Subcomponente: Tarjeta VIP de Fidelización y Puntos Wey -->
+    <app-portal-fidelizacion-card
+      [cliente]="cliente"
+      [pedidosEntregados]="pedidosEntregados"
+    ></app-portal-fidelizacion-card>
+
     <!-- Subcomponente 1: Pedidos Activos en Tiempo Real -->
     <app-portal-pedidos-activos
       [pedidos]="pedidosActivos"
