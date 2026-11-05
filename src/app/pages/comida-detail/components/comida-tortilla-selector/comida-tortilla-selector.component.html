@@ -1,0 +1,59 @@
+<div class="contenedor-tortilla-selector">
+  <div class="encabezado-selector-tortilla">
+    <div class="titulo-con-badge">
+      <span class="icono-comal">🫓</span>
+      <div>
+        <h4 class="titulo-seccion-tortilla">Base de Tortilla y Masa Artesanal</h4>
+        <p class="subtitulo-seccion-tortilla">
+          Selecciona cómo deseas que el comal prepare la base de tus antojitos:
+        </p>
+      </div>
+    </div>
+    <span class="badge-artesanal">100% Nixtamalizado</span>
+  </div>
+
+  <div class="grid-opciones-tortilla">
+    @for (opcion of opcionesTortilla; track opcion.id) {
+      <div
+        class="tarjeta-opcion-tortilla"
+        [class.seleccionada]="opcion.nombre === opcionSeleccionada()"
+        (click)="seleccionarOpcion(opcion)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="seleccionarOpcion(opcion)"
+        (keydown.space)="seleccionarOpcion(opcion)"
+      >
+        <div class="cabecera-tarjeta-tortilla">
+          <span class="icono-tortilla">{{ opcion.icono }}</span>
+          <span class="badge-etiqueta-tortilla">{{ opcion.etiqueta }}</span>
+        </div>
+
+        <div class="cuerpo-tarjeta-tortilla">
+          <h5 class="nombre-tortilla">{{ opcion.nombre }}</h5>
+          <p class="desc-tortilla">{{ opcion.descripcion }}</p>
+        </div>
+
+        <div class="pie-tarjeta-tortilla">
+          @if (opcion.esGlutenFree) {
+            <span class="chip-dietario chip-sin-gluten">🌾 Sin Gluten</span>
+          } @else {
+            <span class="chip-dietario chip-trigo">🌾 Trigo Tradicional</span>
+          }
+
+          <div class="radio-indicador-visual">
+            @if (opcion.nombre === opcionSeleccionada()) {
+              <span class="punto-seleccionado">●</span>
+            } @else {
+              <span class="punto-vacio">○</span>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="nota-artesanal-footer">
+    <span class="icono-sombrero">🇲🇽</span>
+    <span>Todas nuestras tortillas se pasan por el comal al momento exacto de recibir tu comanda.</span>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+.contenedor-tortilla-selector {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.encabezado-selector-tortilla {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.titulo-con-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icono-comal {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.titulo-seccion-tortilla {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2b2d42;
+  font-family: var(--elwey-font-headings, 'Poppins', sans-serif);
+}
+
+.subtitulo-seccion-tortilla {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.82rem;
+  color: #6c757d;
+}
+
+.badge-artesanal {
+  background: #fff3bf;
+  color: #d9480f;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid #ffe066;
+}
+
+.grid-opciones-tortilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.85rem;
+}
+
+.tarjeta-opcion-tortilla {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.tarjeta-opcion-tortilla:hover {
+  border-color: #ee1a0e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(238, 26, 14, 0.08);
+  background: #ffffff;
+}
+
+.tarjeta-opcion-tortilla.seleccionada {
+  background: #fff8f6;
+  border-color: #ee1a0e;
+  box-shadow: 0 6px 16px rgba(238, 26, 14, 0.14);
+}
+
+.cabecera-tarjeta-tortilla {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.icono-tortilla {
+  font-size: 1.5rem;
+}
+
+.badge-etiqueta-tortilla {
+  background: #edf2f7;
+  color: #4a5568;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+.tarjeta-opcion-tortilla.seleccionada .badge-etiqueta-tortilla {
+  background: #ee1a0e;
+  color: #ffffff;
+}
+
+.cuerpo-tarjeta-tortilla {
+  flex: 1;
+}
+
+.nombre-tortilla {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.tarjeta-opcion-tortilla.seleccionada .nombre-tortilla {
+  color: #ee1a0e;
+}
+
+.desc-tortilla {
+  margin: 0;
+  font-size: 0.77rem;
+  color: #718096;
+  line-height: 1.35;
+}
+
+.pie-tarjeta-tortilla {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.chip-dietario {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.chip-sin-gluten {
+  background: #e6fcf5;
+  color: #0ca678;
+}
+
+.chip-trigo {
+  background: #f1f3f5;
+  color: #495057;
+}
+
+.radio-indicador-visual {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.punto-seleccionado {
+  color: #ee1a0e;
+  font-weight: bold;
+}
+
+.punto-vacio {
+  color: #adb5bd;
+}
+
+.nota-artesanal-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  padding: 0.6rem 0.85rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  color: #495057;
+  font-style: italic;
+}
+
+.icono-sombrero {
+  font-size: 1rem;
+}

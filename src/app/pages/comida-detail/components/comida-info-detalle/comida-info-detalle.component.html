@@ -34,6 +34,14 @@
         />
       </div>
 
+      <!-- Selector de Base de Tortilla y Masa Artesanal (Adicional 9) -->
+      @if (!esBebida && !esPersonal) {
+        <app-comida-tortilla-selector
+          [valorInicial]="tortillaSeleccionada()"
+          (cambioTortilla)="onTortillaChange($event)"
+        ></app-comida-tortilla-selector>
+      }
+
       <!-- Adicionales Disponibles (Subcomponente fraccionado Lego) -->
       <app-comida-adicionales
         [adicionales]="adicionales()"

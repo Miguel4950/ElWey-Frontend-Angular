@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -14,10 +14,17 @@ import { CarritoService } from '../../../../service/carrito.service';
 import { ComidaService } from '../../../../service/comida.service';
 import { ComidaAdicionalesComponent } from '../comida-adicionales/comida-adicionales.component';
 import { ComidaBebidasComponent } from '../comida-bebidas/comida-bebidas.component';
+import { ComidaTortillaSelectorComponent } from '../comida-tortilla-selector/comida-tortilla-selector.component';
 
 @Component({
   selector: 'app-comida-info-detalle, app-col-info-detalle',
-  imports: [RouterLink, DecimalPipe, ComidaAdicionalesComponent, ComidaBebidasComponent],
+  imports: [
+    RouterLink,
+    DecimalPipe,
+    ComidaAdicionalesComponent,
+    ComidaBebidasComponent,
+    ComidaTortillaSelectorComponent,
+  ],
   templateUrl: './comida-info-detalle.component.html',
   styleUrl: './comida-info-detalle.component.css',
 })
@@ -42,6 +49,9 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
   elementoSeleccionado: ComidaDTO | null = null;
   adicionalesSeleccionados: AdicionalCantidadDTO[] = [];
 
+  // Selección artesanal de tortilla / masa mexicana
+  tortillaSeleccionada = signal<string>('Maíz Amarillo Nixtamalizado');
+
   pedidoCreado: PedidoDTO | null = null;
   agregadoAlCarrito: boolean = false;
   errorMessage: string = '';
@@ -59,6 +69,10 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
 
   onBebidasChange(seleccionadas: BebidaSeleccionadaItem[]): void {
     this.bebidasSeleccionadas = seleccionadas;
+  }
+
+  onTortillaChange(nuevaTortilla: string): void {
+    this.tortillaSeleccionada.set(nuevaTortilla);
   }
 
   get esBebida(): boolean {
@@ -165,10 +179,14 @@ export class ComidaInfoDetalleComponent implements OnInit, OnDestroy {
 
     const subtotalAdics = adicsMapeados.reduce((sum, a) => sum + a.subtotal, 0);
 
+    const nombreFinal = !this.esBebida
+      ? `${c.nombre} (${this.tortillaSeleccionada()})`
+      : c.nombre;
+
     const itemCarrito: ItemCarritoDTO = {
       id: `${c.id}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       comidaId: c.id,
-      comidaNombre: c.nombre,
+      comidaNombre: nombreFinal,
       comidaPrecio: c.precio,
       categoriaNombre: c.categoriaNombre,
       imagenUrl: c.imagen_url,
