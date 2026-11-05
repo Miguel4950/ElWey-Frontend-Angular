@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -13,12 +13,14 @@ import { CrearPedidoDTO } from '../../dtos/crear-pedido.dto';
 import { PedidoDTO } from '../../dtos/pedido.dto';
 import { CarritoItemsComponent } from './components/carrito-items/carrito-items.component';
 import { CarritoResumenComponent } from './components/carrito-resumen/carrito-resumen.component';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
 /**
  * Página principal del Carrito de Compras en "El Wey".
  * Dividida en subcomponentes visuales reutilizables:
  * - CarritoItemsComponent: Lista de platos, adicionales, modificadores de cantidad y eliminación.
  * - CarritoResumenComponent: Resumen de totales, desglose financiero y botón de checkout.
+ * - ConfirmDialogComponent: Modal estilizado para confirmación de vaciado de carrito.
  */
 @Component({
   selector: 'app-carrito-page',
@@ -31,6 +33,7 @@ import { CarritoResumenComponent } from './components/carrito-resumen/carrito-re
     CalaverasComponent,
     CarritoItemsComponent,
     CarritoResumenComponent,
+    ConfirmDialogComponent,
   ],
   templateUrl: './carrito-page.component.html',
   styleUrl: './carrito-page.component.css',
@@ -68,6 +71,9 @@ export class CarritoPageComponent implements OnInit, OnDestroy {
   cargando: boolean = false;
   pedidoExitoso: PedidoDTO | null = null;
   errorMessage: string = '';
+
+  // Signal reactivo para control de visibilidad del modal de confirmación
+  mostrarModalVaciar = signal<boolean>(false);
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
@@ -110,9 +116,16 @@ export class CarritoPageComponent implements OnInit, OnDestroy {
   }
 
   limpiarCarrito(): void {
-    if (confirm('¿Deseas vaciar tu carrito de compras?')) {
-      this.carritoService.limpiar();
-    }
+    this.mostrarModalVaciar.set(true);
+  }
+
+  confirmarVaciarCarrito(): void {
+    this.carritoService.limpiar();
+    this.mostrarModalVaciar.set(false);
+  }
+
+  cancelarVaciarCarrito(): void {
+    this.mostrarModalVaciar.set(false);
   }
 
   confirmarPedido(): void {

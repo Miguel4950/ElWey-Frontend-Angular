@@ -1,0 +1,18 @@
+@if (visible()) {
+  <div class="confirm-overlay" (click)="cancelar()" role="dialog" aria-modal="true">
+    <div class="confirm-modal" (click)="$event.stopPropagation()">
+      <div class="confirm-icon">{{ icono() }}</div>
+      <h3 class="confirm-title">{{ titulo() }}</h3>
+      <p class="confirm-message">{{ mensaje() }}</p>
+
+      <div class="confirm-actions">
+        <button type="button" class="btn-cancelar" (click)="cancelar()">
+          {{ textoCancelar() }}
+        </button>
+        <button type="button" class="btn-confirmar" (click)="confirmar()">
+          {{ textoConfirmar() }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

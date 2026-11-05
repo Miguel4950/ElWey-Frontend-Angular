@@ -103,5 +103,17 @@
   </div>
 </main>
 
+<!-- Modal de confirmación estilizado temático para vaciar carrito -->
+<app-confirm-dialog
+  [visible]="mostrarModalVaciar()"
+  titulo="¿Vaciar tu Carrito?"
+  mensaje="Se removerán todos los platos y adicionales agregados a la orden. ¿Estás seguro de que deseas vaciarlo?"
+  icono="🗑️"
+  textoConfirmar="Sí, Vaciar Carrito"
+  textoCancelar="Conservar Platillos"
+  (onConfirmar)="confirmarVaciarCarrito()"
+  (onCancelar)="cancelarVaciarCarrito()"
+></app-confirm-dialog>
+
 <app-calaveras></app-calaveras>
 <app-footer></app-footer>

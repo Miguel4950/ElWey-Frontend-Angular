@@ -1,0 +1,110 @@
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.confirm-modal {
+  background: radial-gradient(circle at top, #2b2823 0%, #171512 100%);
+  border: 1.5px solid rgba(227, 98, 9, 0.5);
+  border-radius: 18px;
+  padding: 2.25rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(227, 98, 9, 0.2);
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.confirm-icon {
+  font-size: 3.25rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 10px rgba(227, 98, 9, 0.35));
+}
+
+.confirm-title {
+  color: #ffbb33;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.3px;
+}
+
+.confirm-message {
+  color: #d1cbc1;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  margin: 0 0 1.75rem 0;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.85rem;
+  justify-content: center;
+}
+
+.btn-cancelar {
+  flex: 1;
+  background: #2e2b26;
+  color: #e5ded5;
+  border: 1px solid #4a453e;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background: #3d3932;
+  color: #ffffff;
+}
+
+.btn-confirmar {
+  flex: 1;
+  background: linear-gradient(135deg, #d32f2f, #9a0007);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+  transition: all 0.2s ease;
+}
+
+.btn-confirmar:hover {
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.6);
+}
