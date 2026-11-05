@@ -1,0 +1,75 @@
+<section class="banner-promociones-flash" aria-label="Especiales y Combos del Día">
+  <!-- Cabecera del Banner -->
+  <div class="promociones-header">
+    <div class="header-titular-promo">
+      <div class="badge-fuego-vivo">
+        <span class="punto-pulso-fuego"></span>
+        <span class="texto-badge-fuego">OFERTAS DEL DÍA & COMBOS</span>
+      </div>
+      <h2 class="titulo-banner-promo">Especiales Taqueros "El Wey"</h2>
+    </div>
+
+    <!-- Contador Regresivo Reactivo -->
+    <div class="caja-countdown-promo">
+      <div class="icono-reloj-countdown">
+        <i class="bi bi-stopwatch-fill"></i>
+      </div>
+      <div class="textos-countdown">
+        <span class="label-countdown">LA COCINA CIERRA EN:</span>
+        <strong class="reloj-countdown-valor">{{ tiempoRestante() }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestañas Selectoras de Combos -->
+  <div class="pestañas-promos" role="tablist">
+    @for (p of promociones; track p.id; let i = $index) {
+      <button
+        type="button"
+        role="tab"
+        class="tab-promo-btn"
+        [class.tab-activa]="promoActivaIndex() === i"
+        [attr.aria-selected]="promoActivaIndex() === i"
+        (click)="seleccionarTab(i)"
+      >
+        <span class="tab-icono">{{ p.icono }}</span>
+        <span class="tab-nombre">{{ p.titulo }}</span>
+        <span class="tab-badge-ahorro">{{ p.badgeAhorro }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Detalle del Combo Activo -->
+  @if (promociones[promoActivaIndex()]; as promoActiva) {
+    <div class="tarjeta-combo-detalle animate-fade-in">
+      <div class="icono-combo-gigante">
+        <span class="emoji-gigante">{{ promoActiva.icono }}</span>
+      </div>
+
+      <div class="info-combo-cuerpo">
+        <div class="fila-etiqueta-ahorro">
+          <span class="etiqueta-flash">{{ promoActiva.etiqueta }}</span>
+          <span class="badge-ahorro-verde">{{ promoActiva.badgeAhorro }}</span>
+        </div>
+
+        <h3 class="titulo-combo-destacado">{{ promoActiva.titulo }}</h3>
+        <p class="desc-combo-destacado">{{ promoActiva.descripcion }}</p>
+
+        <div class="fila-precios-y-accion">
+          <div class="precios-combo-box">
+            <span class="precio-tachado">${{ promoActiva.precioAnterior | number:'1.0-0' }}</span>
+            <span class="precio-oferta-grande">${{ promoActiva.precioOferta | number:'1.0-0' }}</span>
+          </div>
+
+          <button
+            type="button"
+            class="btn-explorar-categoria"
+            (click)="aplicarFiltroPromo(promoActiva.categoriaTarget)"
+          >
+            Ver {{ promoActiva.categoriaTarget }} en la Carta &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</section>

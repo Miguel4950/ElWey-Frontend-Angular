@@ -1,0 +1,312 @@
+.banner-promociones-flash {
+  background: linear-gradient(135deg, #241c18 0%, #171614 100%);
+  border: 1.5px solid #3d3129;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-promociones-flash::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ee1a0e, #facc15, #4caf50);
+}
+
+/* Cabecera */
+.promociones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.badge-fuego-vivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: rgba(238, 26, 14, 0.15);
+  border: 1px solid rgba(238, 26, 14, 0.35);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-bottom: 6px;
+}
+
+.punto-pulso-fuego {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ee1a0e;
+  box-shadow: 0 0 8px #ee1a0e;
+  animation: pulsoFuego 1.6s infinite ease-in-out;
+}
+
+@keyframes pulsoFuego {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.texto-badge-fuego {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ee1a0e;
+  letter-spacing: 0.5px;
+}
+
+.titulo-banner-promo {
+  font-family: 'Abril Fatface', serif;
+  font-size: 1.45rem;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* Caja Countdown */
+.caja-countdown-promo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #1a1513;
+  border: 1px solid #3d332c;
+  border-radius: 10px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.icono-reloj-countdown {
+  font-size: 1.4rem;
+  color: #facc15;
+}
+
+.textos-countdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-countdown {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: #8c8075;
+  letter-spacing: 0.5px;
+}
+
+.reloj-countdown-valor {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+/* Pestañas */
+.pestañas-promos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tab-promo-btn {
+  background-color: #171614;
+  border: 1px solid #332b26;
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.tab-promo-btn:hover {
+  border-color: #facc15;
+  background-color: #211c19;
+}
+
+.tab-promo-btn.tab-activa {
+  background-color: #261f1b;
+  border-color: #facc15;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+}
+
+.tab-icono {
+  font-size: 1.2rem;
+}
+
+.tab-nombre {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #d6cdc5;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-promo-btn.tab-activa .tab-nombre {
+  color: #ffffff;
+}
+
+.tab-badge-ahorro {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Tarjeta Detalle Combo */
+.tarjeta-combo-detalle {
+  background-color: #1b1613;
+  border: 1px solid #3b3028;
+  border-radius: 10px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.icono-combo-gigante {
+  background-color: #261e1a;
+  border: 1.5px solid #4a3c33;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.emoji-gigante {
+  font-size: 2.3rem;
+}
+
+.info-combo-cuerpo {
+  flex-grow: 1;
+}
+
+.fila-etiqueta-ahorro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.etiqueta-flash {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ee1a0e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-ahorro-verde {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.15);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.titulo-combo-destacado {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+}
+
+.desc-combo-destacado {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.84rem;
+  color: #b5aba4;
+  margin: 0 0 14px 0;
+  line-height: 1.4;
+}
+
+.fila-precios-y-accion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.precios-combo-box {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.precio-tachado {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  color: #8a7e74;
+  text-decoration: line-through;
+}
+
+.precio-oferta-grande {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #facc15;
+}
+
+.btn-explorar-categoria {
+  background: linear-gradient(135deg, #ab1d19 0%, #ee1a0e 100%);
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(238, 26, 14, 0.3);
+}
+
+.btn-explorar-categoria:hover {
+  background: linear-gradient(135deg, #ee1a0e 0%, #f94336 100%);
+  box-shadow: 0 4px 12px rgba(238, 26, 14, 0.5);
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@media (max-width: 640px) {
+  .tarjeta-combo-detalle {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fila-etiqueta-ahorro,
+  .fila-precios-y-accion {
+    justify-content: center;
+  }
+}
