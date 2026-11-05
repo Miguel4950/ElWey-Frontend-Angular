@@ -41,6 +41,11 @@
         ></app-pedido-gestion>
       }
 
+      <!-- Subcomponente de Tracking Logístico y Radar de Despacho en Vivo -->
+      <app-pedido-tracking
+        [pedido]="pedido"
+      ></app-pedido-tracking>
+
       <!-- Subcomponente 2: Datos del Comensal, Resumen y Desglose de Platos -->
       <app-pedido-info
         [pedido]="pedido"

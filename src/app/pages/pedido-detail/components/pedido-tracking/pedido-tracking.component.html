@@ -1,0 +1,76 @@
+<section class="card-tracking-logistico" aria-labelledby="titulo-tracking">
+  <div class="encabezado-tracking">
+    <div class="titulo-grupo">
+      <span class="badge-radar-vivo">
+        <span class="punto-radar-pulso"></span>
+        Radar de Despacho en Vivo
+      </span>
+      <h3 id="titulo-tracking" class="titulo-radar">Seguimiento de Entrega en Bogotá</h3>
+    </div>
+    <div class="caja-tiempo-estimado">
+      <span class="etiqueta-tiempo">Tiempo Estimado</span>
+      <strong class="valor-tiempo">{{ tiempoEstimadoMinutos() }}</strong>
+    </div>
+  </div>
+
+  <!-- Barra de Progreso Dinamica -->
+  <div class="contenedor-barra-progreso">
+    <div
+      class="barra-progreso-activa"
+      [style.width.%]="porcentajeProgreso()"
+      role="progressbar"
+      [attr.aria-valuenow]="porcentajeProgreso()"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
+  </div>
+
+  <!-- Pasos Logísticos -->
+  <div class="grid-pasos-tracking">
+    <div class="paso-item" [class.completado]="pasoActual() >= 1" [class.activo]="pasoActual() === 1">
+      <div class="circulo-paso">👨‍🍳</div>
+      <span class="nombre-paso">Cocinando</span>
+      <small class="detalle-paso">Preparación al pastor</small>
+    </div>
+
+    <div class="paso-item" [class.completado]="pasoActual() >= 2" [class.activo]="pasoActual() === 2">
+      <div class="circulo-paso">🛵</div>
+      <span class="nombre-paso">En Ruta</span>
+      <small class="detalle-paso">Despachado en Bogotá</small>
+    </div>
+
+    <div class="paso-item" [class.completado]="pasoActual() >= 3" [class.activo]="pasoActual() === 3">
+      <div class="circulo-paso">🎉</div>
+      <span class="nombre-paso">Entregado</span>
+      <small class="detalle-paso">¡Buen provecho!</small>
+    </div>
+  </div>
+
+  <!-- Radar Logístico Interactivo Visual -->
+  <div class="radar-visual-box">
+    <div class="radar-animacion-circulo">
+      <div class="haz-radar"></div>
+      <div class="anillo-radar anillo-1"></div>
+      <div class="anillo-radar anillo-2"></div>
+      <div class="anillo-radar anillo-3"></div>
+      <div class="punto-restaurante" title="Taquería El Wey - Sede Central">🌮</div>
+      <div class="punto-domiciliario" [class.en-movimiento]="pasoActual() === 2" title="Repartidor en camino">🛵</div>
+      <div class="punto-destino" title="Dirección de Entrega">📍</div>
+    </div>
+
+    <div class="telemetria-despacho">
+      <div class="dato-telemetria">
+        <span class="etiqueta-tel">Repartidor Asignado</span>
+        <strong class="valor-tel">{{ pedido().domiciliarioNombre || 'Flota general en asignación' }}</strong>
+      </div>
+      <div class="dato-telemetria">
+        <span class="etiqueta-tel">Transporte & Embalaje</span>
+        <strong class="valor-tel">Bolsa Térmica Sellada (75°C)</strong>
+      </div>
+      <div class="dato-telemetria">
+        <span class="etiqueta-tel">Destino del Pedido</span>
+        <strong class="valor-tel">{{ pedido().clienteDireccion || 'Bogotá D.C.' }}</strong>
+      </div>
+    </div>
+  </div>
+</section>

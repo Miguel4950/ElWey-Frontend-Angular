@@ -11,11 +11,13 @@ import { DomiciliarioService } from '../../service/domiciliario.service';
 import { ClienteService } from '../../service/cliente.service';
 import { PedidoGestionComponent } from './components/pedido-gestion/pedido-gestion.component';
 import { PedidoInfoComponent } from './components/pedido-info/pedido-info.component';
+import { PedidoTrackingComponent } from './components/pedido-tracking/pedido-tracking.component';
 
 /**
  * Detalle consolidado de un pedido (Comanda).
  * Estructurado en subcomponentes visuales especializados:
  * - PedidoGestionComponent: Barra de operaciones de cocina y asignación/despacho de repartidores.
+ * - PedidoTrackingComponent: Barra de progreso, radar en vivo y telemetría de despacho logístico.
  * - PedidoInfoComponent: Datos del comensal, desglose de platos, adicionales y totales.
  */
 @Component({
@@ -27,6 +29,7 @@ import { PedidoInfoComponent } from './components/pedido-info/pedido-info.compon
     FooterComponent,
     CalaverasComponent,
     PedidoGestionComponent,
+    PedidoTrackingComponent,
     PedidoInfoComponent,
   ],
   templateUrl: './pedido-detail.component.html',
