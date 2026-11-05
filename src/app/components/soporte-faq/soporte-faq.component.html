@@ -1,0 +1,142 @@
+<!-- Botón Flotante Global de Soporte -->
+<button
+  type="button"
+  class="btn-flotante-soporte"
+  (click)="toggleModal()"
+  title="Preguntas frecuentes y atención en línea"
+>
+  <span class="punto-online"></span>
+  <span class="icono-soporte">🌮</span>
+  <span class="texto-btn-soporte">¿Dudas? Ayuda & FAQ</span>
+</button>
+
+<!-- Modal / Drawer del Centro de Soporte -->
+@if (abierto()) {
+  <div class="overlay-soporte" (click)="cerrarModal()">
+    <div class="modal-soporte" (click)="$event.stopPropagation()">
+
+      <!-- Encabezado del Modal -->
+      <header class="header-soporte">
+        <div class="status-cocina-badge">
+          <span class="dot-verde"></span>
+          <span>Cocina & Domicilios Operativos en Bogotá</span>
+        </div>
+        <h2 class="titulo-soporte">Centro de Ayuda El Wey</h2>
+        <p class="subtitulo-soporte">
+          Resolvemos tus inquietudes de inmediato o comunícate directamente con nuestro equipo.
+        </p>
+        <button type="button" class="btn-cerrar-soporte" (click)="cerrarModal()" title="Cerrar">
+          &times;
+        </button>
+      </header>
+
+      <!-- Buscador Reactivo -->
+      <div class="buscador-box">
+        <input
+          type="text"
+          [value]="busqueda()"
+          (input)="onBuscar($event)"
+          placeholder="Busca por palabra clave (ej: gluten, pagos, tiempos)..."
+          class="input-buscador-faq"
+        />
+      </div>
+
+      <!-- Filtros por Categoría (Chips) -->
+      <div class="chips-categorias">
+        <button
+          type="button"
+          class="chip-faq"
+          [class.activo]="categoriaSeleccionada() === 'todos'"
+          (click)="setCategoria('todos')"
+        >
+          Todas
+        </button>
+        <button
+          type="button"
+          class="chip-faq"
+          [class.activo]="categoriaSeleccionada() === 'envios'"
+          (click)="setCategoria('envios')"
+        >
+          🛵 Envíos & Cobertura
+        </button>
+        <button
+          type="button"
+          class="chip-faq"
+          [class.activo]="categoriaSeleccionada() === 'pagos'"
+          (click)="setCategoria('pagos')"
+        >
+          💳 Medios de Pago
+        </button>
+        <button
+          type="button"
+          class="chip-faq"
+          [class.activo]="categoriaSeleccionada() === 'menu'"
+          (click)="setCategoria('menu')"
+        >
+          🥑 Menú & Alérgenos
+        </button>
+        <button
+          type="button"
+          class="chip-faq"
+          [class.activo]="categoriaSeleccionada() === 'pedidos'"
+          (click)="setCategoria('pedidos')"
+        >
+          🧾 Pedidos & Estado
+        </button>
+      </div>
+
+      <!-- Lista Acordeón de FAQs -->
+      <div class="cuerpo-faqs">
+        @if (faqsFiltradas().length === 0) {
+          <div class="sin-resultados-faq">
+            <span class="icono-vacio">🌮❓</span>
+            <p>No encontramos preguntas con ese término.</p>
+            <button type="button" class="btn-reset-filtro" (click)="busqueda.set(''); setCategoria('todos')">
+              Ver todas las preguntas
+            </button>
+          </div>
+        } @else {
+          <div class="acordeon-faqs">
+            @for (faq of faqsFiltradas(); track faq.id) {
+              <div
+                class="item-acordeon"
+                [class.expandido]="preguntaExpandida() === faq.id"
+              >
+                <button
+                  type="button"
+                  class="btn-pregunta"
+                  (click)="togglePregunta(faq.id)"
+                >
+                  <span class="texto-pregunta">{{ faq.pregunta }}</span>
+                  <span class="flecha-toggle">{{ preguntaExpandida() === faq.id ? '−' : '+' }}</span>
+                </button>
+
+                @if (preguntaExpandida() === faq.id) {
+                  <div class="contenido-respuesta">
+                    <p>{{ faq.respuesta }}</p>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Banner de Contacto Directo WhatsApp -->
+      <footer class="footer-soporte">
+        <div class="info-atencion">
+          <span class="label-atencion">¿Tienes una pregunta específica?</span>
+          <small class="horario-atencion">Atención telefónica: (601) 745-WEY1 • 11:30 AM - 10:30 PM</small>
+        </div>
+        <button
+          type="button"
+          class="btn-whatsapp-directo"
+          (click)="abrirWhatsApp()"
+        >
+          <span>💬 Chatear por WhatsApp &rarr;</span>
+        </button>
+      </footer>
+
+    </div>
+  </div>
+}
